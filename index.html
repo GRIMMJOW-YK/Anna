@@ -1,609 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Eternal Bouquet | A Promise of Patience</title>
-  <!-- Google Fonts for elegant typography -->
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      font-family: 'Poppins', sans-serif;
-      color: #fff3e8;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* General Reset and Body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: linear-gradient(135deg, #050510, #1a0b1c, #0a0a2a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            overflow: hidden; /* Prevents scrolling */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    /* Password Overlay - Lock screen */
-    .password-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, #1a0b14 0%, #0a0510 100%);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 1s ease, visibility 0.3s;
-      font-family: 'Poppins', sans-serif;
-    }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    .password-card {
-      background: rgba(20, 12, 28, 0.85);
-      backdrop-filter: blur(12px);
-      border-radius: 48px;
-      padding: 40px 32px;
-      text-align: center;
-      border: 1px solid rgba(255, 200, 220, 0.3);
-      box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 2px rgba(255, 160, 180, 0.1);
-      width: 320px;
-      animation: floatGlow 3s infinite alternate;
-    }
+        /* --- PASSWORD SCREEN --- */
+        #lock-screen {
+            position: absolute;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            transition: opacity 2s ease-out;
+        }
 
-    @keyframes floatGlow {
-      0% { box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 2px rgba(255, 160, 180, 0.2); transform: translateY(0px);}
-      100% { box-shadow: 0 35px 55px rgba(0,0,0,0.6), 0 0 0 4px rgba(255, 120, 150, 0.5); transform: translateY(-5px);}
-    }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
 
-    .password-card h2 {
-      font-family: 'Dancing Script', cursive;
-      font-size: 2.8rem;
-      margin: 0 0 15px 0;
-      color: #ffcfdf;
-      text-shadow: 0 0 8px #ff6b8b;
-      letter-spacing: 2px;
-    }
+        .glass-card h2 {
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            color: #f8e5e5;
+        }
 
-    .password-card p {
-      font-size: 0.9rem;
-      opacity: 0.8;
-      margin-bottom: 30px;
-      color: #ffd9e5;
-    }
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-    .password-input {
-      background: rgba(255, 245, 240, 0.15);
-      border: 1px solid #ffb7c5;
-      padding: 12px 20px;
-      width: 80%;
-      border-radius: 60px;
-      font-size: 1.2rem;
-      text-align: center;
-      color: #fff;
-      font-weight: 500;
-      outline: none;
-      letter-spacing: 2px;
-      transition: all 0.3s;
-    }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: none;
+        }
 
-    .password-input:focus {
-      border-color: #ff6f91;
-      box-shadow: 0 0 15px #ff6f91;
-      background: rgba(255, 200, 210, 0.2);
-    }
+        input:focus {
+            border-color: #ff9a9e;
+            box-shadow: 0 0 15px rgba(255, 154, 158, 0.3);
+        }
 
-    .unlock-btn {
-      background: linear-gradient(135deg, #ff6b8b, #ff3b5c);
-      border: none;
-      margin-top: 25px;
-      padding: 12px 30px;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      font-family: 'Poppins', sans-serif;
-      letter-spacing: 1px;
-      width: 80%;
-      box-shadow: 0 5px 15px rgba(255, 60, 90, 0.4);
-    }
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid #ff9a9e;
+            color: #ff9a9e;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.4s;
+        }
 
-    .unlock-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 22px rgba(255, 60, 90, 0.7);
-    }
+        button:hover {
+            background: #ff9a9e;
+            color: #1a0b1c;
+            box-shadow: 0 0 20px rgba(255, 154, 158, 0.5);
+        }
 
-    .error-msg {
-      color: #ffb3ba;
-      font-size: 0.8rem;
-      margin-top: 15px;
-      min-height: 30px;
-    }
+        .error-msg {
+            margin-top: 15px;
+            color: #ff4d4d;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-    /* Main content after unlock (hidden initially) */
-    .main-content {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 1.2s ease;
-    }
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
 
-    .main-content.visible {
-      opacity: 1;
-      visibility: visible;
-    }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
 
-    /* Text overlay with emotional sentence */
-    .message-container {
-      position: absolute;
-      bottom: 8%;
-      left: 0;
-      right: 0;
-      text-align: center;
-      z-index: 20;
-      pointer-events: none;
-      padding: 20px;
-    }
+        /* --- MAIN EXPERIENCE (BOUQUET & MESSAGE) --- */
+        #main-site {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none; /* Hidden until unlocked */
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 3s ease-in;
+            text-align: center;
+            padding: 20px;
+        }
 
-    .eternal-sentence {
-      font-family: 'Dancing Script', cursive;
-      font-size: 2.2rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #ffe6f0, #ffb7c5, #ff8aa8);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      text-shadow: 0 0 20px rgba(255, 80, 120, 0.5);
-      display: inline-block;
-      backdrop-filter: blur(4px);
-      padding: 12px 24px;
-      border-radius: 80px;
-      letter-spacing: 1px;
-      animation: glowPulse 3s infinite;
-      white-space: pre-line;
-      line-height: 1.4;
-      border: 1px solid rgba(255, 200, 210, 0.4);
-      background-color: rgba(10, 5, 20, 0.5);
-    }
+        .content-container {
+            z-index: 10;
+            position: relative;
+        }
 
-    @keyframes glowPulse {
-      0% { text-shadow: 0 0 5px #ff98b0; border-color: rgba(255, 160, 180, 0.3);}
-      100% { text-shadow: 0 0 25px #ff3b6e, 0 0 8px #ff8aa8; border-color: rgba(255, 100, 130, 0.8);}
-    }
+        /* The glowing flower/centerpiece */
+        .glowing-flower {
+            font-size: 60px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(255, 154, 158, 0.8));
+            animation: float 4s ease-in-out infinite;
+        }
 
-    /* Floating hearts animation via CSS */
-    .floating-heart {
-      position: absolute;
-      pointer-events: none;
-      z-index: 25;
-      font-size: 1.5rem;
-      animation: floatUp 8s linear forwards;
-      opacity: 0.7;
-    }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
 
-    @keyframes floatUp {
-      0% { transform: translateY(100vh) scale(0.5); opacity: 0.8; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-    }
+        /* The Main Super Decorated Sentence */
+        .core-message {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: #ffe6e6;
+            line-height: 1.4;
+            max-width: 800px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 
+                         0 0 20px rgba(255, 154, 158, 0.6), 
+                         0 0 40px rgba(255, 154, 158, 0.4);
+        }
 
-    /* Promise ring / small decoration */
-    .promise-note {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(8px);
-      padding: 10px 20px;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-family: 'Poppins', monospace;
-      border-left: 3px solid #ff7b9c;
-      pointer-events: none;
-      z-index: 20;
-      color: #ffdbeb;
-    }
+        /* Mobile responsiveness for the text */
+        @media (max-width: 600px) {
+            .core-message {
+                font-size: 2.2rem;
+            }
+        }
 
-    /* subtle instruction */
-    .hint {
-      position: absolute;
-      bottom: 15px;
-      left: 15px;
-      font-size: 0.7rem;
-      opacity: 0.5;
-      z-index: 20;
-    }
+        /* Word-by-word fade animation classes */
+        .word {
+            opacity: 0;
+            display: inline-block;
+            transform: translateY(20px);
+            animation: fadeWordUp 1.5s forwards ease-out;
+        }
 
-    @media (max-width: 700px) {
-      .eternal-sentence { font-size: 1.4rem; padding: 8px 16px; }
-      .promise-note { font-size: 0.6rem; top: 10px; right: 10px; }
-    }
-  </style>
+        @keyframes fadeWordUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Falling Petals & Dust Particles */
+        .particle {
+            position: absolute;
+            top: -10%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.6;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- PASSWORD OVERLAY -->
-<div id="passwordOverlay" class="password-overlay">
-  <div class="password-card">
-    <h2>✦ Secret Garden ✦</h2>
-    <p>a whisper only for you ...</p>
-    <input type="password" id="passwordInput" class="password-input" placeholder="Password" autocomplete="off">
-    <button id="unlockBtn" class="unlock-btn">Unlock Heart</button>
-    <div id="errorMsg" class="error-msg"></div>
-    <div style="margin-top: 20px; font-size: 0.7rem; opacity: 0.6;">✨ hint: your name, my devotion ✨</div>
-  </div>
-</div>
-
-<!-- MAIN 3D CONTENT -->
-<div id="mainContent" class="main-content">
-  <div class="promise-note">💌 A promise written in petals 💌</div>
-  <div class="message-container">
-    <div class="eternal-sentence" id="mainSentence">
-      "I will wait if it takes a year,<br> until the day you can say 'I love you' to me."
+    <div id="lock-screen">
+        <div class="glass-card" id="card">
+            <h2>Secret Name</h2>
+            <input type="password" id="pass-input" placeholder="Who holds the key?">
+            <button onclick="checkPassword()">Unlock</button>
+            <p id="error-msg" class="error-msg">Only she holds the key.</p>
+        </div>
     </div>
-  </div>
-  <div class="hint">🌸 every flower carries my silent vow 🌸</div>
-</div>
 
-<!-- Three.js libraries -->
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-    }
-  }
-</script>
+    <div id="main-site">
+        <div class="content-container">
+            <div class="glowing-flower">✨🌸✨</div>
+            <h1 class="core-message" id="message">I will wait if it takes a year until the day you can say I love you to me.</h1>
+        </div>
+    </div>
 
-<script type="module">
-  import * as THREE from 'three';
-  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-  import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+    <script>
+        function checkPassword() {
+            const input = document.getElementById("pass-input").value.trim().toUpperCase();
+            const errorMsg = document.getElementById("error-msg");
+            const card = document.getElementById("card");
+            const lockScreen = document.getElementById("lock-screen");
+            const mainSite = document.getElementById("main-site");
 
-  // --- PASSWORD LOGIC ---
-  const overlay = document.getElementById('passwordOverlay');
-  const mainContent = document.getElementById('mainContent');
-  const unlockBtn = document.getElementById('unlockBtn');
-  const passwordInput = document.getElementById('passwordInput');
-  const errorMsg = document.getElementById('errorMsg');
-  const correctPassword = "ANNA";
+            if (input === "ANNA") {
+                // Correct Password
+                errorMsg.style.opacity = "0";
+                
+                // Fade out lock screen
+                lockScreen.style.opacity = "0";
+                
+                setTimeout(() => {
+                    lockScreen.style.display = "none";
+                    mainSite.style.display = "flex";
+                    
+                    // Small delay before fading in the main site for dramatic effect
+                    setTimeout(() => {
+                        mainSite.style.opacity = "1";
+                        animateText();
+                        createParticles();
+                    }, 500);
 
-  function unlockWebsite() {
-    const entered = passwordInput.value.trim().toUpperCase();
-    if (entered === correctPassword) {
-      // fade out overlay and show main
-      overlay.style.opacity = '0';
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        mainContent.classList.add('visible');
-        // Start heart generator after unlock
-        startFloatingHearts();
-        // Initialize 3D scene (it was already created but hidden? Actually create now for performance)
-        initThreeJS();
-      }, 800);
-    } else {
-      errorMsg.innerText = "❀ Not yet... the right key opens this heart. Try 'ANNA' ❀";
-      passwordInput.value = '';
-      passwordInput.style.borderColor = "#ff6b8b";
-      setTimeout(() => { passwordInput.style.borderColor = "#ffb7c5"; }, 500);
-    }
-  }
-
-  unlockBtn.addEventListener('click', unlockWebsite);
-  passwordInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') unlockWebsite();
-  });
-
-  // --- Floating Hearts Generator (CSS emotional effect) ---
-  function startFloatingHearts() {
-    setInterval(() => {
-      const heart = document.createElement('div');
-      heart.className = 'floating-heart';
-      heart.innerHTML = ['❤️', '💖', '💗', '🌸', '🌹', '✨', '💞'][Math.floor(Math.random() * 7)];
-      heart.style.left = Math.random() * 100 + '%';
-      heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-      heart.style.animationDuration = Math.random() * 5 + 6 + 's';
-      heart.style.opacity = Math.random() * 0.6 + 0.3;
-      document.body.appendChild(heart);
-      setTimeout(() => { heart.remove(); }, 8000);
-    }, 800);
-  }
-
-  // --- THREE.JS: DIGITAL BOUQUET & ROMANTIC SCENE ---
-  let scene, camera, renderer, labelRenderer, controls, bouquetGroup;
-  let particlesField, flowerPetals = [];
-  let mixer; // for any future animations
-
-  function initThreeJS() {
-    const container = document.getElementById('mainContent');
-    
-    // Scene setup
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x050210);
-    scene.fog = new THREE.FogExp2(0x050210, 0.008);
-    
-    // Camera: perspective
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(3, 2.5, 5);
-    camera.lookAt(0, 1, 0);
-    
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true; // soft shadows for depth
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
-    
-    // Controls with auto-rotate & gentle interaction
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 1.2;
-    controls.enableZoom = true;
-    controls.enablePan = false;
-    controls.target.set(0, 1.2, 0);
-    
-    // Lighting: dreamy atmosphere
-    // Ambient
-    const ambientLight = new THREE.AmbientLight(0x332233);
-    scene.add(ambientLight);
-    // Main directional light
-    const mainLight = new THREE.DirectionalLight(0xffccaa, 1.2);
-    mainLight.position.set(4, 5, 3);
-    mainLight.castShadow = true;
-    mainLight.receiveShadow = false;
-    mainLight.shadow.mapSize.width = 1024;
-    scene.add(mainLight);
-    // Fill light from below (romantic glow)
-    const fillLight = new THREE.PointLight(0xff88aa, 0.6);
-    fillLight.position.set(0, -0.5, 1);
-    scene.add(fillLight);
-    // Back rim light
-    const rimLight = new THREE.PointLight(0xffaa99, 0.8);
-    rimLight.position.set(-1, 2, -2);
-    scene.add(rimLight);
-    // colorful fairy lights
-    const colorLights = [];
-    for (let i = 0; i < 6; i++) {
-      const cl = new THREE.PointLight(0xff66aa, 0.4);
-      cl.userData = { angle: i * Math.PI * 2 / 6, radius: 2.2, speed: 0.5 };
-      scene.add(cl);
-      colorLights.push(cl);
-    }
-    
-    // Add sparkling particle system (stars)
-    const starGeometry = new THREE.BufferGeometry();
-    const starCount = 800;
-    const starPositions = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount; i++) {
-      starPositions[i*3] = (Math.random() - 0.5) * 200;
-      starPositions[i*3+1] = (Math.random() - 0.5) * 80;
-      starPositions[i*3+2] = (Math.random() - 0.5) * 80 - 30;
-    }
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const starMaterial = new THREE.PointsMaterial({ color: 0xffccdd, size: 0.08, transparent: true, opacity: 0.6 });
-    const stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
-    
-    // --- CREATE BOUQUET (handcrafted flowers) ---
-    bouquetGroup = new THREE.Group();
-    
-    // Function to create a single flower (rose-like) with stem
-    function createFlower(x, z, colorHex, scaleFact = 1, yOffset = 0) {
-      const group = new THREE.Group();
-      const stemMat = new THREE.MeshStandardMaterial({ color: 0x4c6a3b, roughness: 0.7, metalness: 0.1 });
-      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.05 * scaleFact, 0.08 * scaleFact, 0.8 * scaleFact, 6), stemMat);
-      stem.position.y = -0.2 * scaleFact;
-      stem.castShadow = true;
-      group.add(stem);
-      
-      // Leaves
-      const leafMat = new THREE.MeshStandardMaterial({ color: 0x6d8c54 });
-      const leafGeo = new THREE.SphereGeometry(0.12 * scaleFact, 4);
-      const leaf1 = new THREE.Mesh(leafGeo, leafMat);
-      leaf1.position.set(0.12 * scaleFact, -0.05 * scaleFact, 0);
-      leaf1.scale.set(0.8, 0.2, 0.5);
-      group.add(leaf1);
-      const leaf2 = new THREE.Mesh(leafGeo, leafMat);
-      leaf2.position.set(-0.12 * scaleFact, -0.05 * scaleFact, 0);
-      leaf2.scale.set(0.8, 0.2, 0.5);
-      group.add(leaf2);
-      
-      // Petals: layered spheres / flattened spheres
-      const petalMat = new THREE.MeshStandardMaterial({ color: colorHex, emissive: 0x331122, emissiveIntensity: 0.15, roughness: 0.3 });
-      const centerMat = new THREE.MeshStandardMaterial({ color: 0xffaa66, emissive: 0x442200 });
-      
-      const center = new THREE.Mesh(new THREE.SphereGeometry(0.18 * scaleFact, 16), centerMat);
-      center.position.y = 0.1 * scaleFact;
-      group.add(center);
-      
-      const petalsPos = [
-        [0, 0.22, 0.2], [0, 0.22, -0.2], [0.2, 0.22, 0], [-0.2, 0.22, 0],
-        [0.14, 0.28, 0.14], [-0.14, 0.28, -0.14], [0.14, 0.28, -0.14], [-0.14, 0.28, 0.14],
-        [0, 0.32, 0.15], [0, 0.32, -0.15], [0.15, 0.32, 0], [-0.15, 0.32, 0]
-      ];
-      petalsPos.forEach(pos => {
-        const petal = new THREE.Mesh(new THREE.SphereGeometry(0.16 * scaleFact, 12), petalMat);
-        petal.position.set(pos[0] * scaleFact, pos[1] * scaleFact, pos[2] * scaleFact);
-        petal.scale.set(0.9, 0.55, 0.8);
-        group.add(petal);
-      });
-      
-      group.position.set(x, yOffset + 0.2, z);
-      group.castShadow = true;
-      group.receiveShadow = false;
-      return group;
-    }
-    
-    // Create a bouquet of 13 flowers in a semicircle + center
-    const colors = [0xff6b8b, 0xff8da1, 0xffb3c6, 0xff9eb5, 0xffc0d0, 0xff7f9e, 0xff4d6d];
-    const positions = [
-      [-0.8, 0, -0.6], [0.8, 0, -0.6], [-0.4, 0, -0.9], [0.4, 0, -0.9], [0, 0, -1.0],
-      [-1.0, 0, 0.1], [1.0, 0, 0.1], [-0.5, 0, 0.4], [0.5, 0, 0.4], [0, 0, 0.2],
-      [-0.2, 0.15, -0.3], [0.2, 0.15, -0.3], [0, 0.25, -0.1]
-    ];
-    
-    positions.forEach((pos, idx) => {
-      const col = colors[idx % colors.length];
-      const scaleVar = 0.85 + Math.random() * 0.3;
-      const flower = createFlower(pos[0], pos[2], col, scaleVar, pos[1] + 0.1);
-      bouquetGroup.add(flower);
-    });
-    
-    // Add some small gypsophila (tiny white flowers)
-    const babyMat = new THREE.MeshStandardMaterial({ color: 0xfff5f0, emissive: 0x552233 });
-    for (let i = 0; i < 80; i++) {
-      const tiny = new THREE.Mesh(new THREE.SphereGeometry(0.045, 6), babyMat);
-      const angle = Math.random() * Math.PI * 2;
-      const rad = 1.0 + Math.random() * 0.8;
-      const yOff = 0.2 + Math.random() * 0.8;
-      tiny.position.set(Math.cos(angle) * rad, yOff, Math.sin(angle) * rad);
-      tiny.castShadow = true;
-      bouquetGroup.add(tiny);
-    }
-    
-    // Decorative vase (glass like)
-    const vaseMat = new THREE.MeshPhysicalMaterial({ color: 0xd9bfb0, metalness: 0.4, roughness: 0.2, transparent: true, opacity: 0.65, clearcoat: 1 });
-    const vase = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.6, 0.9, 32), vaseMat);
-    vase.position.y = -0.3;
-    vase.castShadow = true;
-    vase.receiveShadow = false;
-    bouquetGroup.add(vase);
-    
-    // add a ribbon around vase
-    const ribbonMat = new THREE.MeshStandardMaterial({ color: 0xffa5b9 });
-    const ribbon = new THREE.Mesh(new THREE.TorusGeometry(0.75, 0.05, 16, 64), ribbonMat);
-    ribbon.rotation.x = Math.PI / 2;
-    ribbon.position.y = 0.05;
-    bouquetGroup.add(ribbon);
-    
-    scene.add(bouquetGroup);
-    
-    // floating glowing particles around bouquet
-    const glowCount = 400;
-    const glowGeo = new THREE.BufferGeometry();
-    const glowPositions = new Float32Array(glowCount * 3);
-    for (let i = 0; i < glowCount; i++) {
-      const rad = 1.2 + Math.random() * 1.5;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(2 * Math.random() - 1);
-      glowPositions[i*3] = Math.sin(phi) * Math.cos(theta) * rad;
-      glowPositions[i*3+1] = Math.sin(phi) * Math.sin(theta) * rad + 0.7;
-      glowPositions[i*3+2] = Math.cos(phi) * rad;
-    }
-    glowGeo.setAttribute('position', new THREE.BufferAttribute(glowPositions, 3));
-    const glowPointsMat = new THREE.PointsMaterial({ color: 0xffaacc, size: 0.03, transparent: true, blending: THREE.AdditiveBlending });
-    const glowParticles = new THREE.Points(glowGeo, glowPointsMat);
-    scene.add(glowParticles);
-    
-    // Falling petals effect (simple but emotional)
-    const petalGeo = new THREE.PlaneGeometry(0.12, 0.08);
-    const petalTexture = (() => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 32;
-      canvas.height = 32;
-      const ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#ffb7c5';
-      ctx.beginPath();
-      ctx.ellipse(16, 16, 12, 8, 0, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.fillStyle = '#ff7b9c';
-      ctx.beginPath();
-      ctx.ellipse(16, 12, 4, 3, 0, 0, 2 * Math.PI);
-      ctx.fill();
-      return new THREE.CanvasTexture(canvas);
-    })();
-    const petalMatF = new THREE.MeshStandardMaterial({ map: petalTexture, side: THREE.DoubleSide, transparent: true, opacity: 0.7 });
-    const fallingPetals = [];
-    for (let i = 0; i < 70; i++) {
-      const petal = new THREE.Mesh(petalGeo, petalMatF.clone());
-      petal.userData = {
-        speedY: 0.008 + Math.random() * 0.012,
-        speedX: (Math.random() - 0.5) * 0.003,
-        speedZ: (Math.random() - 0.5) * 0.003,
-        rotSpeed: (Math.random() - 0.5) * 0.02,
-        startY: 2 + Math.random() * 3
-      };
-      petal.position.x = (Math.random() - 0.5) * 4;
-      petal.position.y = petal.userData.startY;
-      petal.position.z = (Math.random() - 0.5) * 3;
-      petal.scale.set(0.8 + Math.random() * 0.7, 0.6 + Math.random() * 0.5, 1);
-      scene.add(petal);
-      fallingPetals.push(petal);
-    }
-    
-    // Animate falling petals and rotating lights
-    let time = 0;
-    function animateFloating() {
-      requestAnimationFrame(animateFloating);
-      time += 0.016;
-      
-      // floating glow particles rotation
-      glowParticles.rotation.y += 0.003;
-      glowParticles.rotation.x = Math.sin(time * 0.2) * 0.1;
-      
-      // color lights movement
-      colorLights.forEach((light, idx) => {
-        const angle = time * 0.8 + idx;
-        light.position.x = Math.sin(angle) * 1.8;
-        light.position.z = Math.cos(angle * 0.7) * 1.9;
-        light.intensity = 0.45 + Math.sin(time * 2 + idx) * 0.2;
-      });
-      
-      // falling petals update
-      fallingPetals.forEach(petal => {
-        petal.position.y -= petal.userData.speedY;
-        petal.position.x += petal.userData.speedX;
-        petal.position.z += petal.userData.speedZ;
-        petal.rotation.z += petal.userData.rotSpeed;
-        if (petal.position.y < -1) {
-          petal.position.y = 2.8;
-          petal.position.x = (Math.random() - 0.5) * 4.2;
-          petal.position.z = (Math.random() - 0.5) * 3.2;
-          petal.userData.speedY = 0.008 + Math.random() * 0.014;
+                }, 2000); // Wait for fade out
+            } else {
+                // Wrong Password
+                errorMsg.style.opacity = "1";
+                card.classList.remove("shake");
+                void card.offsetWidth; // Trigger reflow to restart animation
+                card.classList.add("shake");
+                document.getElementById("pass-input").value = "";
+            }
         }
-      });
-      
-      // gentle floating bouquet
-      bouquetGroup.position.y = Math.sin(time * 1.2) * 0.008;
-      
-      // update controls and render
-      controls.update(); // auto-rotate is enabled
-      renderer.render(scene, camera);
-    }
-    
-    animateFloating();
-    
-    // resize handler
-    window.addEventListener('resize', onWindowResize, false);
-    function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-    
-    // add little CSS2D label with a romantic note (floating near bouquet)
-    const labelDiv = document.createElement('div');
-    labelDiv.textContent = '✧ waiting endlessly for you ✧';
-    labelDiv.style.color = '#ffcfdf';
-    labelDiv.style.fontFamily = "'Dancing Script', cursive";
-    labelDiv.style.fontSize = '16px';
-    labelDiv.style.fontWeight = 'bold';
-    labelDiv.style.textShadow = '0 0 6px #ff3b6e';
-    labelDiv.style.background = 'rgba(0,0,0,0.4)';
-    labelDiv.style.padding = '4px 12px';
-    labelDiv.style.borderRadius = '40px';
-    labelDiv.style.backdropFilter = 'blur(6px)';
-    const labelObj = new CSS2DObject(labelDiv);
-    labelObj.position.set(0, 1.9, 0.7);
-    scene.add(labelObj);
-    
-    // also add gentle wind sound? not needed but pure visual
-  }
-  
-  // Preload but ensure three js only runs after unlock? The init is called only after unlock.
-  // However to avoid error: but user may see black canvas? It will be fine.
-  // just init after unlock. If user unlocks quickly, no issue.
-  // Also we already call init inside unlock.
-  // To give smooth loading, we can pre-create some small effect, but it's fine.
-  
-  // For safety, if someone tries to access without password, no scene.
-  console.log("Locked. Enter ANNA to reveal the bouquet of patience.");
-</script>
+
+        // Allow pressing "Enter" key on keyboard
+        document.getElementById("pass-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                checkPassword();
+            }
+        });
+
+        // Break the sentence into spans to animate word by word slowly
+        function animateText() {
+            const msgElement = document.getElementById("message");
+            const text = msgElement.innerText;
+            const words = text.split(" ");
+            msgElement.innerHTML = ""; // clear original text
+
+            words.forEach((word, index) => {
+                let span = document.createElement("span");
+                span.classList.add("word");
+                span.innerText = word + " ";
+                // Delay each word by 0.6 seconds to make it emotional and slow
+                span.style.animationDelay = `${index * 0.6}s`;
+                msgElement.appendChild(span);
+            });
+        }
+
+        // Generate glowing dust and falling petals in the background
+        function createParticles() {
+            const symbols = ["🌸", "✨", "💫", "🤍"];
+            setInterval(() => {
+                const particle = document.createElement("div");
+                particle.classList.add("particle");
+                
+                // Randomize symbol
+                particle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                // Randomize size
+                const size = Math.random() * 15 + 10;
+                particle.style.fontSize = `${size}px`;
+                
+                // Randomize starting X position
+                particle.style.left = `${Math.random() * 100}vw`;
+                
+                // Randomize fall duration (between 10s and 20s)
+                const duration = Math.random() * 10 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                document.getElementById("main-site").appendChild(particle);
+                
+                // Remove particle after it falls to prevent lag
+                setTimeout(() => {
+                    particle.remove();
+                }, duration * 1000);
+            }, 400); // Generate a new particle every 400ms
+        }
+    </script>
 </body>
 </html>
