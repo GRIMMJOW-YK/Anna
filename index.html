@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>For Anna ✨ Heart's Echo</title>
-<!-- canvas-confetti library for celebrations -->
+<title>For Anna — Where My Heart Lives ❤️</title>
+<!-- canvas-confetti library -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none; /* only for aesthetics, not intrusive */
 }
 
 body {
@@ -39,23 +40,29 @@ body {
 }
 
 .lock-card {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(18px);
     padding: 40px 30px;
-    border-radius: 60px 20px 60px 20px;
+    border-radius: 80px 20px 80px 20px;
     text-align: center;
-    box-shadow: 0 20px 35px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,100,150,0.3);
-    border: 1px solid rgba(255,200,220,0.5);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,150,180,0.5);
+    border: 1px solid rgba(255,200,220,0.7);
     width: 85%;
     max-width: 350px;
+    animation: softGlow 2s infinite alternate;
+}
+
+@keyframes softGlow {
+    0% { box-shadow: 0 0 5px #ff99bb; border-color: rgba(255,150,180,0.4);}
+    100% { box-shadow: 0 0 20px #ff4d6d; border-color: #ffb7c5;}
 }
 
 .lock-card h2 {
     font-family: 'Dancing Script', cursive;
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     margin-bottom: 20px;
     color: #ffb7c5;
-    text-shadow: 0 0 8px #ff3366;
+    text-shadow: 0 0 12px #ff3366;
 }
 
 #lockScreen input {
@@ -65,7 +72,7 @@ body {
     width: 80%;
     font-size: 1rem;
     text-align: center;
-    background: rgba(255,255,240,0.9);
+    background: rgba(255,255,240,0.95);
     color: #a11d3f;
     font-weight: bold;
     outline: none;
@@ -74,7 +81,7 @@ body {
 
 #lockScreen input:focus {
     transform: scale(1.02);
-    box-shadow: 0 0 15px #ff6699;
+    box-shadow: 0 0 18px #ff6699;
 }
 
 #lockScreen button {
@@ -102,7 +109,7 @@ body {
     text-shadow: 0 0 2px black;
 }
 
-/* MAIN CONTENT (initially hidden) */
+/* MAIN CONTENT */
 #mainContent {
     display: none;
     position: relative;
@@ -110,23 +117,23 @@ body {
     min-height: 100vh;
     background: radial-gradient(ellipse at 30% 40%, #1e0b2c, #020111);
     overflow-x: hidden;
-    padding-bottom: 40px;
+    padding-bottom: 50px;
 }
 
-/* Animated gradient overlay */
+/* Animated gradient overlay + candle light effect */
 .gradient-bg {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,80,120,0.15), transparent 70%);
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,100,140,0.2), transparent 70%);
     pointer-events: none;
     z-index: 0;
     transition: 0.1s;
 }
 
-/* Floating Stars */
+/* Starfield */
 .stardust {
     position: fixed;
     top: 0;
@@ -148,7 +155,7 @@ body {
     100% { opacity: 0.9; }
 }
 
-/* floating hearts */
+/* floating hearts + rose petals */
 .floating-heart {
     position: fixed;
     bottom: -20px;
@@ -158,48 +165,74 @@ body {
     animation: riseHeart linear forwards;
 }
 
+.floating-petal {
+    position: fixed;
+    bottom: -30px;
+    pointer-events: none;
+    z-index: 19;
+    font-size: 22px;
+    animation: swayRise 7s linear forwards;
+}
+
 @keyframes riseHeart {
     0% { transform: translateY(0) rotate(0deg); opacity: 1; }
     100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
 }
 
-/* container content */
+@keyframes swayRise {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+    50% { transform: translateY(-60vh) translateX(20px) rotate(180deg); opacity: 0.9; }
+    100% { transform: translateY(-120vh) translateX(-20px) rotate(360deg); opacity: 0; }
+}
+
+/* main container */
 .content-wrap {
     position: relative;
     z-index: 10;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 20px 20px 60px;
 }
 
-/* Glassmorphism cards */
+/* glass cards */
 .glass-card {
     background: rgba(255, 240, 245, 0.1);
-    backdrop-filter: blur(12px);
-    border-radius: 40px;
-    border: 1px solid rgba(255, 200, 220, 0.4);
-    padding: 25px;
+    backdrop-filter: blur(14px);
+    border-radius: 48px;
+    border: 1px solid rgba(255, 200, 220, 0.5);
+    padding: 28px;
     margin-bottom: 30px;
     box-shadow: 0 20px 35px -12px rgba(0,0,0,0.4);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .glass-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 25px 40px -12px rgba(255,80,120,0.3);
-    border-color: rgba(255,140,170,0.7);
+    transform: translateY(-6px);
+    box-shadow: 0 30px 45px -12px rgba(255,80,120,0.4);
+    border-color: rgba(255,160,180,0.8);
 }
 
-/* Typing effect title */
+/* Heartbeat text */
+.heartbeat-text {
+    animation: heartbeat 1.4s ease infinite;
+    display: inline-block;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); text-shadow: 0 0 0 #ff99bb; }
+    50% { transform: scale(1.05); text-shadow: 0 0 12px #ff4d6d; }
+    100% { transform: scale(1); }
+}
+
 .typing-title {
-    font-size: 2.4rem;
+    font-size: 2.5rem;
     font-weight: bold;
     font-family: 'Dancing Script', cursive;
     border-right: 3px solid #ff99bb;
     white-space: nowrap;
     overflow: hidden;
     width: 0;
-    animation: typingAnim 3.5s steps(30, end) forwards, blinkCursor 0.75s step-end infinite;
+    animation: typingAnim 3.8s steps(35, end) forwards, blinkCursor 0.75s step-end infinite;
     margin-bottom: 20px;
     color: #ffe3ed;
     text-shadow: 0 0 10px #ff4d6d;
@@ -222,21 +255,20 @@ body {
     color: #ffefef;
 }
 
-/* chat bubble */
+/* Chat bubbles */
 .chat-bubble {
-    background: rgba(255, 100, 130, 0.3);
+    background: rgba(255, 100, 130, 0.35);
     backdrop-filter: blur(8px);
     border-radius: 30px 30px 30px 10px;
-    padding: 15px 20px;
+    padding: 14px 22px;
     margin: 15px 0;
     display: inline-block;
-    max-width: 85%;
+    max-width: 90%;
     font-style: italic;
-    border-left: 4px solid #ff99bb;
-    transition: all 0.2s;
+    border-left: 5px solid #ff99bb;
 }
 
-/* photo gallery */
+/* Gallery */
 .gallery {
     display: flex;
     flex-wrap: wrap;
@@ -247,44 +279,35 @@ body {
 
 .photo-card {
     width: 170px;
-    background: rgba(0,0,0,0.4);
-    border-radius: 28px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 32px;
     padding: 10px;
     backdrop-filter: blur(5px);
     text-align: center;
     transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     cursor: pointer;
-    border: 1px solid rgba(255, 215, 225, 0.6);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255, 215, 225, 0.7);
 }
 
 .photo-card:hover {
     transform: scale(1.05) rotate(1deg);
-    background: rgba(255,100,120,0.2);
-    box-shadow: 0 0 20px #ff99bb;
+    background: rgba(255,100,120,0.3);
+    box-shadow: 0 0 22px #ff99bb;
 }
 
 .photo-card img {
     width: 100%;
     height: 150px;
     object-fit: cover;
-    border-radius: 20px;
+    border-radius: 24px;
     border: 2px solid #ffb7c5;
 }
 
-.photo-card p {
-    margin-top: 8px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: #ffe0e7;
-}
-
-/* reason list */
+/* reason list carousel style */
 .reason-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: 15px;
 }
 
 .reason-item {
@@ -295,99 +318,107 @@ body {
     align-items: center;
     gap: 12px;
     font-size: 1rem;
-    backdrop-filter: blur(4px);
     transition: 0.2s;
 }
 
-.reason-item:hover {
-    background: rgba(255,100,130,0.3);
-    transform: translateX(8px);
+/* impact meter */
+.impact-meter {
+    background: rgba(0,0,0,0.5);
+    border-radius: 40px;
+    padding: 10px 15px;
+    margin-top: 15px;
 }
 
-.reason-emoji {
-    font-size: 1.5rem;
+.meter-fill {
+    height: 12px;
+    background: linear-gradient(90deg, #ff6699, #ffb3c6);
+    border-radius: 20px;
+    width: 0%;
+    transition: width 1s ease;
 }
 
-/* Buttons */
+/* buttons */
 .love-btn {
     background: linear-gradient(135deg, #ff3366, #ff6680);
     border: none;
-    padding: 12px 30px;
+    padding: 12px 26px;
     border-radius: 40px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
     color: white;
     cursor: pointer;
     transition: 0.3s;
-    margin-top: 10px;
-    margin-right: 12px;
+    margin: 8px 8px 0 0;
     box-shadow: 0 4px 14px rgba(255, 51, 102, 0.5);
 }
 
 .love-btn:hover {
     transform: scale(1.02);
     background: linear-gradient(135deg, #ff1a4f, #ff4d6d);
-    box-shadow: 0 8px 20px rgba(255, 51, 102, 0.8);
 }
 
-/* music player mini */
-.music-mini {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(8px);
-    padding: 8px 16px;
-    border-radius: 40px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 50;
-    border: 1px solid #ffa5c0;
-    font-size: 0.8rem;
-    cursor: pointer;
-}
-
-.music-mini span {
-    font-size: 1.4rem;
-}
-
-/* final sweet message */
+/* final message */
 #finalMessage {
     display: none;
     background: linear-gradient(145deg, #ffb7c5, #ff8aa8);
     color: #2d0a1a;
-    padding: 20px;
-    border-radius: 50px;
+    padding: 22px;
+    border-radius: 60px;
     text-align: center;
     margin-top: 20px;
     font-weight: bold;
     font-size: 1.3rem;
-    box-shadow: 0 0 30px #ff99bb;
     animation: glowPulse 1.5s infinite;
 }
 
-@keyframes glowPulse {
-    0% { box-shadow: 0 0 5px #ff99bb; }
-    100% { box-shadow: 0 0 25px #ff4d6d; }
+/* Promise ring */
+.promise-ring {
+    text-align: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
-/* virtual hug effect */
-.hug-animation {
-    animation: hugshake 0.6s ease-in-out;
+/* countdown */
+.countdown {
+    font-family: monospace;
+    font-size: 1.4rem;
+    background: rgba(0,0,0,0.4);
+    border-radius: 50px;
+    padding: 5px 12px;
+    display: inline-block;
 }
 
-@keyframes hugshake {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1) translateX(5px); background: #ff99bb; color: #fff; }
-    100% { transform: scale(1); }
+/* music mini */
+.music-mini {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(12px);
+    padding: 8px 18px;
+    border-radius: 50px;
+    display: flex;
+    gap: 12px;
+    z-index: 50;
+    border: 1px solid #ffa5c0;
+    cursor: pointer;
 }
 
-/* responsive */
+/* extra emotional letter */
+#emotionalLetter {
+    background: rgba(255,210,220,0.2);
+    border-radius: 40px;
+    padding: 20px;
+    margin-top: 20px;
+    font-style: normal;
+    border-left: 6px solid #ff99bb;
+    display: none;
+}
+
 @media (max-width: 600px) {
     .typing-title { font-size: 1.8rem; white-space: normal; border-right: none; animation: none; width: auto; }
     .photo-card { width: 140px; }
-    .message-text { font-size: 1rem; }
 }
 </style>
 </head>
@@ -410,82 +441,95 @@ body {
     <div class="stardust"></div>
 
     <div class="content-wrap">
-        <!-- TYPING GREETING -->
+        <!-- GREETING -->
         <div class="glass-card">
             <div class="typing-title" id="typingTitle">Hey Anna... this is for you ❤️</div>
-            <div class="message-text" style="margin-top: 20px;">
+            <div class="message-text">
                 I don’t always speak what I feel... but my heart writes poems about you.<br><br>
-                Every sunrise feels warmer when I know you exist in this world.  
-                You make ordinary days magical, just by being you. ✨<br><br>
-                I know life is complicated, and I respect every part of your journey.  
-                But I want you to know — you’re never alone. I’m right here, silently cheering for you.
+                Every sunrise feels warmer because you exist. You make ordinary days magical, just by being you. ✨<br><br>
+                I respect your world, your timing, your everything. But I need you to know — you're my favorite thought, every single morning.
             </div>
         </div>
 
-        <!-- QUOTE BUBBLES -->
+        <!-- QUOTES -->
         <div class="glass-card">
             <div class="chat-bubble">💬 “You didn't say anything... but somehow, I understood everything.”</div>
             <div class="chat-bubble">💖 “I think... you already know how special you are to me.”</div>
             <div class="chat-bubble">🌙 “Even the stars are jealous of the light you bring into my life.”</div>
         </div>
 
-        <!-- PHOTO GALLERY - romantic memories -->
+        <!-- GALLERY + NOTES -->
         <div class="glass-card">
-            <h3 style="font-family: 'Dancing Script'; font-size: 1.8rem; text-align: center;">📸 Our little gallery</h3>
+            <h3 style="font-family: 'Dancing Script'; font-size: 1.9rem; text-align: center;">📸 Our little gallery</h3>
             <div class="gallery" id="photoGallery">
-                <!-- romantic stock images (safe, aesthetic) -->
-                <div class="photo-card" data-note="A sunset just like the warmth you give me.">
-                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&h=200&fit=crop" alt="sunset beach">
+                <div class="photo-card" data-note="A sunset just like the warmth you give me. I'd love to watch one with you.">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&h=200&fit=crop" alt="sunset">
                     <p>Golden Hour</p>
                 </div>
-                <div class="photo-card" data-note="Roses are red, but my heart beats in your name.">
-                    <img src="https://images.unsplash.com/photo-1490750967868-88aa4476b946?w=300&h=200&fit=crop" alt="rose bouquet">
+                <div class="photo-card" data-note="Roses remind me of how beautiful you are — inside and out.">
+                    <img src="https://images.unsplash.com/photo-1490750967868-88aa4476b946?w=300&h=200&fit=crop" alt="rose">
                     <p>Eternal Blossom</p>
                 </div>
-                <div class="photo-card" data-note="Two souls, one silent melody.">
-                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300&h=200&fit=crop" alt="couple silhouette">
+                <div class="photo-card" data-note="Two souls, one silent melody. That's us.">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300&h=200&fit=crop" alt="couple">
                     <p>Silent Harmony</p>
                 </div>
-                <div class="photo-card" data-note="Starry nights remind me of your eyes ✨">
-                    <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=300&h=200&fit=crop" alt="stars night">
+                <div class="photo-card" data-note="Starry nights remind me of your eyes ✨ infinite and deep.">
+                    <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=300&h=200&fit=crop" alt="stars">
                     <p>Cosmic Love</p>
                 </div>
             </div>
-            <p style="font-size: 0.8rem; margin-top: 8px; text-align: center;">🌸 tap any photo for a hidden note</p>
+            <p style="font-size: 0.8rem; text-align: center;">🌸 tap any photo — a secret message appears</p>
         </div>
 
-        <!-- REASONS WHY YOU ARE SPECIAL -->
+        <!-- REASONS + IMPACT METER -->
         <div class="glass-card">
-            <h3 style="font-family: 'Dancing Script'; font-size: 1.8rem;">💌 Reasons my heart chose you</h3>
-            <div class="reason-list">
+            <h3 style="font-family: 'Dancing Script'; font-size: 1.8rem;">💌 Why my heart chose you</h3>
+            <div class="reason-list" id="reasonList">
                 <div class="reason-item"><span class="reason-emoji">🌟</span> Your presence heals my rough days</div>
                 <div class="reason-item"><span class="reason-emoji">🎶</span> The way you care without being loud</div>
                 <div class="reason-item"><span class="reason-emoji">🌼</span> Your smile (even through text) makes everything brighter</div>
                 <div class="reason-item"><span class="reason-emoji">📖</span> You’re authentic, rare, and wonderfully real</div>
                 <div class="reason-item"><span class="reason-emoji">💭</span> Even when you're far, I feel close to you</div>
             </div>
+            <div class="impact-meter">
+                <div style="display: flex; justify-content: space-between;"><span>💖 Your impact on my happiness</span> <span id="impactPercent">0%</span></div>
+                <div class="meter-fill" id="meterFill"></div>
+            </div>
+            <button class="love-btn" id="increaseImpactBtn">❤️ You make me feel complete</button>
         </div>
 
-        <!-- INTERACTIVE ZONE : Surprise, Virtual Hug, Final -->
+        <!-- COUNTDOWN TO SPECIAL MOMENT -->
         <div class="glass-card" style="text-align: center;">
-            <button class="love-btn" id="surpriseBtn">🎁 Send you shooting stars</button>
+            <h3>⏳ Counting until I can hold your hand (metaphorically until you're ready)</h3>
+            <div class="countdown" id="countdownTimer">-- days -- hours -- mins</div>
+            <p style="font-size:0.8rem;">Every second you're in my heart, time becomes precious.</p>
+        </div>
+
+        <!-- INTERACTIVE BUTTONS + PROMISE RING -->
+        <div class="glass-card" style="text-align: center;">
+            <button class="love-btn" id="surpriseBtn">🎁 Send shooting stars</button>
             <button class="love-btn" id="hugBtn">🤗 Virtual Hug</button>
-            <button class="love-btn" id="finalBtn">💌 Something for your heart</button>
+            <button class="love-btn" id="finalBtn">💌 Promise Ring</button>
+            <button class="love-btn" id="emotionalLetterBtn">📜 Read my hidden letter</button>
             <div id="finalMessage">
                 💖 I’ll wait, even if it takes a year... until the day you can say “I love you” to me. 💖<br>
                 <span style="font-size: 0.9rem;">My feelings are patient, but they’re always yours.</span>
             </div>
-            <div id="extraMessage" style="margin-top: 15px; font-size: 0.9rem; color: #ffc0d0;"></div>
+            <div id="emotionalLetter">
+                ✨ <strong>My Dearest Anna,</strong><br><br>
+                I’ve imagined a thousand ways to tell you this, but none capture the truth. You’ve become the gentle thought that ends my day and the hope that starts my morning. I don’t need a label — I just need you to know: you are loved. Truly, deeply, without conditions. No matter where life takes us, a piece of my soul will always whisper your name. Thank you for existing. <br> — Forever yours.
+            </div>
+            <div id="extraMessage" style="margin-top: 15px; font-size: 1rem; color: #ffc0d0;"></div>
         </div>
 
-        <!-- sweet counter: days i've adored you (just symbolic) -->
-        <div class="glass-card" style="text-align: center; background: rgba(255,200,210,0.1);">
+        <!-- DAYS COUNTER -->
+        <div class="glass-card" style="text-align: center;">
             <p>📆 <span id="daysCounter"></span> days of knowing that you're magic.</p>
-            <p style="font-size: 0.85rem;">“Every day I choose you in my prayers.”</p>
+            <p class="heartbeat-text">“Every day I choose you in my prayers.”</p>
         </div>
     </div>
 
-    <!-- MINI MUSIC PLAYER -->
     <div class="music-mini" id="musicToggle">
         <span>🎵</span> <span id="musicStatus">play melody</span>
     </div>
@@ -493,7 +537,6 @@ body {
 
 <audio id="bgMusic" loop preload="auto">
     <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_8b4e7b7f3d.mp3?filename=romantic-piano-184330.mp3" type="audio/mpeg">
-    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -507,199 +550,187 @@ const errorSpan = document.getElementById('error');
 function checkPasswordAndUnlock() {
     const pwd = passwordInput.value.trim();
     if (pwd === "ANNA") {
-        // unlock with grand effect
         lockScreen.style.display = "none";
         mainContent.style.display = "block";
-        // celebrate confetti
-        canvasConfetti({ particleCount: 180, spread: 100, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ff99bb', '#ffb3c6'] });
-        canvasConfetti({ particleCount: 80, spread: 130, origin: { y: 0.4, x: 0.3 }, startVelocity: 15 });
-        // start music with user gesture (unlock button click is valid)
+        canvasConfetti({ particleCount: 220, spread: 110, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ff99bb', '#ffb3c6'] });
+        canvasConfetti({ particleCount: 100, spread: 140, origin: { y: 0.4, x: 0.3 }, startVelocity: 18 });
         const music = document.getElementById('bgMusic');
-        music.play().catch(e => console.log("autoplay blocked, but user can click music button"));
-        // start heart rain
-        startHeartRain();
+        music.play().catch(e=>console.log);
+        startHeartRainAndPetals();
         initMouseGlow();
-        // set symbolic days (since first meet - sentimental)
-        const firstMeet = new Date(2024, 0, 15); // cute symbolic date
+        // Days counter
+        const firstMeet = new Date(2024, 0, 15);
         const today = new Date();
-        const diffTime = Math.abs(today - firstMeet);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const diffDays = Math.ceil(Math.abs(today - firstMeet) / (1000*60*60*24));
         document.getElementById('daysCounter').innerText = diffDays > 0 ? diffDays : 127;
-        // Also show a special popup note
         showTemporaryMessage("✨ Welcome, beautiful soul. Every detail is made for you. ✨");
+        startCountdownToDate("2026-01-01"); // sweet symbolic countdown
+        // Initialize meter
+        let impact = 0;
+        document.getElementById('increaseImpactBtn').addEventListener('click', () => {
+            impact = Math.min(100, impact + 14);
+            document.getElementById('impactPercent').innerText = impact + "%";
+            document.getElementById('meterFill').style.width = impact + "%";
+            if(impact >= 100) showTemporaryMessage("💘 You've filled my heart completely. I'm yours, always.");
+            canvasConfetti({ particleCount: 50, spread: 45, origin: { y: 0.8 } });
+        });
     } else {
         errorSpan.innerText = "💔 Not the right key... only Anna knows it 💔";
-        // shake effect
         const lockCard = document.querySelector('.lock-card');
         lockCard.style.animation = 'shake 0.4s ease';
-        setTimeout(() => { lockCard.style.animation = ''; }, 500);
+        setTimeout(() => lockCard.style.animation = '', 500);
     }
 }
 unlockBtn.addEventListener('click', checkPasswordAndUnlock);
 passwordInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') checkPasswordAndUnlock(); });
 
-// Shake keyframes
 const styleShake = document.createElement('style');
 styleShake.textContent = `@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } 100% { transform: translateX(0); } }`;
 document.head.appendChild(styleShake);
 
-// ======================= HEART RAIN (enhanced) =======================
-function startHeartRain() {
+// ======================= HEART + PETAL RAIN =======================
+function startHeartRainAndPetals() {
     setInterval(() => {
         const heart = document.createElement('div');
         heart.classList.add('floating-heart');
-        const heartList = ['❤️', '💖', '💗', '💕', '💓', '🌸', '✨'];
-        heart.innerText = heartList[Math.floor(Math.random() * heartList.length)];
-        const size = Math.random() * 25 + 15;
-        heart.style.fontSize = size + 'px';
+        const icons = ['❤️', '💖', '💗', '💕', '💓', '🌸', '✨', '🌹'];
+        heart.innerText = icons[Math.floor(Math.random() * icons.length)];
+        heart.style.fontSize = (Math.random() * 28 + 16) + 'px';
         heart.style.left = Math.random() * 100 + '%';
         heart.style.animationDuration = Math.random() * 5 + 4 + 's';
-        heart.style.opacity = Math.random() * 0.7 + 0.4;
         document.body.appendChild(heart);
-        setTimeout(() => { heart.remove(); }, 6000);
-    }, 250);
+        setTimeout(() => heart.remove(), 6000);
+    }, 280);
+    setInterval(() => {
+        const petal = document.createElement('div');
+        petal.classList.add('floating-petal');
+        petal.innerText = '🌹';
+        petal.style.fontSize = (Math.random() * 22 + 18) + 'px';
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.animationDuration = Math.random() * 6 + 5 + 's';
+        document.body.appendChild(petal);
+        setTimeout(() => petal.remove(), 7000);
+    }, 800);
 }
 
-// ======================= MOUSE GLOW (romantic aura) =======================
 function initMouseGlow() {
     const gradientDiv = document.getElementById('gradientBg');
     document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth) * 100;
-        const y = (e.clientY / window.innerHeight) * 100;
-        gradientDiv.style.setProperty('--x', x + '%');
-        gradientDiv.style.setProperty('--y', y + '%');
+        gradientDiv.style.setProperty('--x', (e.clientX / window.innerWidth) * 100 + '%');
+        gradientDiv.style.setProperty('--y', (e.clientY / window.innerHeight) * 100 + '%');
     });
 }
 
-// ======================= PHOTO CLICK NOTE =======================
-const photoCards = document.querySelectorAll('.photo-card');
-photoCards.forEach(card => {
+// ======================= PHOTO NOTES =======================
+document.querySelectorAll('.photo-card').forEach(card => {
     card.addEventListener('click', () => {
         const note = card.getAttribute('data-note') || "You are my favorite thought 💭";
-        showTemporaryMessage(`📷 ${note}`, 2500);
-        canvasConfetti({ particleCount: 30, spread: 45, origin: { y: 0.8 }, startVelocity: 12, colors: ['#ff99cc', '#ffb3ba'] });
+        showTemporaryMessage(`📷 ${note}`, 2800);
+        canvasConfetti({ particleCount: 40, spread: 50, origin: { y: 0.8 }, colors: ['#ff99cc', '#ffb3ba'] });
     });
 });
 
 function showTemporaryMessage(msg, duration = 2500) {
     let msgDiv = document.getElementById('extraMessage');
-    if(!msgDiv) {
-        const container = document.querySelector('.glass-card:last-of-type');
-        const newDiv = document.createElement('div');
-        newDiv.id = 'extraMessage';
-        newDiv.style.marginTop = '15px';
-        newDiv.style.fontSize = '1rem';
-        newDiv.style.fontWeight = 'bold';
-        newDiv.style.background = 'rgba(255,200,220,0.3)';
-        newDiv.style.padding = '8px';
-        newDiv.style.borderRadius = '40px';
-        container.appendChild(newDiv);
-        msgDiv = newDiv;
-    }
+    if(!msgDiv) return;
     msgDiv.innerText = msg;
     msgDiv.style.opacity = '1';
-    setTimeout(() => {
-        if(msgDiv) msgDiv.style.opacity = '0';
-        setTimeout(() => { if(msgDiv) msgDiv.innerText = ''; }, 500);
-    }, duration);
+    setTimeout(() => { if(msgDiv) msgDiv.style.opacity = '0'; setTimeout(() => { if(msgDiv) msgDiv.innerText = ''; }, 400); }, duration);
 }
 
-// ======================= SURPRISE BUTTON (shooting stars + confetti) =======================
+// ======================= SURPRISE =======================
 document.getElementById('surpriseBtn').addEventListener('click', () => {
-    canvasConfetti({ particleCount: 250, spread: 130, origin: { y: 0.5 }, startVelocity: 20, colors: ['#ffd966', '#ff99bb', '#ff4d6d'] });
-    canvasConfetti({ particleCount: 100, spread: 70, origin: { y: 0.3, x: 0.2 }, startVelocity: 25, decay: 0.9 });
-    for(let i=0;i<3;i++) {
-        setTimeout(() => {
-            canvasConfetti({ particleCount: 80, spread: 100, origin: { y: 0.7, x: Math.random() }, startVelocity: 18 });
-        }, i*150);
-    }
+    canvasConfetti({ particleCount: 300, spread: 140, origin: { y: 0.5 }, startVelocity: 22, colors: ['#ffd966', '#ff99bb', '#ff4d6d'] });
+    for(let i=0;i<5;i++) setTimeout(() => canvasConfetti({ particleCount: 80, spread: 100, origin: { y: 0.7, x: Math.random() } }), i*120);
     showTemporaryMessage("✨ A thousand stars just fell for you, Anna ✨");
 });
 
-// ======================= VIRTUAL HUG =======================
-const hugBtn = document.getElementById('hugBtn');
-hugBtn.addEventListener('click', () => {
-    const hugDiv = document.getElementById('finalMessage') || document.querySelector('.glass-card');
-    if(hugDiv) {
-        hugDiv.classList.add('hug-animation');
-        setTimeout(() => hugDiv.classList.remove('hug-animation'), 700);
+// VIRTUAL HUG
+document.getElementById('hugBtn').addEventListener('click', () => {
+    const finalDiv = document.getElementById('finalMessage');
+    if(finalDiv) {
+        finalDiv.classList.add('hug-animation');
+        setTimeout(() => finalDiv.classList.remove('hug-animation'), 700);
     }
     showTemporaryMessage("🤗 You received a warm hug! Feel the love wrapping around you. 💞");
-    canvasConfetti({ particleCount: 60, spread: 60, origin: { y: 0.6 }, colors: ['#ffb7c5', '#ff8aa8'] });
+    canvasConfetti({ particleCount: 70, spread: 65, origin: { y: 0.6 }, colors: ['#ffb7c5'] });
 });
 
-// ======================= FINAL BUTTON (show hidden promise + heart explosion) =======================
+// FINAL BUTTON (Promise ring effect)
 const finalBtn = document.getElementById('finalBtn');
 const finalMsgDiv = document.getElementById('finalMessage');
 finalBtn.addEventListener('click', () => {
-    if(finalMsgDiv.style.display === 'none' || finalMsgDiv.style.display === '') {
-        finalMsgDiv.style.display = 'block';
-        canvasConfetti({ particleCount: 300, spread: 110, origin: { y: 0.5 }, colors: ['#ff3366', '#ff99bb', '#ffffff'], startVelocity: 18 });
-        // also create many hearts manually
-        for(let i=0;i<30;i++) {
-            setTimeout(() => {
-                const heartPop = document.createElement('div');
-                heartPop.innerText = '❤️';
-                heartPop.style.position = 'fixed';
-                heartPop.style.left = Math.random() * 100 + '%';
-                heartPop.style.bottom = '0px';
-                heartPop.style.fontSize = (Math.random() * 30 + 20) + 'px';
-                heartPop.style.pointerEvents = 'none';
-                heartPop.style.zIndex = '999';
-                heartPop.style.animation = 'riseHeart 1.5s ease-out forwards';
-                document.body.appendChild(heartPop);
-                setTimeout(() => heartPop.remove(), 1500);
-            }, i*60);
-        }
-        showTemporaryMessage("💌 I’ll wait as long as it takes... because you are worth every second. 💌", 4000);
+    finalMsgDiv.style.display = 'block';
+    canvasConfetti({ particleCount: 400, spread: 120, origin: { y: 0.5 }, colors: ['#ff3366', '#ff99bb', '#ffffff'], startVelocity: 20 });
+    for(let i=0;i<40;i++) {
+        setTimeout(() => {
+            const heartPop = document.createElement('div');
+            heartPop.innerText = '💍❤️';
+            heartPop.style.position = 'fixed';
+            heartPop.style.left = Math.random() * 100 + '%';
+            heartPop.style.bottom = '0px';
+            heartPop.style.fontSize = (Math.random() * 35 + 20) + 'px';
+            heartPop.style.pointerEvents = 'none';
+            heartPop.style.zIndex = '999';
+            heartPop.style.animation = 'riseHeart 1.6s ease-out forwards';
+            document.body.appendChild(heartPop);
+            setTimeout(() => heartPop.remove(), 1600);
+        }, i*60);
+    }
+    showTemporaryMessage("💍 This is my promise: I'll wait, care, and cherish you. Always.", 4500);
+});
+
+// EMOTIONAL LETTER
+document.getElementById('emotionalLetterBtn').addEventListener('click', () => {
+    const letterDiv = document.getElementById('emotionalLetter');
+    if(letterDiv.style.display === 'none' || letterDiv.style.display === '') {
+        letterDiv.style.display = 'block';
+        canvasConfetti({ particleCount: 150, spread: 80, origin: { y: 0.7 } });
+        showTemporaryMessage("💌 A letter from my soul... only for you.");
     } else {
-        finalMsgDiv.style.display = 'block';
-        canvasConfetti({ particleCount: 150, spread: 90 });
+        letterDiv.style.display = 'none';
     }
 });
 
-// music toggle button
+// COUNTDOWN function (to a symbolic future date)
+function startCountdownToDate(targetDate) {
+    const target = new Date(targetDate).getTime();
+    setInterval(() => {
+        const now = new Date().getTime();
+        const distance = target - now;
+        if(distance < 0) {
+            document.getElementById('countdownTimer').innerHTML = "✨ Every day is special with you ✨";
+            return;
+        }
+        const days = Math.floor(distance / (1000*60*60*24));
+        const hours = Math.floor((distance % (86400000)) / (3600000));
+        const mins = Math.floor((distance % 3600000) / 60000);
+        document.getElementById('countdownTimer').innerHTML = `${days}d ${hours}h ${mins}m until our special horizon 💫`;
+    }, 1000);
+}
+
+// MUSIC
 const musicToggle = document.getElementById('musicToggle');
 const music = document.getElementById('bgMusic');
 const musicStatusSpan = document.getElementById('musicStatus');
-let musicPlaying = false;
 musicToggle.addEventListener('click', () => {
     if(music.paused) {
-        music.play().then(() => {
-            musicPlaying = true;
-            musicStatusSpan.innerText = "🎶 playing";
-        }).catch(() => {
-            musicStatusSpan.innerText = "tap again";
-        });
+        music.play().then(() => musicStatusSpan.innerText = "🎶 playing").catch(()=> musicStatusSpan.innerText = "tap again");
     } else {
         music.pause();
-        musicPlaying = false;
         musicStatusSpan.innerText = "♫ paused";
     }
 });
-// try autoplay on unlock but also set default status
-setTimeout(() => {
-    if(music.paused) musicStatusSpan.innerText = "play melody";
-    else musicStatusSpan.innerText = "🎶 playing";
-}, 100);
+setTimeout(() => { if(music.paused) musicStatusSpan.innerText = "play melody"; else musicStatusSpan.innerText = "🎶 playing"; }, 100);
 
-// dynamic background: shimmer effect
-setInterval(() => {
-    const starsDiv = document.querySelector('.stardust');
-    if(starsDiv) starsDiv.style.opacity = Math.random() * 0.5 + 0.4;
-}, 3000);
-
-// On final also display forever
-finalMsgDiv.style.display = 'none';
-
-// add cute floating cursor hearts on click
+// Extra floating cursor hearts on click
 document.addEventListener('click', (e) => {
     const heartCursor = document.createElement('div');
     heartCursor.innerHTML = '💕';
     heartCursor.style.position = 'fixed';
     heartCursor.style.left = (e.clientX - 12) + 'px';
     heartCursor.style.top = (e.clientY - 12) + 'px';
-    heartCursor.style.fontSize = '26px';
+    heartCursor.style.fontSize = '28px';
     heartCursor.style.pointerEvents = 'none';
     heartCursor.style.zIndex = '9999';
     heartCursor.style.opacity = '0.9';
@@ -709,6 +740,19 @@ document.addEventListener('click', (e) => {
     setTimeout(() => { heartCursor.style.transform = 'scale(1.5)'; heartCursor.style.opacity = '0'; }, 20);
     setTimeout(() => heartCursor.remove(), 800);
 });
+
+// additional animation: pulse on final message
+finalMsgDiv.style.display = 'none';
+document.getElementById('emotionalLetter').style.display = 'none';
+
+// hack to add heartbeat style to some elements
+const styleHeartBeat = document.createElement('style');
+styleHeartBeat.textContent = `.hug-animation { animation: hugshake 0.6s ease-in-out; } @keyframes hugshake { 0% { transform: scale(1); } 50% { transform: scale(1.08) translateX(4px); background: #ff99bb; } 100% { transform: scale(1); } }`;
+document.head.appendChild(styleHeartBeat);
+
+// initial meter fill update
+document.getElementById('meterFill').style.width = '0%';
+document.getElementById('impactPercent').innerText = '0%';
 </script>
 </body>
-    </html>
+                        </html>
