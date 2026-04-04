@@ -2,650 +2,710 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Anna ❤️‍🩹</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>for Anna ✨</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* subtle, keeps romantic focus, but text can be selected */
+            user-select: none; /* subtle cinematic feel, text still selectable */
         }
 
         body {
-            font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, 'Roboto', sans-serif;
-            background: #0a0c12;
+            font-family: 'Segoe UI', 'Poppins', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            background: radial-gradient(circle at 30% 10%, #0a0f2a, #02040c);
             min-height: 100vh;
             overflow-x: hidden;
-            color: #f1e9ff;
+            color: #f0eef7;
+            position: relative;
         }
 
-        /* ----- LOCK SCREEN (overlay) ----- */
+        /* ========= STARS & FLOATING HEARTS (background magic) ========= */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            background-color: #fff9ea;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255,245,200,0.8);
+            animation: twinkle 3s infinite alternate;
+            opacity: 0.4;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(1);}
+            100% { opacity: 1; transform: scale(1.2);}
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: rgba(255, 120, 160, 0.7);
+            font-size: 1.4rem;
+            pointer-events: none;
+            animation: floatUp 10s linear infinite;
+            filter: drop-shadow(0 0 6px #ff99cc);
+            z-index: 1;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            15% { opacity: 0.8; }
+            85% { opacity: 0.8; }
+            100% {
+                transform: translateY(-20vh) rotate(20deg);
+                opacity: 0;
+            }
+        }
+
+        /* ========= LOCK SCREEN ========= */
         .lock-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #0b0e17 0%, #03050a 100%);
+            background: radial-gradient(circle at center, #0b1120, #010003);
             backdrop-filter: blur(2px);
-            z-index: 2000;
             display: flex;
-            align-items: center;
             justify-content: center;
-            transition: opacity 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            opacity: 1;
+            align-items: center;
+            z-index: 200;
+            transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            flex-direction: column;
+            gap: 1.5rem;
         }
-
         .lock-card {
-            background: rgba(20, 22, 36, 0.7);
+            background: rgba(15, 20, 35, 0.7);
             backdrop-filter: blur(12px);
             border-radius: 48px;
-            padding: 2rem 2rem 2.5rem;
-            width: 90%;
-            max-width: 380px;
+            padding: 2rem 2rem 2.2rem;
+            width: 85%;
+            max-width: 340px;
             text-align: center;
-            border: 1px solid rgba(255, 160, 180, 0.3);
-            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 100, 130, 0.2);
-            transition: transform 0.3s;
+            border: 1px solid rgba(255, 200, 220, 0.25);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5), 0 0 20px rgba(255,100,150,0.2);
+            animation: softGlowPulse 3s infinite;
         }
-
+        @keyframes softGlowPulse {
+            0% { box-shadow: 0 0 5px rgba(255,140,170,0.2); border-color: rgba(255,180,200,0.2);}
+            100% { box-shadow: 0 0 20px rgba(255,120,160,0.4); border-color: rgba(255,200,220,0.5);}
+        }
         .lock-card h2 {
             font-weight: 400;
             letter-spacing: 2px;
-            font-size: 1.7rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #ffb7c5, #ffe0e7);
+            margin-bottom: 1.2rem;
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #ffe6f0, #ffb7c5);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-
-        .lock-card p {
-            font-size: 0.85rem;
-            opacity: 0.7;
-            margin-bottom: 1.8rem;
-        }
-
-        .password-input {
-            background: rgba(15, 18, 28, 0.8);
-            border: 1px solid #ff9eb0;
-            border-radius: 60px;
-            padding: 14px 20px;
+        .lock-card input {
+            background: rgba(255,255,245,0.1);
+            border: 1px solid rgba(255,180,200,0.6);
+            padding: 12px 18px;
             width: 100%;
-            color: #ffeef2;
+            border-radius: 60px;
+            color: #ffdfea;
             font-size: 1rem;
             text-align: center;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             outline: none;
             transition: all 0.2s;
         }
-
-        .password-input:focus {
-            border-color: #ff7b9c;
-            box-shadow: 0 0 12px rgba(255, 100, 130, 0.5);
+        .lock-card input:focus {
+            border-color: #ff99bb;
+            box-shadow: 0 0 12px #ff99bb80;
         }
-
-        .unlock-btn {
-            background: linear-gradient(95deg, #ff7b9c, #ffa5bd);
+        .lock-card button {
+            margin-top: 20px;
+            background: linear-gradient(95deg, #ff88aa, #ff6f91);
             border: none;
-            width: 100%;
-            margin-top: 1.2rem;
-            padding: 12px;
-            border-radius: 60px;
-            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            color: #1a1025;
             font-size: 1rem;
-            color: #1a0f16;
             cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 12px rgba(255, 80, 120, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
         }
-
-        .unlock-btn:hover {
+        .lock-card button:hover {
             transform: scale(0.97);
-            background: linear-gradient(95deg, #ff6a90, #ff95b0);
+            box-shadow: 0 5px 15px #ff7799;
         }
-
-        .error-msg {
-            color: #ffaeae;
-            font-size: 0.8rem;
-            margin-top: 1rem;
-            min-height: 2rem;
-            font-weight: 300;
-        }
-
-        /* ----- MAIN CONTENT (hidden until unlock) ----- */
-        .main-content {
-            display: none;
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            min-height: 100vh;
-            background: transparent;
-        }
-
-        /* canvas star background */
-        #starCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* floating hearts container */
-        .hearts-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-            overflow: hidden;
-        }
-
-        .heart {
-            position: absolute;
-            font-size: 1.4rem;
-            animation: floatUp 6s linear forwards;
+        .hint {
+            margin-top: 12px;
+            font-size: 0.85rem;
             opacity: 0.7;
-            filter: drop-shadow(0 0 4px #ff99aa);
+            color: #ffcddf;
+        }
+        .error-msg {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: #ffaa99;
+            min-height: 40px;
+        }
+
+        /* cinematic overlays */
+        .cinematic-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: 250;
             pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .glow-light {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255,220,180,0.8) 0%, rgba(255,140,170,0) 80%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 251;
+            pointer-events: none;
+            filter: blur(12px);
+            transition: transform 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+        }
+        .zoom-effect {
+            animation: cameraZoom 1.6s forwards;
+        }
+        @keyframes cameraZoom {
+            0% { transform: scale(1); opacity: 1; background: #000; }
+            100% { transform: scale(1.1); opacity: 0; background: #000; display: none; }
         }
 
-        @keyframes floatUp {
-            0% {
-                transform: translateY(100vh) scale(0.4);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.8;
-            }
-            80% {
-                opacity: 0.9;
-            }
-            100% {
-                transform: translateY(-20vh) scale(1.2);
-                opacity: 0;
-            }
+        /* name glow container */
+        .name-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #050b1a, #010101);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 180;
+            backdrop-filter: blur(4px);
+            transition: opacity 1s ease;
+            flex-direction: column;
+        }
+        .glow-text {
+            font-size: 4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ffe0f0, #ffb3c6, #ff8eae);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+            animation: neonPulse 1.8s infinite alternate, shimmer 3s infinite;
+            text-shadow: 0 0 20px #ff9ebb, 0 0 40px #ff6f91;
+            letter-spacing: 4px;
+        }
+        @keyframes neonPulse {
+            0% { text-shadow: 0 0 8px #ff99bb, 0 0 16px #ff6f91; opacity: 0.9; }
+            100% { text-shadow: 0 0 28px #ffb3cc, 0 0 40px #ff3f6b; opacity: 1; }
+        }
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
-        /* main container content */
-        .container {
+        /* ========= MAIN CONTENT (hidden initially) ========= */
+        .main-content {
             position: relative;
-            z-index: 15;
-            max-width: 720px;
+            z-index: 20;
+            max-width: 650px;
             margin: 0 auto;
             padding: 2rem 1.5rem 4rem;
-            background: rgba(8, 10, 18, 0.55);
-            backdrop-filter: blur(10px);
-            border-radius: 2rem;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 200, 210, 0.2);
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+            pointer-events: none;
+        }
+        .main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
 
-        /* typing effect header */
-        .typing-header {
-            font-size: 2.2rem;
+        /* TYPING intro */
+        .typing-area {
+            font-size: 2rem;
             font-weight: 500;
+            margin-bottom: 2rem;
             text-align: center;
-            margin-bottom: 1.8rem;
+            min-height: 90px;
+            font-family: 'Segoe UI', cursive;
             letter-spacing: -0.5px;
-            min-height: 5rem;
-            color: #ffeef4;
-            text-shadow: 0 0 8px #ff99ae;
+            background: linear-gradient(135deg, #ffdbec, #ffb5cb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            margin-left: 4px;
+            background: #ffb7ce;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
-        .heartfelt-message {
-            background: rgba(25, 20, 35, 0.6);
-            border-left: 5px solid #ff98b2;
-            padding: 1.2rem 1.5rem;
-            border-radius: 32px;
-            margin: 1.8rem 0;
-            font-size: 1.05rem;
-            line-height: 1.45;
-            font-weight: 350;
+        .emotional-note {
+            background: rgba(255, 240, 245, 0.08);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 1.2rem 1.4rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #ff99bb;
+            font-size: 1rem;
+            line-height: 1.5;
             text-align: center;
-            backdrop-filter: blur(4px);
         }
 
         /* chat bubbles */
-        .chat-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .chat-bubble {
+            background: rgba(30, 20, 45, 0.65);
+            backdrop-filter: blur(10px);
+            border-radius: 28px 28px 28px 12px;
+            padding: 0.9rem 1.2rem;
+            margin: 1rem 0;
+            max-width: 85%;
+            width: fit-content;
+            border: 1px solid rgba(255, 200, 210, 0.3);
+            font-size: 1rem;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .chat-bubble:nth-child(odd) {
+            margin-left: auto;
+            border-radius: 28px 28px 12px 28px;
+            background: rgba(50, 35, 70, 0.8);
+        }
+        .bubble-group {
             margin: 2rem 0;
         }
 
-        .bubble {
-            max-width: 85%;
-            padding: 0.9rem 1.3rem;
-            border-radius: 28px;
-            font-size: 0.98rem;
-            line-height: 1.4;
-            background: rgba(35, 30, 50, 0.75);
-            backdrop-filter: blur(5px);
-            color: #fce4ec;
-            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-            border: 0.5px solid rgba(255, 150, 170, 0.4);
-            transition: all 0.2s;
-        }
-
-        .bubble.left {
-            align-self: flex-start;
-            border-bottom-left-radius: 8px;
-            background: rgba(25, 20, 45, 0.8);
-        }
-
-        .bubble.right {
-            align-self: flex-end;
-            border-bottom-right-radius: 8px;
-            background: rgba(55, 40, 70, 0.8);
-            text-align: right;
-        }
-
-        /* final MAIN LINE glow + fade */
-        .main-final-line {
-            text-align: center;
-            margin: 2rem 0 2rem;
-            padding: 1.8rem 1rem;
-            background: rgba(0, 0, 0, 0.45);
-            border-radius: 60px;
-            font-size: 1.3rem;
-            font-weight: 500;
-            line-height: 1.4;
-            letter-spacing: 0.3px;
-            color: #ffe2ea;
-            text-shadow: 0 0 5px #ff7b9c, 0 0 12px #ff4d73;
-            animation: gentleGlowPulse 2.8s infinite ease-in-out, fadeSlideUp 1s ease-out;
-            border: 1px solid rgba(255, 140, 170, 0.5);
-            backdrop-filter: blur(8px);
-        }
-
-        @keyframes gentleGlowPulse {
-            0% { text-shadow: 0 0 2px #ff99ae, 0 0 6px #ff6685; box-shadow: 0 0 8px rgba(255,100,130,0.2);}
-            50% { text-shadow: 0 0 12px #ffbfcf, 0 0 22px #ff5277; box-shadow: 0 0 20px rgba(255,100,130,0.5);}
-            100% { text-shadow: 0 0 2px #ff99ae, 0 0 6px #ff6685; box-shadow: 0 0 8px rgba(255,100,130,0.2);}
-        }
-
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* tap button & hidden message */
+        /* button */
         .tap-btn {
-            background: none;
-            border: 1.5px solid #ffb3c6;
-            background: rgba(30, 20, 40, 0.7);
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #ffdfe8;
-            cursor: pointer;
-            transition: 0.25s;
-            margin: 1rem auto 0.5rem;
-            display: inline-block;
-            width: auto;
-            backdrop-filter: blur(4px);
-        }
-
-        .tap-btn:hover {
-            background: #ff99b0;
-            color: #150e1a;
-            border-color: #ff99b0;
-            box-shadow: 0 0 12px #ff99b0;
-            transform: scale(1.02);
-        }
-
-        .hidden-message {
-            margin-top: 1.2rem;
-            font-size: 1rem;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 28px;
-            transition: 0.3s;
-            text-align: center;
-            color: #fcd3df;
-            border-left: 3px solid #ff99ae;
-        }
-
-        /* music control */
-        .music-control {
-            position: fixed;
-            bottom: 22px;
-            right: 22px;
-            background: rgba(15, 12, 25, 0.8);
-            backdrop-filter: blur(10px);
+            background: linear-gradient(115deg, #ff88aa, #ff5e86);
+            border: none;
+            padding: 14px 28px;
             border-radius: 60px;
-            padding: 10px 16px;
             font-size: 1.2rem;
-            z-index: 30;
-            display: flex;
-            gap: 8px;
-            align-items: center;
+            font-weight: bold;
+            color: #130b1a;
+            margin: 2rem auto 1.5rem;
+            display: block;
+            width: fit-content;
             cursor: pointer;
-            border: 1px solid #ffb7c5;
-            color: #ffc1cf;
-            transition: 0.2s;
+            transition: all 0.25s;
+            box-shadow: 0 5px 20px #ff3f6b60;
+        }
+        .tap-btn:hover {
+            transform: scale(0.96);
+            box-shadow: 0 2px 12px #ff99bb;
         }
 
-        .music-control span {
-            font-size: 0.75rem;
-            font-weight: 400;
+        /* final message container (hidden) */
+        .final-message {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 48px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(12px);
+            transition: all 0.5s;
+        }
+        .glow-final {
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin: 1.2rem 0;
+            background: linear-gradient(135deg, #fff0f5, #ffbfd5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+            animation: gentleGlow 2.2s infinite alternate;
+            letter-spacing: -0.3px;
+        }
+        @keyframes gentleGlow {
+            0% { text-shadow: 0 0 2px #ff99bb; opacity: 0.9; }
+            100% { text-shadow: 0 0 20px #ff6f91, 0 0 5px #ffb7c5; opacity: 1; }
+        }
+        .ending-lines {
+            font-size: 1.1rem;
+            margin-top: 20px;
+            opacity: 0.9;
+            font-style: italic;
+            line-height: 1.5;
+        }
+        .hidden {
+            display: none;
         }
 
-        /* responsiveness */
-        @media (max-width: 550px) {
-            .container {
-                padding: 1.5rem 1rem;
-                margin: 1rem 1rem;
-            }
-            .typing-header {
-                font-size: 1.6rem;
-            }
-            .main-final-line {
-                font-size: 1.1rem;
-                padding: 1.2rem;
-            }
-            .bubble {
-                max-width: 92%;
-                font-size: 0.9rem;
-            }
-        }
-
-        button {
-            font-family: inherit;
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 3rem;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
 
+<div class="stars-container" id="starsContainer"></div>
+<div id="heartsContainer"></div>
+
 <!-- LOCK SCREEN -->
-<div id="lockScreen" class="lock-screen">
+<div class="lock-screen" id="lockScreen">
     <div class="lock-card">
-        <h2>✧ a whisper ✧</h2>
-        <p>a little secret space for you</p>
-        <input type="password" id="passwordInput" class="password-input" placeholder="password" autocomplete="off" maxlength="10">
-        <button id="unlockBtn" class="unlock-btn">→ unlock feelings ←</button>
-        <div id="lockError" class="error-msg"></div>
-        <div style="font-size:0.7rem; margin-top:1rem; opacity:0.5">🔐 enter: ANNA</div>
+        <h2>✦ unlock the night ✦</h2>
+        <input type="password" id="passwordInput" placeholder="enter password" autocomplete="off">
+        <button id="unlockBtn">open →</button>
+        <div class="hint">💌 You already know the answer… 🙂</div>
+        <div class="error-msg" id="errorMsg"></div>
     </div>
 </div>
 
-<!-- MAIN CONTENT (hidden initially) -->
-<div id="mainContent" class="main-content">
-    <canvas id="starCanvas"></canvas>
-    <div class="hearts-container" id="heartsContainer"></div>
+<!-- Cinematic overlay elements -->
+<div id="cinematicBlack" class="cinematic-overlay"></div>
+<div id="glowLight" class="glow-light"></div>
 
-    <div class="container">
-        <div class="typing-header" id="typingHeader"></div>
+<!-- Name glow container -->
+<div id="nameGlowContainer" class="name-glow" style="display: none;">
+    <div class="glow-text">Anna ❤️</div>
+</div>
 
-        <div class="heartfelt-message">
-            ✦ Anna, I don't need anything from you except what you already give — your presence, your quiet laugh, the way small moments with you feel like warm tea on a cold night. <br>
-            No pressure, no expectations. Just honest admiration. You make ordinary days feel like poetry. ✦
-        </div>
+<!-- Main romantic content -->
+<div class="main-content" id="mainContent">
+    <div class="typing-area" id="typingIntro"></div>
+    
+    <div class="emotional-note">
+        ✨ We don't talk much in real life... but our chats feel like a quiet place. ✨<br>
+        Comfort, little smiles, and you became important — slowly, beautifully.
+    </div>
 
-        <div class="chat-section">
-            <div class="bubble left">💭 “You didn’t say anything… but somehow, I understood everything.”</div>
-            <div class="bubble right">🌙 “Some feelings don’t need words… they are just felt.”</div>
-            <div class="bubble left">✨ “I think… you already know how special you are to me.”</div>
-        </div>
+    <div class="bubble-group">
+        <div class="chat-bubble">💬 We may not talk much in real life… but I like talking to you.</div>
+        <div class="chat-bubble">💬 Even small chats with you feel different.</div>
+        <div class="chat-bubble">💬 I don’t know when… but you became important.</div>
+        <div class="chat-bubble">💬 It just feels easy with you.</div>
+    </div>
 
-        <!-- FINAL MAIN LINE (MOST IMPORTANT) with glow/fade -->
-        <div class="main-final-line" id="finalPromiseLine">
+    <button class="tap-btn" id="tapRevealBtn">✨ Tap here ✨</button>
+
+    <div id="finalMessageContainer" class="final-message hidden">
+        <div class="glow-final" id="finalGlowLine">
             “I’ll wait, even if it takes a year… until the day you can say ‘I love you’ to me.”
         </div>
-
-        <div style="text-align: center; margin: 1rem 0 0.5rem;">
-            <button id="tapButton" class="tap-btn">💗 tap here 💗</button>
+        <div class="ending-lines">
+            🌙 No pressure… just be you.<br>
+            🌸 That’s already enough for me.
         </div>
-        <div id="extraHiddenMsg" class="hidden-message" style="display: none;"></div>
     </div>
-
-    <div id="musicCtrl" class="music-control">
-        🎵 <span id="musicStatus">pause</span>
-    </div>
+    <footer>for anna · softly</footer>
 </div>
 
 <script>
-    (function(){
-        // ---------- DOM elements ----------
-        const lockScreen = document.getElementById('lockScreen');
-        const mainContent = document.getElementById('mainContent');
-        const passwordInput = document.getElementById('passwordInput');
-        const unlockBtn = document.getElementById('unlockBtn');
-        const lockError = document.getElementById('lockError');
-        
-        // audio element
-        const audio = new Audio();
-        // using romantic piano track (royalty-friendly from Pixabay)
-        audio.src = "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07b.mp3?filename=meditation-piano-170121.mp3";
-        audio.loop = true;
-        audio.volume = 0.28;
-        audio.preload = "auto";
-        
-        let musicPlaying = false;
-        const musicCtrlDiv = document.getElementById('musicCtrl');
-        const musicStatusSpan = document.getElementById('musicStatus');
-        
-        function updateMusicUI() {
-            if(musicPlaying) {
-                musicStatusSpan.innerText = "playing ♪";
-                musicCtrlDiv.style.opacity = "0.9";
-            } else {
-                musicStatusSpan.innerText = "pause";
-            }
+    // ------------------- STARS & HEARTS (generative) -------------------
+    function createStars() {
+        const starContainer = document.getElementById('starsContainer');
+        for (let i = 0; i < 220; i++) {
+            let star = document.createElement('div');
+            star.classList.add('star');
+            let size = Math.random() * 3 + 1.5;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = Math.random() * 3 + 1.5 + 's';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            starContainer.appendChild(star);
         }
-        
-        function attemptPlayMusic() {
-            audio.play().then(() => {
-                musicPlaying = true;
-                updateMusicUI();
-            }).catch(e => {
-                console.log("autoplay blocked, waiting for manual interaction");
-                musicPlaying = false;
-                updateMusicUI();
-            });
-        }
-        
-        // manual music toggle
-        musicCtrlDiv.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if(musicPlaying) {
-                audio.pause();
-                musicPlaying = false;
-                updateMusicUI();
-            } else {
-                attemptPlayMusic();
-            }
-        });
-        
-        // ---------- floating hearts animation ----------
+    }
+    function createHearts() {
         const heartsContainer = document.getElementById('heartsContainer');
-        let heartInterval;
-        function startFloatingHearts() {
-            if(heartInterval) clearInterval(heartInterval);
-            heartInterval = setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                const heartsList = ['❤️', '💖', '💗', '💓', '🌸', '✨', '💕'];
-                heart.innerText = heartsList[Math.floor(Math.random() * heartsList.length)];
-                const size = Math.random() * 20 + 12; // px font
-                heart.style.fontSize = size + 'px';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDuration = Math.random() * 4 + 5 + 's';
-                heart.style.animationDelay = Math.random() * 1 + 's';
-                heart.style.opacity = Math.random() * 0.6 + 0.3;
-                heartsContainer.appendChild(heart);
-                setTimeout(() => { if(heart && heart.remove) heart.remove(); }, 7000);
-            }, 1200);
-        }
-        
-        // ---------- canvas star background (twinkling stars) ----------
-        const canvas = document.getElementById('starCanvas');
-        let ctx = canvas.getContext('2d');
-        let stars = [];
-        let animationId;
-        
-        function initStars() {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            const starCount = Math.floor(width * height / 4800);
-            stars = [];
-            for(let i = 0; i < starCount; i++) {
-                stars.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    radius: Math.random() * 2.2 + 1,
-                    alpha: Math.random() * 0.6 + 0.2,
-                    twinkleSpeed: 0.005 + Math.random() * 0.02,
-                    phase: Math.random() * Math.PI * 2
+        setInterval(() => {
+            let heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = ['❤️', '💖', '🌸', '✨', '💗'][Math.floor(Math.random()*5)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.fontSize = Math.random() * 18 + 14 + 'px';
+            heart.style.animationDuration = Math.random() * 8 + 6 + 's';
+            heart.style.animationDelay = '0s';
+            heart.style.opacity = Math.random() * 0.6 + 0.3;
+            heartsContainer.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 10000);
+        }, 1800);
+    }
+    createStars();
+    createHearts();
+
+    // ------------------- AUDIO (Web Audio - soft romantic pad) -------------------
+    let audioContext = null;
+    let musicStarted = false;
+    let currentGain = null;
+    let oscillatorNodes = [];
+
+    function startSoftMusic() {
+        if (musicStarted) return;
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            currentGain = audioContext.createGain();
+            currentGain.gain.value = 0.2; // soft volume
+            currentGain.connect(audioContext.destination);
+            
+            // romantic pad: two gentle oscillators with slow attack/release envelope
+            function playChord(frequencies, duration = 5.5) {
+                // stop previous oscillators gently
+                oscillatorNodes.forEach(osc => {
+                    try { osc.stop(); } catch(e) {}
+                });
+                oscillatorNodes = [];
+                frequencies.forEach(freq => {
+                    const osc = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+                    gainNode.gain.value = 0.12;
+                    osc.connect(gainNode);
+                    gainNode.connect(currentGain);
+                    osc.start();
+                    // smooth fade out before next chord
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration - 0.4);
+                    osc.stop(audioContext.currentTime + duration);
+                    oscillatorNodes.push(osc);
                 });
             }
-        }
-        
-        function drawStars() {
-            if(!ctx) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#03030c";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            for(let s of stars) {
-                // twinkling effect based on sine wave
-                const twinkle = 0.4 + 0.6 * (Math.sin(Date.now() * s.twinkleSpeed + s.phase) * 0.5 + 0.5);
-                let alphaVal = Math.min(0.9, s.alpha * (0.6 + twinkle * 0.5));
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 235, 240, ${alphaVal})`;
-                ctx.fill();
+            
+            // chord progression (romantic / gentle)
+            const chordProgression = [
+                [261.63, 329.63, 392.00],  // Cmaj
+                [293.66, 369.99, 440.00],  // Dm
+                [329.63, 392.00, 493.88],  // Em
+                [349.23, 440.00, 523.25],  // Fmaj
+                [261.63, 329.63, 392.00],  // Cmaj
+                [196.00, 261.63, 329.63],  // Am
+                [349.23, 440.00, 523.25],  // Fmaj
+                [293.66, 369.99, 440.00]   // G
+            ];
+            let chordIndex = 0;
+            function nextChord() {
+                if (!audioContext || audioContext.state !== 'running') return;
+                const chord = chordProgression[chordIndex % chordProgression.length];
+                playChord(chord, 5.2);
+                chordIndex++;
+                setTimeout(nextChord, 5300);
             }
-            animationId = requestAnimationFrame(drawStars);
-        }
+            setTimeout(() => { nextChord(); }, 200);
+            
+            // add soft ambient sub-bass
+            const subOsc = audioContext.createOscillator();
+            const subGain = audioContext.createGain();
+            subOsc.type = 'sine';
+            subOsc.frequency.value = 65.41; // C2
+            subGain.gain.value = 0.06;
+            subOsc.connect(subGain);
+            subGain.connect(currentGain);
+            subOsc.start();
+            subOsc.stop(audioContext.currentTime + 180);
+            
+            musicStarted = true;
+        } catch(e) { console.warn("audio not supported", e); }
+    }
+
+    // ------------------- PASSWORD & CINEMATIC UNLOCK -------------------
+    const lockScreen = document.getElementById('lockScreen');
+    const passwordInput = document.getElementById('passwordInput');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const errorMsgSpan = document.getElementById('errorMsg');
+    const cinematicBlack = document.getElementById('cinematicBlack');
+    const glowLightDiv = document.getElementById('glowLight');
+    const nameGlowContainer = document.getElementById('nameGlowContainer');
+    const mainContent = document.getElementById('mainContent');
+    let unlockSequenceActive = false;
+
+    function showWrongPassword() {
+        errorMsgSpan.innerText = "❄️ not yet... try again, softheart ❄️";
+        setTimeout(() => { errorMsgSpan.innerText = ""; }, 1800);
+        passwordInput.style.border = "1px solid #ff8888";
+        setTimeout(() => { passwordInput.style.border = ""; }, 500);
+    }
+
+    function startCinematicAndUnlock() {
+        if (unlockSequenceActive) return;
+        unlockSequenceActive = true;
         
-        function resizeStars() {
-            initStars();
-        }
+        // start background music (user interaction now)
+        startSoftMusic();
+        if (audioContext && audioContext.state === 'suspended') audioContext.resume();
         
-        // ---------- typing effect on header ----------
-        const typingHeaderElem = document.getElementById('typingHeader');
-        let typingInterval = null;
-        function startTypingEffect() {
-            if(typingInterval) clearInterval(typingInterval);
-            const fullText = "Hey Anna… ❤️";
-            typingHeaderElem.innerHTML = "";
-            let index = 0;
-            function typeChar() {
-                if(index < fullText.length) {
-                    typingHeaderElem.innerHTML += fullText.charAt(index);
-                    index++;
-                } else {
-                    clearInterval(typingInterval);
-                }
-            }
-            typingInterval = setInterval(typeChar, 110);
-        }
+        // 1. Fade out lock screen
+        lockScreen.style.opacity = "0";
+        setTimeout(() => { lockScreen.style.display = "none"; }, 600);
         
-        // extra hidden message for "Tap here" button
-        const tapBtn = document.getElementById('tapButton');
-        const extraMsgDiv = document.getElementById('extraHiddenMsg');
-        tapBtn.addEventListener('click', () => {
-            if(extraMsgDiv.style.display === 'none' || extraMsgDiv.style.display === '') {
-                extraMsgDiv.innerHTML = "💌 The truth is: even the smallest conversations with you stay with me longer than you'd imagine. You don’t need to say anything special — just you being you is already magic. 💌";
-                extraMsgDiv.style.display = 'block';
-                extraMsgDiv.style.animation = 'fadeSlideUp 0.5s ease';
-            } else {
-                // you can keep revealed but we don't hide, it stays as emotional reveal
-                // but to avoid hiding, we just keep it visible (final emotional msg)
-                // no toggle, just once meaningful. But it's okay, press again does nothing new
-                if(!extraMsgDiv.dataset.revealed){
-                    extraMsgDiv.innerHTML += "<br>🌙 And I’ll always respect your pace. ✨";
-                    extraMsgDiv.dataset.revealed = "true";
-                }
-            }
-        });
+        // 2. Cinematic: black overlay + glow light + zoom effect
+        cinematicBlack.style.opacity = "1";
+        cinematicBlack.style.backgroundColor = "#000000";
         
-        // ---------- password validation and unlock ----------
-        function unlockWebsite() {
-            // hide lock screen with smooth fade
-            lockScreen.style.opacity = "0";
+        // show glow light that grows
+        glowLightDiv.style.display = "block";
+        setTimeout(() => {
+            glowLightDiv.style.transform = "translate(-50%, -50%) scale(18)";
+            glowLightDiv.style.transition = "transform 1.2s ease-out";
+        }, 50);
+        
+        // 3. Zoom effect on black overlay
+        cinematicBlack.style.animation = "cameraZoom 1.5s forwards";
+        
+        setTimeout(() => {
+            cinematicBlack.style.opacity = "0";
+            glowLightDiv.style.display = "none";
+            cinematicBlack.style.animation = "";
+            // reveal name glow effect
+            nameGlowContainer.style.display = "flex";
+            nameGlowContainer.style.opacity = "1";
+            
+            // after name glow effect (3.2 secs) fade into main content
             setTimeout(() => {
-                lockScreen.style.display = "none";
-                mainContent.style.display = "block";
-                // start animations
-                startTypingEffect();
-                startFloatingHearts();
-                initStars();
-                drawStars();
-                window.addEventListener('resize', () => {
-                    resizeStars();
-                });
-                // try to play music after user gesture (unlock click)
-                attemptPlayMusic();
-            }, 500);
+                nameGlowContainer.style.opacity = "0";
+                setTimeout(() => {
+                    nameGlowContainer.style.display = "none";
+                    // show main content with smooth reveal
+                    mainContent.classList.add("visible");
+                    // start typing intro after main content appears
+                    startTypingEffect();
+                }, 800);
+            }, 2800);
+        }, 1400);
+    }
+
+    // password validation
+    function verifyPassword() {
+        let entered = passwordInput.value.trim();
+        if (entered.toUpperCase() === "ANNA") {
+            startCinematicAndUnlock();
+        } else {
+            showWrongPassword();
         }
-        
-        function handleUnlock() {
-            const enteredPass = passwordInput.value.trim();
-            if(enteredPass === "ANNA") {
-                lockError.innerText = "";
-                unlockWebsite();
+    }
+
+    unlockBtn.addEventListener('click', verifyPassword);
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') verifyPassword();
+    });
+
+    // ------------------- TYPING INTRO ("Hey Anna… ❤️") -------------------
+    let typingTimeout = null;
+    function startTypingEffect() {
+        const typingDiv = document.getElementById('typingIntro');
+        const fullText = "Hey Anna… ❤️";
+        typingDiv.innerHTML = "";
+        let i = 0;
+        function typeChar() {
+            if (i < fullText.length) {
+                typingDiv.innerHTML += fullText.charAt(i);
+                i++;
+                setTimeout(typeChar, 90);
             } else {
-                lockError.innerText = "❄️ not the right key... try again, softly ❄️";
-                passwordInput.value = "";
-                passwordInput.style.borderColor = "#ff7b8e";
-                setTimeout(() => { passwordInput.style.borderColor = "#ff9eb0"; }, 800);
+                let cursorSpan = document.createElement('span');
+                cursorSpan.className = 'cursor';
+                cursorSpan.innerHTML = '|';
+                typingDiv.appendChild(cursorSpan);
             }
         }
+        typeChar();
+    }
+
+    // ------------------- TAP HERE BUTTON: reveal final message with glow animation -------------------
+    const tapBtn = document.getElementById('tapRevealBtn');
+    const finalContainer = document.getElementById('finalMessageContainer');
+    const finalGlowLine = document.getElementById('finalGlowLine');
+    
+    tapBtn.addEventListener('click', () => {
+        if (!finalContainer.classList.contains('hidden')) return;
+        finalContainer.classList.remove('hidden');
+        finalContainer.style.animation = "fadeSlideUp 0.6s ease";
+        // additional glow effect to the final main line
+        finalGlowLine.style.animation = "gentleGlow 1.2s infinite alternate";
+        // smooth scroll into view
+        finalContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        unlockBtn.addEventListener('click', handleUnlock);
-        passwordInput.addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') handleUnlock();
-        });
-        
-        // preload canvas on window load but only after unlock? Not needed but resize prepare
-        window.addEventListener('resize', () => {
-            if(mainContent.style.display === 'block') {
-                resizeStars();
-            }
-        });
-        
-        // security: avoid showing main content before unlock
-        mainContent.style.display = "none";
-        
-        // final glow line already in html, but ensure it's visible.
-        // Add micro animation on final line
-        const finalLine = document.getElementById('finalPromiseLine');
-        if(finalLine) {
-            finalLine.style.animation = "gentleGlowPulse 2.8s infinite ease-in-out, fadeSlideUp 0.9s ease-out";
+        // tiny extra magic: add a floating heart burst
+        for(let i=0;i<8;i++) {
+            let heartBurst = document.createElement('div');
+            heartBurst.classList.add('floating-heart');
+            heartBurst.innerHTML = '💗';
+            heartBurst.style.left = (50 + (Math.random() * 40 - 20)) + '%';
+            heartBurst.style.fontSize = '22px';
+            heartBurst.style.animationDuration = '2s';
+            document.body.appendChild(heartBurst);
+            setTimeout(() => heartBurst.remove(), 2200);
         }
-        
-        // little floating particles effect for unlock transition ready
-        // also chat bubbles subtle hover glow
-        const bubbles = document.querySelectorAll('.bubble');
-        if(bubbles.length) {
-            bubbles.forEach(b => {
-                b.addEventListener('mouseenter', () => {
-                    b.style.transform = "scale(1.01)";
-                    b.style.transition = "0.2s";
-                });
-                b.addEventListener('mouseleave', () => {
-                    b.style.transform = "scale(1)";
-                });
-            });
+    });
+    
+    // Add additional style for smooth fade up
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = `
+        @keyframes fadeSlideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
-        
-        // additional small effect: preload the audio but not play automatically.
-        // also ensure password is case sensitive "ANNA" exactly.
-        // graceful error cleanup
-    })();
+        .final-message:not(.hidden) {
+            display: block;
+            animation: fadeSlideUp 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .lock-screen, .name-glow, .cinematic-overlay, .glow-light {
+            will-change: transform, opacity;
+        }
+        .main-content {
+            will-change: opacity, transform;
+        }
+        input, button {
+            cursor: pointer;
+        }
+    `;
+    document.head.appendChild(styleSheet);
+    
+    // Preload small polish: ensure main content hidden until unlock
+    mainContent.classList.remove('visible');
+    
+    // extra background safety: make floating hearts softer on mobile
+    if (window.innerWidth < 600) {
+        const heartsInt = setInterval(() => {}, 100);
+        setTimeout(() => clearInterval(heartsInt), 100);
+    }
+    
+    // additional romantic shimmer: name glow container graceful
+    window.addEventListener('load', () => {
+        // prefill nothing, but ensure password field focused
+        setTimeout(() => { if(lockScreen.style.display !== 'none') passwordInput.focus(); }, 100);
+    });
 </script>
 </body>
-				</html>
+	</html>
