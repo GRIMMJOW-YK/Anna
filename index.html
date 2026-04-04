@@ -18,6 +18,12 @@
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             scroll-behavior: smooth;
+            cursor: default;
+        }
+
+        /* Custom cursor glow (subtle) */
+        body, button, .floating-star, .paper-lantern, .candle, .memory-jar {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23ffb7c5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v4M22 12h-4M12 20v-4M4 12H2"/></svg>') 12 12, auto;
         }
 
         /* ---------- PASSWORD GATE (Premium Cinematic) ---------- */
@@ -149,11 +155,12 @@
             align-items: center;
             padding: 2rem 1.5rem;
             position: relative;
-            background: rgba(8, 5, 16, 0.55);
+            background: rgba(8, 5, 16, 0.45);
             backdrop-filter: blur(2px);
             border-bottom: 1px solid rgba(255, 180, 200, 0.08);
         }
 
+        /* Dynamic gradient background (slow shift) */
         .parallax-bg {
             position: fixed;
             top: 0;
@@ -163,6 +170,23 @@
             background: radial-gradient(circle at 50% 30%, #1f1428, #020108);
             z-index: -2;
             will-change: transform;
+            animation: slowShift 20s infinite alternate;
+        }
+        @keyframes slowShift {
+            0% { background: radial-gradient(circle at 30% 20%, #1f1428, #020108);}
+            100% { background: radial-gradient(circle at 70% 80%, #2a1a2e, #03010a);}
+        }
+
+        /* Vignette overlay for depth */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+            pointer-events: none;
+            z-index: 3;
         }
 
         .floating-particles {
@@ -173,6 +197,21 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
+        }
+
+        /* Extra floating orbs (soft glow) */
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,180,200,0.2), transparent);
+            filter: blur(25px);
+            pointer-events: none;
+            z-index: 0;
+            animation: drift 18s infinite alternate;
+        }
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            100% { transform: translate(30px, -40px) scale(1.2); opacity: 0.6; }
         }
 
         .cinematic-text {
@@ -258,7 +297,7 @@
             to { opacity: 1; transform: translateY(0);}
         }
 
-        /* MAIN CINEMATIC MOMENT - GLOWING HEARTBEAT TEXT (same font) */
+        /* MAIN CINEMATIC MOMENT - GLOWING HEARTBEAT TEXT with shimmer underline */
         .glowing-heartbeat {
             font-size: 2rem;
             font-weight: 600;
@@ -272,6 +311,23 @@
             text-shadow: 0 0 15px rgba(255, 100, 130, 0.4);
             max-width: 90%;
             line-height: 1.4;
+            position: relative;
+        }
+        .glowing-heartbeat::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffb7c5, #ff6b8b, #ffb7c5, transparent);
+            border-radius: 2px;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { opacity: 0.2; width: 30%; left: 35%; }
+            50% { opacity: 1; width: 80%; left: 10%; }
+            100% { opacity: 0.2; width: 30%; left: 35%; }
         }
 
         @keyframes gentleHeartbeat {
@@ -284,40 +340,70 @@
             padding: 1rem;
         }
 
-        /* Additional features: floating star, paper lantern, time sands */
-        .floating-star {
+        /* New features: candle, memory jar, extra floating elements */
+        .candle {
             position: fixed;
-            bottom: 20px;
+            bottom: 100px;
             right: 20px;
             font-size: 2rem;
             cursor: pointer;
             z-index: 100;
-            filter: drop-shadow(0 0 6px gold);
-            transition: transform 0.2s;
             background: rgba(0,0,0,0.3);
-            border-radius: 50%;
-            width: 55px;
-            height: 55px;
+            border-radius: 60px;
+            padding: 8px 16px;
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
+            gap: 8px;
         }
-        .floating-star:hover { transform: scale(1.1); }
+        .candle:hover { transform: scale(1.05); background: rgba(255,140,170,0.3); }
         
-        .paper-lantern {
+        .memory-jar {
             position: fixed;
-            bottom: 20px;
+            bottom: 100px;
             left: 20px;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             cursor: pointer;
             z-index: 100;
             background: rgba(0,0,0,0.3);
-            border-radius: 40px;
-            padding: 8px 14px;
+            border-radius: 60px;
+            padding: 8px 18px;
             backdrop-filter: blur(4px);
             transition: 0.2s;
-            font-family: monospace;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .memory-jar:hover { transform: scale(1.05); background: rgba(180,220,255,0.2); }
+        
+        .floating-star, .paper-lantern {
+            position: fixed;
+            z-index: 100;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .floating-star {
+            bottom: 20px;
+            right: 20px;
+            font-size: 2rem;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            filter: drop-shadow(0 0 6px gold);
+        }
+        .floating-star:hover { transform: scale(1.1); background: rgba(255,215,0,0.3);}
+        
+        .paper-lantern {
+            bottom: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            border-radius: 40px;
+            padding: 8px 14px;
         }
         .paper-lantern:hover { background: rgba(255,140,170,0.3); transform: translateY(-3px); }
         
@@ -380,6 +466,8 @@
             .floating-star { width: 45px; height: 45px; font-size: 1.5rem; bottom: 15px; right: 15px; }
             .paper-lantern { font-size: 1rem; bottom: 15px; left: 15px; }
             .time-sands { bottom: 70px; left: 15px; font-size: 0.6rem; }
+            .candle { bottom: 80px; right: 15px; font-size: 1.5rem; padding: 5px 12px; }
+            .memory-jar { bottom: 80px; left: 15px; font-size: 1.4rem; padding: 5px 14px; }
         }
     </style>
 </head>
@@ -400,6 +488,8 @@
 <div id="cinemaSite" class="cinematic-site">
     <div class="parallax-bg" id="parallaxBg"></div>
     <canvas id="particleCanvas" class="floating-particles"></canvas>
+    <div class="vignette"></div>
+    <!-- Dynamic floating orbs (created by JS) -->
     
     <div class="scenes-container" id="scenesContainer">
         <!-- Scene 1: Beginning hook (typing) -->
@@ -430,7 +520,7 @@
             </div>
         </section>
 
-        <!-- Scene 4: MAIN CINEMATIC MOMENT (Heart) - now using unified glowing sentence -->
+        <!-- Scene 4: MAIN CINEMATIC MOMENT (Heart) - unified glowing sentence -->
         <section class="scene" id="scene4">
             <div class="main-sentence-container">
                 <div class="glowing-heartbeat" id="unifiedPromiseText">
@@ -453,9 +543,11 @@
         </section>
     </div>
     
-    <!-- NEW FEATURES: Floating star, paper lantern, time sands -->
+    <!-- Enhanced interactive elements -->
     <div class="floating-star" id="wishStar">⭐️</div>
     <div class="paper-lantern" id="lanternMsg">🏮 whisper</div>
+    <div class="candle" id="patienceCandle">🕯️</div>
+    <div class="memory-jar" id="memoryJar">🏺✨</div>
     <div class="time-sands" id="timeSands">⌛︎ a quiet year is just a season of patience</div>
 </div>
 
@@ -524,6 +616,7 @@
                     cinemaSite.classList.add("active");
                     startAmbientMusic();
                     initParticles();
+                    createFloatingOrbs();
                     startCinematicFlow();
                 }, 1000);
             } else {
@@ -535,7 +628,7 @@
         unlockBtn.addEventListener('click', unlock);
         passInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') unlock(); });
 
-        // PARTICLES
+        // PARTICLES (enhanced)
         let particleCanvas, ctx, particles = [], animationId;
         function initParticles() {
             particleCanvas = document.getElementById('particleCanvas');
@@ -547,16 +640,16 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
             ctx = particleCanvas.getContext('2d');
-            const PARTICLE_COUNT = 140;
+            const PARTICLE_COUNT = 180;
             for(let i=0; i<PARTICLE_COUNT; i++) {
                 particles.push({
                     x: Math.random() * particleCanvas.width,
                     y: Math.random() * particleCanvas.height,
-                    radius: Math.random() * 2.8 + 1,
-                    alpha: Math.random() * 0.5 + 0.2,
-                    vx: (Math.random() - 0.5) * 0.25,
-                    vy: (Math.random() - 0.5) * 0.2 + 0.1,
-                    color: `rgba(255, 190, 210, ${0.2+Math.random()*0.4})`
+                    radius: Math.random() * 3.5 + 1,
+                    alpha: Math.random() * 0.6 + 0.2,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.15 + 0.05,
+                    color: `rgba(255, 190, 210, ${0.2+Math.random()*0.5})`
                 });
             }
             function draw() {
@@ -579,7 +672,22 @@
             draw();
         }
 
-        // CINEMATIC FLOW
+        // Floating glowing orbs
+        function createFloatingOrbs() {
+            for (let i = 0; i < 6; i++) {
+                const orb = document.createElement('div');
+                orb.className = 'floating-orb';
+                orb.style.width = Math.random() * 200 + 100 + 'px';
+                orb.style.height = orb.style.width;
+                orb.style.left = Math.random() * 100 + '%';
+                orb.style.top = Math.random() * 100 + '%';
+                orb.style.animationDuration = Math.random() * 20 + 15 + 's';
+                orb.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(orb);
+            }
+        }
+
+        // CINEMATIC FLOW (same as before, with new interactive elements)
         function startCinematicFlow() {
             // Scene 1 typing
             const line1El = document.getElementById('hookLine1');
@@ -640,12 +748,10 @@
                                 setTimeout(() => {
                                     line.style.opacity = '1';
                                     line.style.transform = 'translateY(0)';
-                                    line.style.transition = 'opacity 0.7s ease, transform 0.6s ease';
                                 }, idx * 350);
                             });
                         }
                         if(sceneId === 'scene4') {
-                            // heartbeatGlow appears after a moment
                             setTimeout(() => {
                                 const glowDiv = document.getElementById('heartbeatGlow');
                                 if(glowDiv && !glowDiv.innerHTML) {
@@ -658,14 +764,12 @@
             }, { threshold: 0.45 });
             document.querySelectorAll('.scene').forEach(scene => observer.observe(scene));
             
-            // Parallax
             const parallaxBg = document.getElementById('parallaxBg');
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
                 if(parallaxBg) parallaxBg.style.transform = `translateY(${scrollY * 0.2}px) scale(1.02)`;
             });
             
-            // Cinematic zoom
             const scenes = document.querySelectorAll('.scene');
             const zoomObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -681,7 +785,7 @@
             }, { threshold: 0.5 });
             scenes.forEach(s => zoomObserver.observe(s));
             
-            // Final button hearts
+            // Final button
             const finalBtn = document.getElementById('finalSmileBtn');
             const extraDiv = document.getElementById('extraSurpriseContainer');
             finalBtn.addEventListener('click', () => {
@@ -704,7 +808,6 @@
                 }
             });
             
-            // quietExtra click
             const quietElem = document.getElementById('quietExtra');
             if(quietElem) {
                 quietElem.addEventListener('click', () => {
@@ -726,7 +829,7 @@
                 });
             }
             
-            // ***** NEW FEATURE: Floating Star (collect wishes) *****
+            // Floating star (wishes)
             const wishStar = document.getElementById('wishStar');
             let wishCount = 0;
             wishStar.addEventListener('click', () => {
@@ -746,15 +849,9 @@
                 setTimeout(() => starMsg.remove(), 1800);
             });
             
-            // Paper lantern: random gentle phrase
+            // Paper lantern
             const lantern = document.getElementById('lanternMsg');
-            const phrases = [
-                "🕯️ time doesn't rush", 
-                "🌸 a quiet year is still precious", 
-                "🌙 patience is gentle", 
-                "✨ no need to hurry", 
-                "🍃 feelings can grow slowly"
-            ];
+            const phrases = ["🕯️ time doesn't rush", "🌸 a quiet year is still precious", "🌙 patience is gentle", "✨ no need to hurry", "🍃 feelings can grow slowly"];
             lantern.addEventListener('click', () => {
                 const rand = phrases[Math.floor(Math.random() * phrases.length)];
                 const floatMsg = document.createElement('div');
@@ -773,9 +870,56 @@
                 createFloatingHeart();
             });
             
-            // Time sands subtle animation
+            // Candle of Patience
+            const candle = document.getElementById('patienceCandle');
+            let candleLit = false;
+            candle.addEventListener('click', () => {
+                if (!candleLit) {
+                    candle.innerHTML = '🕯️🔥';
+                    candleLit = true;
+                    const flameMsg = document.createElement('div');
+                    flameMsg.className = 'extra-surprise';
+                    flameMsg.style.position = 'fixed';
+                    flameMsg.style.bottom = '140px';
+                    flameMsg.style.right = '40px';
+                    flameMsg.style.background = 'rgba(255,180,100,0.3)';
+                    flameMsg.style.padding = '5px 12px';
+                    flameMsg.style.borderRadius = '30px';
+                    flameMsg.style.fontSize = '0.7rem';
+                    flameMsg.innerText = '🔥 a quiet flame of patience burns';
+                    document.body.appendChild(flameMsg);
+                    setTimeout(() => flameMsg.remove(), 2500);
+                    for(let i=0;i<8;i++) createFloatingHeart();
+                } else {
+                    candle.innerHTML = '🕯️';
+                    candleLit = false;
+                }
+            });
+            
+            // Memory Jar: collects wishes
+            const jar = document.getElementById('memoryJar');
+            let jarCount = 0;
+            jar.addEventListener('click', () => {
+                jarCount++;
+                jar.innerHTML = `🏺✨ ${jarCount}`;
+                const jarMsg = document.createElement('div');
+                jarMsg.className = 'extra-surprise';
+                jarMsg.style.position = 'fixed';
+                jarMsg.style.bottom = '140px';
+                jarMsg.style.left = '30px';
+                jarMsg.style.background = 'rgba(100,150,200,0.3)';
+                jarMsg.style.padding = '5px 12px';
+                jarMsg.style.borderRadius = '30px';
+                jarMsg.style.fontSize = '0.7rem';
+                jarMsg.innerText = `📦 memory ${jarCount} · softly kept`;
+                document.body.appendChild(jarMsg);
+                setTimeout(() => jarMsg.remove(), 2000);
+                createFloatingHeart();
+            });
+            
+            // Time sands subtle pulse
             const timeEl = document.getElementById('timeSands');
-            let sandInterval = setInterval(() => {
+            setInterval(() => {
                 if(timeEl) {
                     timeEl.style.opacity = '0.7';
                     setTimeout(() => { if(timeEl) timeEl.style.opacity = '1'; }, 300);
@@ -803,4 +947,4 @@
     })();
 </script>
 </body>
-        </html>
+    </html>
