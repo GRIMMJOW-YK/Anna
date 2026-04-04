@@ -2,669 +2,489 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>For Anna · a gentle constellation</title>
-    <!-- Google Fonts: Great Vibes + clean sans for readability -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --pink: #ff4d6d;
+            --purple: #c77dff;
+            --bg: #050508;
+            --text-light: #f8f9fa;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none; /* prevent accidental selection, keeps clean */
         }
 
         body {
-            background: #0a0710;
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
-            min-height: 100vh;
-            color: #f8eef5;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* ---- DARK NIGHT SKY (global) ---- */
-        .stars-container, .hearts-container {
+        /* Background Effects */
+        #stars-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             z-index: 0;
-            transition: opacity 2.5s ease-out;
-            opacity: 0;
-        }
-
-        .stars-container.visible, .hearts-container.visible {
-            opacity: 1;
+            pointer-events: none;
         }
 
         .star {
             position: absolute;
-            background-color: #fff9e8;
+            background: white;
             border-radius: 50%;
-            box-shadow: 0 0 6px rgba(255, 220, 180, 0.7);
-            animation: twinkle 3s infinite alternate;
-            opacity: 0.6;
+            animation: twinkle infinite alternate;
         }
 
         @keyframes twinkle {
-            0% { opacity: 0.3; transform: scale(1);}
-            100% { opacity: 1; transform: scale(1.1);}
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 5px white; }
         }
 
-        .floating-heart {
+        /* Screens */
+        .screen {
             position: absolute;
-            font-size: 1.4rem;
-            pointer-events: none;
-            animation: floatHeart 12s linear infinite;
-            opacity: 0.5;
-            filter: drop-shadow(0 0 3px #ff99cc);
-        }
-
-        @keyframes floatHeart {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.7; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) rotate(12deg); opacity: 0; }
-        }
-
-        /* ----- LOCK SCREEN (OVERLAY) ----- */
-        .lock-screen {
-            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: #0b0712;
-            backdrop-filter: blur(2px);
-            z-index: 200;
+            min-height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            transition: opacity 1s ease;
-            opacity: 1;
-        }
-
-        .lock-card {
-            background: rgba(18, 12, 28, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 2.5rem;
-            padding: 2rem 1.8rem;
-            width: 85%;
-            max-width: 360px;
-            text-align: center;
-            border: 1px solid rgba(255, 100, 150, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255, 77, 109, 0.2);
-        }
-
-        .lock-card h2 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.4rem;
-            color: #ffb7c5;
-            margin-bottom: 1rem;
-        }
-
-        .lock-card input {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(20, 15, 30, 0.9);
-            border: 1px solid #ff4d6d;
-            border-radius: 60px;
-            color: #ffeef4;
-            font-size: 1rem;
-            text-align: center;
-            letter-spacing: 2px;
-            outline: none;
-            margin: 1rem 0;
-        }
-
-        .lock-card button {
-            background: linear-gradient(135deg, #ff4d6d, #c77dff);
-            border: none;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 1rem;
-            color: white;
-            width: 100%;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .lock-card button:active { transform: scale(0.97);}
-        .hint-text { margin-top: 1rem; font-size: 0.85rem; color: #d9b4d4; }
-        .error-msg { color: #ff9eb5; font-size: 0.8rem; margin-top: 0.8rem; min-height: 2rem; }
-
-        /* ----- CINEMATIC UNLOCK OVERLAY ----- */
-        .cinematic-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000000;
-            z-index: 180;
-            display: flex;
             align-items: center;
-            justify-content: center;
+            z-index: 10;
+            transition: opacity 1.5s ease, visibility 1.5s ease;
+        }
+
+        .hidden {
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.8s ease;
-            backdrop-filter: brightness(0.9);
+            pointer-events: none;
         }
 
-        .cinematic-content {
+        /* Screen 1: Password */
+        .lock-container {
             text-align: center;
-            transform: scale(0.85);
-            transition: transform 2.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 77, 109, 0.2);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 400px;
         }
 
-        .cinematic-content.zoom-in {
-            transform: scale(1.08);
+        .lock-container h2 {
+            font-weight: 300;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        input[type="password"], input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 10px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-bottom: 2px solid var(--pink);
+        }
+
+        .hint {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: linear-gradient(45deg, var(--pink), var(--purple));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .error-msg {
+            color: var(--pink);
+            font-size: 0.85rem;
+            margin-top: 10px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        /* Screen 2: Cinematic Unlock */
+        #cinematic-screen {
+            background: radial-gradient(circle at center, rgba(199, 125, 255, 0.1) 0%, var(--bg) 70%);
         }
 
         .anna-glow {
             font-family: 'Great Vibes', cursive;
             font-size: 4.5rem;
-            background: linear-gradient(135deg, #ffb3c6, #e0aaff);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 20px #ff4d6d, 0 0 35px #c77dff;
-            animation: gentlePulse 2s infinite ease;
+            color: white;
+            text-shadow: 0 0 20px var(--pink), 0 0 40px var(--purple), 0 0 60px var(--pink);
+            animation: pulseGlow 3s infinite alternate, zoomIn 5s ease forwards;
             opacity: 0;
-            transition: opacity 1.2s ease;
         }
 
-        .anna-glow.show {
-            opacity: 1;
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 20px var(--pink), 0 0 30px var(--purple); }
+            100% { text-shadow: 0 0 30px var(--pink), 0 0 50px var(--purple), 0 0 70px var(--pink); }
         }
 
-        @keyframes gentlePulse {
-            0% { text-shadow: 0 0 5px #ff4d6d, 0 0 15px #c77dff; opacity: 0.9;}
-            100% { text-shadow: 0 0 25px #ff6f91, 0 0 45px #da8eff; opacity: 1;}
+        @keyframes zoomIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            30% { opacity: 1; }
+            100% { transform: scale(1.1); opacity: 1; }
         }
 
-        /* ----- MAIN CONTENT (hidden until cinematic fades) ----- */
-        .main-content {
-            position: relative;
-            z-index: 10;
-            max-width: 650px;
-            margin: 0 auto;
-            padding: 2rem 1.5rem 4rem;
-            opacity: 0;
-            transition: opacity 1s ease;
-            pointer-events: none;
-        }
-
-        .main-content.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* Typing intro */
-        .typing-area {
-            font-size: 1.7rem;
-            font-weight: 500;
+        /* Screen 3: Main Content */
+        #main-content, #secret-page {
+            justify-content: flex-start;
+            padding: 10vh 5% 5vh 5%;
+            overflow-y: auto;
+            align-items: center;
             text-align: center;
-            margin: 1rem 0 1.8rem;
-            min-height: 5rem;
-            font-family: 'Inter', monospace;
-            letter-spacing: -0.3px;
-            color: #ffcfdf;
         }
 
-        /* emotional message block & chat bubbles */
-        .message-block {
-            background: rgba(30, 20, 45, 0.5);
-            backdrop-filter: blur(8px);
-            border-radius: 2rem;
-            padding: 1.5rem;
-            margin: 1.2rem 0;
-            border: 1px solid rgba(255, 120, 160, 0.3);
+        .typing-text {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            border-right: 2px solid white;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
         }
 
-        .emotional-text {
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; border-color: transparent; }
+        }
+
+        .fade-in-text {
             font-size: 1.1rem;
-            line-height: 1.5;
-            font-weight: 400;
-            color: #f7e6ed;
-            margin-bottom: 1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 600px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 1s ease;
+        }
+
+        .fade-in-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 40px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .chat-bubble {
-            background: rgba(255, 77, 109, 0.12);
-            border-left: 4px solid #ff77aa;
-            border-radius: 1.5rem;
-            padding: 0.8rem 1.2rem;
-            margin: 0.8rem 0;
-            font-size: 0.95rem;
-            transition: transform 0.2s;
-            backdrop-filter: blur(4px);
+            background: rgba(255, 77, 109, 0.1);
+            border: 1px solid rgba(199, 125, 255, 0.3);
+            padding: 15px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            color: var(--text-light);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 1s ease;
+            text-align: left;
+            position: relative;
         }
 
-        .glow-button {
-            background: linear-gradient(145deg, #ff4d6d, #b45eff);
-            border: none;
-            padding: 14px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: white;
-            width: 80%;
-            margin: 1.5rem auto;
-            display: block;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 0 12px #ff4d6d;
+        .chat-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 77, 109, 0.1);
+            border-bottom: 1px solid rgba(199, 125, 255, 0.3);
+            border-right: 1px solid rgba(199, 125, 255, 0.3);
+            transform: translateY(10px) rotate(45deg);
+            z-index: -1;
         }
 
-        .glow-button:active { transform: scale(0.96);}
+        .chat-bubble.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chat-bubble:nth-child(even) {
+            align-self: flex-end;
+            background: rgba(199, 125, 255, 0.1);
+            border-color: rgba(255, 77, 109, 0.3);
+            text-align: right;
+        }
+        
+        .chat-bubble:nth-child(even)::after {
+            left: auto;
+            right: 20px;
+            background: rgba(199, 125, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 77, 109, 0.3);
+            border-right: 1px solid rgba(255, 77, 109, 0.3);
+        }
+
+        .reveal-btn {
+            margin: 50px 0;
+            box-shadow: 0 0 20px rgba(255, 77, 109, 0.4);
+        }
 
         .final-message {
             font-family: 'Great Vibes', cursive;
-            font-size: 1.9rem;
-            text-align: center;
-            background: linear-gradient(135deg, #ffe6f0, #e6ccff);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin: 1.8rem 0 1rem;
-            animation: softGlowZoom 1s ease;
-            transform-origin: center;
-        }
-
-        @keyframes softGlowZoom {
-            0% { opacity: 0; transform: scale(0.92); letter-spacing: 2px; text-shadow: none; }
-            100% { opacity: 1; transform: scale(1); text-shadow: 0 0 15px #ff85b3;}
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0 0 15px var(--pink);
+            margin: 30px 0;
+            display: none;
+            animation: zoomIn 2s ease forwards;
+            padding: 0 20px;
         }
 
         .ending-lines {
-            text-align: center;
             font-size: 1rem;
-            margin: 1rem 0;
-            color: #eac9dc;
-            font-weight: 300;
-        }
-
-        .hidden-second {
+            color: rgba(255, 255, 255, 0.6);
             display: none;
-            margin-top: 2rem;
-            background: rgba(0,0,0,0.6);
-            border-radius: 2rem;
-            padding: 1.6rem;
-            backdrop-filter: blur(16px);
-            border: 1px solid #ff99bb;
-            transition: all 0.4s ease;
+            margin-bottom: 40px;
         }
 
-        .hidden-second.show-second {
-            display: block;
-            animation: fadeSlideUp 0.5s ease;
-        }
-
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(20px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-
-        .one-more {
-            text-align: center;
-            margin: 1rem 0 0.5rem;
+        .secret-btn {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.4);
             font-size: 0.9rem;
-            color: #ffb7cf;
-            cursor: pointer;
-            display: inline-block;
-            width: auto;
-            background: rgba(255,100,150,0.2);
-            padding: 0.3rem 1rem;
-            border-radius: 30px;
-            transition: 0.2s;
+            margin-top: 50px;
+            display: none;
+            box-shadow: none;
+        }
+        
+        .secret-btn:hover {
+            color: var(--pink);
         }
 
-        .one-more:hover { background: #ff4d6d40; letter-spacing: 0.5px;}
-
-        hr {
-            margin: 1.2rem 0;
-            border-color: #ff4d6d30;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 550px) {
-            .anna-glow { font-size: 3rem; }
-            .final-message { font-size: 1.5rem; }
-            .typing-area { font-size: 1.3rem; }
-        }
     </style>
 </head>
 <body>
 
-<!-- Stars background (dynamic) -->
-<div class="stars-container" id="starsContainer"></div>
-<div class="hearts-container" id="heartsContainer"></div>
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+    </audio>
 
-<!-- LOCK SCREEN -->
-<div class="lock-screen" id="lockScreen">
-    <div class="lock-card">
-        <h2>✦ Anna ✦</h2>
-        <input type="password" id="passwordInput" placeholder="•••••" autocomplete="off" maxlength="10">
-        <button id="unlockBtn">open the sky</button>
-        <div class="hint-text">✨ You already know the answer… 🙂 ✨</div>
-        <div class="error-msg" id="errorMsg"></div>
-    </div>
-</div>
+    <div id="stars-container"></div>
 
-<!-- CINEMATIC OVERLAY (unlock sequence) -->
-<div class="cinematic-overlay" id="cinematicOverlay">
-    <div class="cinematic-content" id="cinematicContent">
-        <div class="anna-glow" id="annaGlowText">Anna ❤️</div>
-    </div>
-</div>
-
-<!-- MAIN EMOTIONAL WEBSITE -->
-<div class="main-content" id="mainContent">
-    <div class="typing-area" id="typingIntro"></div>
-    
-    <div class="message-block">
-        <div class="emotional-text">💬 “We don’t really talk much in real life…”</div>
-        <div class="emotional-text">💬 “But talking to you in messages feels easy.”</div>
-        <div class="emotional-text">💬 “Even small chats with you make my day better.”</div>
-        <div class="emotional-text">💬 “I didn’t expect it… but you slowly became important to me.”</div>
-        <div class="emotional-text">💬 “There’s something about you… I don’t know how to explain it.”</div>
-        <div class="emotional-text">💬 “I just feel comfortable with you.”</div>
+    <div id="screen-password" class="screen">
+        <div class="lock-container">
+            <h2>For Anna</h2>
+            <p class="hint">You already know the answer… 🙂</p>
+            <input type="password" id="password-input" placeholder="Enter Password" autocomplete="off">
+            <p id="error-msg" class="error-msg">That's not quite right...</p>
+            <button onclick="checkPassword()" style="margin-top: 15px;">Unlock</button>
+        </div>
     </div>
 
-    <!-- CHAT BUBBLES (extra feeling) -->
-    <div id="bubblesContainer">
-        <div class="chat-bubble">💭 “Even your small ‘hi’ feels different.”</div>
-        <div class="chat-bubble">💭 “You don’t even try… but you make things better.”</div>
-        <div class="chat-bubble">💭 “I like the way we talk… it feels real.”</div>
-        <div class="chat-bubble">💭 “I don’t want to rush anything… I just want this to stay.”</div>
-        <div class="chat-bubble">💭 “You make normal moments feel special.”</div>
-        <div class="chat-bubble">💭 “I smile more these days… maybe you are the reason.”</div>
+    <div id="screen-cinematic" class="screen hidden">
+        <h1 class="anna-glow" id="anna-text">Anna ❤️</h1>
     </div>
 
-    <!-- TAP HERE BUTTON -->
-    <button class="glow-button" id="tapRevealBtn">✨ Tap here ✨</button>
+    <div id="screen-main" class="screen hidden">
+        <div class="typing-text" id="typing-text">Hey Anna… ❤️</div>
 
-    <!-- Final message & ending (hidden initially) -->
-    <div id="finalSection" style="display: none;">
-        <div class="final-message" id="peakMessage">“I’ll wait, even if it takes a year… until the day you can say ‘I love you’ to me.”</div>
-        <div class="ending-lines">🌸 No pressure… just be you. 🌸<br>That’s already enough for me.</div>
+        <div class="main-messages">
+            <p class="fade-in-text">We don’t really talk much in real life…</p>
+            <p class="fade-in-text">But talking to you in messages feels easy.</p>
+            <p class="fade-in-text">Even small chats with you make my day better.</p>
+            <p class="fade-in-text">I didn’t expect it… but you slowly became important to me.</p>
+            <p class="fade-in-text">There’s something about you… I don’t know how to explain it.</p>
+            <p class="fade-in-text">I just feel comfortable with you.</p>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-bubble">Even your small ‘hi’ feels different.</div>
+            <div class="chat-bubble">You don’t even try… but you make things better.</div>
+            <div class="chat-bubble">I like the way we talk… it feels real.</div>
+            <div class="chat-bubble">I don’t want to rush anything… I just want this to stay.</div>
+            <div class="chat-bubble">You make normal moments feel special.</div>
+            <div class="chat-bubble">I smile more these days… maybe you are the reason.</div>
+        </div>
+
+        <button class="reveal-btn fade-in-text" id="reveal-btn" onclick="showFinalMessage()">Tap here</button>
+
+        <div class="final-message" id="final-message">
+            “I’ll wait, even if it takes a year… until the day you can say ‘I love you’ to me.”
+        </div>
         
-        <!-- hidden second page trigger -->
-        <div style="text-align: center; margin-top: 1rem;">
-            <span class="one-more" id="oneMoreTrigger">👉 One more thing… 👈</span>
+        <div class="ending-lines" id="ending-lines">
+            <p>No pressure… just be you.</p>
+            <p>That’s already enough for me.</p>
         </div>
-        <!-- second page content -->
-        <div id="secondPageContent" class="hidden-second">
-            <div style="font-size:1.2rem; font-weight:300; text-align:center; line-height:1.5;">
-                “I didn’t plan to feel this way…”<br><br>
-                “But somehow, you became a part of my day.”<br><br>
-                “Even when we don’t talk, I think about you.”<br><br>
-                “I don’t know what this will become…”<br><br>
-                “But I know… I don’t want to lose this.”<br><br>
-                <strong style="color:#ffb3d1;">👉 “Just stay… that’s enough for me ❤️”</strong>
-            </div>
-        </div>
+
+        <button class="secret-btn" id="secret-btn" onclick="showSecretPage()">👉 One more thing...</button>
     </div>
-</div>
 
-<script>
-    // ---------------------- GLOBAL VARIABLES ----------------------
-    let musicStarted = false;
-    let audioElement = null;
-    let unlockInProgress = false;
-    let finalRevealed = false;    // to prevent multiple final message trigger
+    <div id="screen-secret" class="screen hidden">
+        <p class="fade-in-text secret-text">I didn’t plan to feel this way…</p>
+        <p class="fade-in-text secret-text">But somehow, you became a part of my day.</p>
+        <p class="fade-in-text secret-text">Even when we don’t talk, I think about you.</p>
+        <p class="fade-in-text secret-text">I don’t know what this will become…</p>
+        <p class="fade-in-text secret-text">But I know… I don’t want to lose this.</p>
+        <br><br>
+        <p class="fade-in-text secret-text" style="font-weight: 600; color: var(--pink);">👉 Just stay… that’s enough for me ❤️</p>
+    </div>
 
-    // stars & hearts generation (performance optimized, limited count)
-    function generateStarsAndHearts() {
-        const starsContainer = document.getElementById('starsContainer');
-        const heartsContainer = document.getElementById('heartsContainer');
-        starsContainer.innerHTML = '';
-        heartsContainer.innerHTML = '';
-        // 80 stars max (lightweight)
-        const starCount = Math.min(90, window.innerWidth / 12);
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            const size = 1 + Math.random() * 3;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 4 + 's';
-            star.style.animationDuration = 1.5 + Math.random() * 2 + 's';
+    <script>
+        // Generate Starry Background
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 70; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            star.style.animationDelay = (Math.random() * 2) + 's';
             starsContainer.appendChild(star);
         }
-        // floating hearts (20 hearts, lightweight)
-        const heartCount = 20;
-        for (let i = 0; i < heartCount; i++) {
-            const heart = document.createElement('div');
-            heart.classList.add('floating-heart');
-            heart.innerHTML = ['❤️', '💖', '🌸', '✨', '💗'][Math.floor(Math.random() * 5)];
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.fontSize = 0.9 + Math.random() * 1.2 + 'rem';
-            heart.style.animationDuration = 8 + Math.random() * 10 + 's';
-            heart.style.animationDelay = Math.random() * 12 + 's';
-            heart.style.opacity = 0.3 + Math.random() * 0.5;
-            heartsContainer.appendChild(heart);
-        }
-    }
 
-    // initialize stars and hearts hidden
-    generateStarsAndHearts();
-    const starsContainerDiv = document.getElementById('starsContainer');
-    const heartsContainerDiv = document.getElementById('heartsContainer');
-
-    // ----- MUSIC setup (romantic piano - mixkit low volume) -----
-    function initMusic() {
-        if (audioElement) return;
-        audioElement = new Audio('https://assets.mixkit.co/music/preview/mixkit-romantic-piano-strings-2370.mp3');
-        audioElement.loop = true;
-        audioElement.volume = 0.25;   // soft background
-        audioElement.preload = 'auto';
-    }
-
-    function startMusicOnInteraction() {
-        if (!musicStarted && audioElement) {
-            audioElement.play().then(() => {
-                musicStarted = true;
-            }).catch(e => console.log("audio autoplay blocked, user will tap again but it's fine"));
-        }
-    }
-
-    // unlock cinematic sequence (after password)
-    function startCinematicSequence() {
-        if (unlockInProgress) return;
-        unlockInProgress = true;
-        
-        // hide lock screen immediately
-        const lockScreen = document.getElementById('lockScreen');
-        lockScreen.style.opacity = '0';
-        setTimeout(() => { lockScreen.style.display = 'none'; }, 600);
-        
-        // show stars + hearts (fade in)
-        starsContainerDiv.classList.add('visible');
-        heartsContainerDiv.classList.add('visible');
-        
-        // show cinematic overlay (fade to black with glow)
-        const cinematic = document.getElementById('cinematicOverlay');
-        cinematic.style.visibility = 'visible';
-        cinematic.style.opacity = '1';
-        
-        // 1) pink glow appears
-        cinematic.style.backgroundColor = '#000000';
-        cinematic.style.boxShadow = 'inset 0 0 100px rgba(255, 77, 109, 0.3)';
-        
-        // 2) stars already slowly appearing (visible class)
-        // 3) smooth zoom-in for content container
-        const cinematicContent = document.getElementById('cinematicContent');
-        setTimeout(() => {
-            cinematicContent.classList.add('zoom-in');
-        }, 200);
-        
-        // 4) reveal Anna Glow text after stars zoom feeling
-        const annaGlowElem = document.getElementById('annaGlowText');
-        setTimeout(() => {
-            annaGlowElem.classList.add('show');
-        }, 800);
-        
-        // 5) After 3 seconds, fade out cinematic -> show main content
-        setTimeout(() => {
-            cinematic.style.opacity = '0';
-            setTimeout(() => {
-                cinematic.style.visibility = 'hidden';
-                // show main content
-                const mainDiv = document.getElementById('mainContent');
-                mainDiv.classList.add('visible');
-                // start typing effect for "Hey Anna… ❤️"
-                startTypingEffect();
-            }, 700);
-        }, 2800);
-    }
-
-    // typing intro "Hey Anna… ❤️"
-    let typingInterval = null;
-    function startTypingEffect() {
-        const typingEl = document.getElementById('typingIntro');
-        const fullText = "Hey Anna… ❤️";
-        typingEl.innerHTML = '';
-        let index = 0;
-        if (typingInterval) clearInterval(typingInterval);
-        typingInterval = setInterval(() => {
-            if (index <= fullText.length) {
-                typingEl.innerHTML = fullText.slice(0, index) + '<span style="opacity:0.7;">|</span>';
-                index++;
-            } else {
-                clearInterval(typingInterval);
-                typingEl.innerHTML = fullText;
+        // Allow 'Enter' key to submit password
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
             }
-        }, 85);
-    }
+        });
 
-    // reveal final message & ending lines (emotional peak)
-    function revealPeak() {
-        if (finalRevealed) return;
-        finalRevealed = true;
-        const finalSection = document.getElementById('finalSection');
-        finalSection.style.display = 'block';
-        // add smooth scroll into view after reveal
-        setTimeout(() => {
-            document.getElementById('peakMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-        // add zoom effect additionally
-        const peakDiv = document.getElementById('peakMessage');
-        peakDiv.style.animation = 'softGlowZoom 0.6s ease forwards';
-    }
+        // Step 1 to Step 2: Password Check
+        function checkPassword() {
+            const input = document.getElementById('password-input').value.trim().toLowerCase();
+            const errorMsg = document.getElementById('error-msg');
+            const audio = document.getElementById('bg-music');
 
-    // handle "One more thing..." -> show second page
-    function bindSecondPageTrigger() {
-        const trigger = document.getElementById('oneMoreTrigger');
-        const secondDiv = document.getElementById('secondPageContent');
-        if (trigger) {
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (secondDiv.classList.contains('show-second')) {
-                    // optional: but keep visible, just toggling? No, we want smooth reveal
-                    return;
-                }
-                secondDiv.classList.add('show-second');
-                // subtle auto-scroll
-                secondDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (input === 'anna') {
+                errorMsg.style.opacity = '0';
+                
+                // Play music on user interaction
+                audio.volume = 0.3;
+                audio.play().catch(e => console.log("Audio autoplay prevented"));
+
+                // Transition Screens
+                document.getElementById('screen-password').classList.add('hidden');
+                document.getElementById('screen-cinematic').classList.remove('hidden');
+
+                // Trigger Anna Glow animation
+                const annaText = document.getElementById('anna-text');
+                setTimeout(() => {
+                    annaText.style.animation = 'pulseGlow 3s infinite alternate, zoomIn 5s ease forwards';
+                }, 100);
+
+                // Wait 6 seconds, then go to Main Content
+                setTimeout(() => {
+                    document.getElementById('screen-cinematic').classList.add('hidden');
+                    showMainContent();
+                }, 6000);
+
+            } else {
+                errorMsg.style.opacity = '1';
+                setTimeout(() => { errorMsg.style.opacity = '0'; }, 2000);
+            }
+        }
+
+        // Step 3: Reveal Main Content & Scroll Animations
+        function showMainContent() {
+            const mainScreen = document.getElementById('screen-main');
+            mainScreen.classList.remove('hidden');
+            
+            // Start typing effect
+            const typingElement = document.getElementById('typing-text');
+            setTimeout(() => {
+                typingElement.style.animation = 'typing 2s steps(20, end) forwards';
+            }, 1000);
+
+            // Initialize scroll observer for fade-in elements
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            // Observe all paragraphs and chat bubbles
+            document.querySelectorAll('.fade-in-text, .chat-bubble').forEach((el) => {
+                observer.observe(el);
             });
         }
-    }
 
-    // Password validation
-    function checkAndUnlock() {
-        const inputField = document.getElementById('passwordInput');
-        const errorSpan = document.getElementById('errorMsg');
-        const userPass = inputField.value.trim();
-        if (userPass.toUpperCase() === "ANNA") {
-            errorSpan.innerHTML = '';
-            // init music if not yet
-            initMusic();
-            // start audio after this user gesture (password click is valid gesture)
-            startMusicOnInteraction();
-            // trigger cinematic unlock sequence
-            startCinematicSequence();
-        } else {
-            errorSpan.innerHTML = '❄️ not yet… try again? ❄️';
-            inputField.style.borderColor = '#ff8888';
-            setTimeout(() => { inputField.style.borderColor = '#ff4d6d'; }, 800);
+        // Step 4: Final Message Reveal
+        function showFinalMessage() {
+            const btn = document.getElementById('reveal-btn');
+            const finalMsg = document.getElementById('final-message');
+            const endingLines = document.getElementById('ending-lines');
+            const secretBtn = document.getElementById('secret-btn');
+
+            btn.style.display = 'none'; // hide button
+            
+            finalMsg.style.display = 'block';
+            setTimeout(() => {
+                endingLines.style.display = 'block';
+                endingLines.style.animation = 'typing 2s forwards'; // soft reveal
+            }, 2500);
+
+            setTimeout(() => {
+                secretBtn.style.display = 'block';
+            }, 5000);
         }
-    }
 
-    // ---- EVENT LISTENERS & INITIAL SETUP ----
-    document.getElementById('unlockBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        checkAndUnlock();
-    });
-    document.getElementById('passwordInput').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') checkAndUnlock();
-    });
-
-    // Tap Here button reveal final message
-    const tapBtn = document.getElementById('tapRevealBtn');
-    tapBtn.addEventListener('click', () => {
-        if (!finalRevealed) {
-            // ensure music might be started if not already (extra safety)
-            if (audioElement && !musicStarted) startMusicOnInteraction();
-            revealPeak();
-            // add gentle haptic-like micro feeling
-            tapBtn.style.transform = 'scale(0.96)';
-            setTimeout(() => { tapBtn.style.transform = ''; }, 150);
-            // after final is shown, attach second page binding (just in case)
-            bindSecondPageTrigger();
+        // Step 5: Secret Page Transition
+        function showSecretPage() {
+            document.getElementById('screen-main').classList.add('hidden');
+            window.scrollTo(0,0);
+            
+            setTimeout(() => {
+                document.getElementById('screen-secret').classList.remove('hidden');
+                
+                // Animate secret text sequentially
+                const secretTexts = document.querySelectorAll('.secret-text');
+                secretTexts.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('visible');
+                    }, index * 1200); // 1.2s delay between each line
+                });
+            }, 1500);
         }
-    });
-
-    // second page binding will be attached after final reveal, but also pre-emptively if final already shown? we'll call on load after but finalSection hidden initially, but bind after it exists.
-    // Also make sure when finalSection becomes visible binding exists.
-    // we can also attach on window load:
-    window.addEventListener('load', () => {
-        // pre-init audio not auto, only after password
-        initMusic();
-        // make sure stars & hearts are hidden until unlock
-        starsContainerDiv.classList.remove('visible');
-        heartsContainerDiv.classList.remove('visible');
-        // ensure no memory leaks
-    });
-
-    // additional: if someone taps anywhere after unlock and music not started (for safari)
-    document.body.addEventListener('touchstart', function onceTouch() {
-        if (!musicStarted && !document.getElementById('lockScreen').style.display || document.getElementById('lockScreen').style.display === 'none') {
-            if (audioElement && !musicStarted) {
-                audioElement.play().catch(e=>null);
-                musicStarted = true;
-            }
-        }
-    }, { once: true, passive: true });
-    
-    // also ensure second page binding works if tap reveal triggered again
-    const observer = new MutationObserver(() => {
-        if (document.getElementById('oneMoreTrigger') && !document.getElementById('oneMoreTrigger').hasListener) {
-            bindSecondPageTrigger();
-            document.getElementById('oneMoreTrigger').hasListener = true;
-        }
-    });
-    observer.observe(document.getElementById('mainContent'), { childList: true, subtree: true });
-    
-    // extra polish: Preload final message container style
-    // make cinematic overlay initial hidden
-    const cinematicOverlay = document.getElementById('cinematicOverlay');
-    cinematicOverlay.style.visibility = 'hidden';
-    cinematicOverlay.style.opacity = '0';
-    document.getElementById('finalSection').style.display = 'none';
-    
-    // floating hearts also get continuous small animations
-    // apply resize protection: avoid layout shift
-    window.addEventListener('resize', () => {
-        // optional: keep stars relative
-    });
-</script>
+    </script>
 </body>
-    </html>
+</html>
+
