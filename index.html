@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Anna · Cinematic Whispers</title>
+  <title>Anna · A Silent Promise | Digital Bouquet</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      user-select: none; /* elegant feel, avoid selection */
     }
 
     body {
       min-height: 100vh;
-      background: radial-gradient(circle at 20% 30%, #0c0a1a 0%, #02010a 100%);
+      background: radial-gradient(ellipse at 30% 40%, #0e0a1f 0%, #02010a 100%);
       font-family: 'Poppins', sans-serif;
       overflow-x: hidden;
-      color: #f3eefe;
-      scroll-behavior: smooth;
+      color: #f5edff;
     }
 
-    /* Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+    /* Google Fonts: Elegant Serif + clean sans */
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap');
 
-    /* ========== BACKGROUND PARTICLES & FLOATING ORBS ========== */
-    .particles {
+    /* ========== BACKGROUND PARTICLES / FLOATING PETALS ========== */
+    .bg-particles {
       position: fixed;
       top: 0;
       left: 0;
@@ -34,50 +34,49 @@
       z-index: 0;
       overflow: hidden;
     }
-    .particle {
+    .petal {
       position: absolute;
-      background: rgba(255, 200, 220, 0.4);
-      border-radius: 50%;
-      filter: blur(2px);
-      animation: floatParticle 12s infinite linear;
+      font-size: 1.2rem;
+      opacity: 0.5;
+      animation: floatPetal 12s linear infinite;
+      filter: drop-shadow(0 0 2px #ffb7c5);
     }
-    @keyframes floatParticle {
-      0% { transform: translateY(100vh) scale(0.6); opacity: 0; }
-      30% { opacity: 0.5; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    @keyframes floatPetal {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.6; }
+      80% { opacity: 0.4; }
+      100% { transform: translateY(-15vh) rotate(360deg); opacity: 0; }
     }
-    .glow-orb {
+    .star-dust {
       position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255,77,109,0.2), rgba(199,125,255,0.05), transparent);
+      width: 2px;
+      height: 2px;
+      background: #ffd9e6;
       border-radius: 50%;
-      filter: blur(60px);
-      animation: orbMove 20s infinite alternate;
+      animation: twinkle 4s infinite alternate;
     }
-    @keyframes orbMove {
-      0% { transform: translate(0%, 0%) scale(1); opacity: 0.4; }
-      100% { transform: translate(10%, 15%) scale(1.3); opacity: 0.8; }
+    @keyframes twinkle {
+      0% { opacity: 0.2; transform: scale(1);}
+      100% { opacity: 0.9; transform: scale(1.5);}
     }
 
-    /* PASSWORD LOCK SCREEN */
+    /* LOCK SCREEN — PREMIUM GLASS */
     .lock-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(3, 2, 15, 0.92);
+      background: rgba(2, 1, 15, 0.94);
       backdrop-filter: blur(12px);
       z-index: 200;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.9s ease, visibility 0s;
-      visibility: visible;
+      transition: opacity 0.9s ease;
     }
     .lock-card {
-      background: rgba(25, 18, 45, 0.6);
+      background: rgba(25, 18, 48, 0.6);
       backdrop-filter: blur(20px);
       border-radius: 56px;
       padding: 2.2rem 1.8rem;
@@ -88,13 +87,12 @@
       box-shadow: 0 30px 50px rgba(0,0,0,0.5), 0 0 30px rgba(255,77,109,0.2);
     }
     .lock-card h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      background: linear-gradient(135deg, #ffb7d0, #d9b0ff);
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, #ffb7d0, #e2b0ff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      letter-spacing: 1px;
     }
     .lock-input {
       width: 100%;
@@ -103,11 +101,11 @@
       border-radius: 60px;
       padding: 14px 20px;
       margin: 24px 0;
-      color: #fff0f5;
+      color: #ffeef4;
       font-size: 1rem;
       text-align: center;
       outline: none;
-      transition: all 0.3s;
+      transition: 0.3s;
     }
     .lock-input:focus {
       border-color: #c77dff;
@@ -135,237 +133,192 @@
       color: #ffa5bb;
       font-size: 0.8rem;
       margin-top: 12px;
-      min-height: 38px;
     }
 
-    /* MAIN STORY CONTAINER */
-    .story-container {
+    /* MAIN BOUQUET CONTAINER */
+    .bouquet-container {
       position: relative;
       z-index: 10;
-      max-width: 700px;
+      max-width: 750px;
       margin: 0 auto;
-      padding: 2rem 1.5rem 4rem;
+      padding: 2rem 1.5rem 3rem;
       opacity: 0;
       visibility: hidden;
       transition: opacity 1.2s ease;
     }
-    .story-container.visible {
+    .bouquet-container.visible {
       opacity: 1;
       visibility: visible;
     }
 
-    /* scene blocks */
-    .scene {
-      margin-bottom: 3rem;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+    /* BOUQUET DESIGN — FLOWER GRID + VASE */
+    .bouquet-display {
+      text-align: center;
+      margin: 1.5rem 0 2rem;
+      position: relative;
     }
-    .scene.revealed {
-      opacity: 1;
-      transform: translateY(0);
+    .flowers-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
     }
-    .typing-text {
-      font-size: 1.6rem;
-      font-weight: 500;
-      background: linear-gradient(125deg, #ffc0d0, #e1b5ff);
+    .flower {
+      background: rgba(30, 20, 55, 0.4);
+      backdrop-filter: blur(8px);
+      border-radius: 60px;
+      padding: 12px 18px;
+      font-size: 2.8rem;
+      transition: transform 0.3s ease;
+      animation: gentleFloat 3s infinite alternate;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,125,160,0.4);
+    }
+    @keyframes gentleFloat {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-8px); }
+    }
+    .vase {
+      width: 180px;
+      height: 100px;
+      background: linear-gradient(145deg, rgba(255,200,210,0.2), rgba(199,125,255,0.15));
+      margin: 0 auto;
+      border-radius: 0 0 60px 60px;
+      border-top: 3px solid rgba(255,125,160,0.6);
+      backdrop-filter: blur(4px);
+      position: relative;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+    }
+    .vase:before {
+      content: "🌹";
+      position: absolute;
+      font-size: 1.8rem;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.7;
+    }
+
+    /* MAIN PROMISE SENTENCE (SUPER DECORATED) */
+    .promise-wrapper {
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(12px);
+      border-radius: 48px;
+      padding: 2rem 1.5rem;
+      margin: 2rem 0;
+      border: 1px solid rgba(255,77,109,0.5);
+      box-shadow: 0 0 30px rgba(255,77,109,0.2);
+    }
+    .main-promise {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.4rem;
+      line-height: 1.3;
+      text-align: center;
+      background: linear-gradient(135deg, #ffb3cc, #e8b5ff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      line-height: 1.4;
-      letter-spacing: -0.2px;
-      border-right: 2px solid #ff7b9e;
-      white-space: normal;
-      display: inline-block;
+      animation: heartbeatGlow 1.6s infinite ease-in-out;
+      text-shadow: 0 0 15px #ff4d6d;
+      letter-spacing: 1px;
     }
-    .chat-container {
-      background: rgba(20, 15, 38, 0.45);
-      backdrop-filter: blur(14px);
-      border-radius: 32px;
-      padding: 1.2rem;
-      margin: 1rem 0;
+    @keyframes heartbeatGlow {
+      0% { text-shadow: 0 0 0px #ff4d6d; transform: scale(1);}
+      50% { text-shadow: 0 0 28px #ff4d6d, 0 0 12px #c77dff; transform: scale(1.02);}
+      100% { text-shadow: 0 0 5px #ff4d6d; transform: scale(1);}
     }
-    .message {
-      display: flex;
-      margin-bottom: 12px;
-      opacity: 0;
-      transform: translateX(-10px);
-      transition: all 0.4s ease;
-    }
-    .message.show {
-      opacity: 1;
-      transform: translateX(0);
-    }
-    .bubble-wa {
-      max-width: 85%;
-      padding: 12px 18px;
-      border-radius: 22px;
-      font-size: 0.95rem;
-      background: rgba(50, 40, 80, 0.7);
-      backdrop-filter: blur(8px);
-      color: #f0eaff;
-      border: 0.5px solid rgba(255, 125, 160, 0.4);
-    }
-    .message.incoming .bubble-wa {
-      background: rgba(30, 22, 60, 0.8);
-      border-bottom-left-radius: 6px;
-    }
-    .message.outgoing {
-      justify-content: flex-end;
-    }
-    .message.outgoing .bubble-wa {
-      background: linear-gradient(145deg, #ff4d6d30, #c77dff30);
-      border-bottom-right-radius: 6px;
-    }
-    .typing-indicator {
-      display: flex;
-      gap: 5px;
-      padding: 10px 15px;
-      background: rgba(40, 30, 70, 0.6);
-      width: fit-content;
-      border-radius: 26px;
-      margin: 6px 0;
-    }
-    .typing-indicator span {
-      width: 8px;
-      height: 8px;
-      background: #ff9ebf;
-      border-radius: 50%;
-      animation: blinkTyping 1.4s infinite;
-    }
-    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blinkTyping {
-      0%, 100% { opacity: 0.3; transform: scale(1);}
-      50% { opacity: 1; transform: scale(1.2);}
+    .promise-sub {
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 12px;
+      color: #e4caff;
+      letter-spacing: 1px;
     }
 
-    .scroll-text {
-      font-size: 1.1rem;
-      font-weight: 400;
-      line-height: 1.7;
-      background: rgba(15,10,30,0.4);
-      backdrop-filter: blur(8px);
-      padding: 1.2rem;
+    /* SUPPORTING EMOTIONAL LINES */
+    .message-card {
+      background: rgba(20, 12, 38, 0.5);
+      backdrop-filter: blur(12px);
       border-radius: 32px;
+      padding: 1.2rem;
       margin: 1.2rem 0;
+      text-align: center;
+      font-weight: 300;
+      font-size: 0.95rem;
       border-left: 3px solid #ff7b9e;
     }
 
-    /* HEARTBEAT CINEMATIC MOMENT */
-    .heartbeat-moment {
-      text-align: center;
-      margin: 2.5rem 0;
-      padding: 1.8rem;
-      background: rgba(0,0,0,0.4);
-      border-radius: 60px;
-      backdrop-filter: blur(12px);
-    }
-    .cinematic-line {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.9rem;
-      font-weight: 600;
-      color: #ffd9e8;
-      text-shadow: 0 0 12px #ff4d6d;
-      letter-spacing: 1px;
-      line-height: 1.3;
-    }
-    .heartbeat-glow {
-      animation: heartbeatPulse 1.3s ease-in-out infinite;
-      display: inline-block;
-    }
-    @keyframes heartbeatPulse {
-      0% { text-shadow: 0 0 0px #ff4d6d, transform: scale(1);}
-      50% { text-shadow: 0 0 25px #ff4d6d, 0 0 12px #c77dff; transform: scale(1.02);}
-      100% { text-shadow: 0 0 5px #ff4d6d; transform: scale(1);}
-    }
-    .step-line {
-      margin: 0.6rem 0;
-      opacity: 0;
-      transform: scale(0.95);
-      transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.2);
-    }
-    .step-line.visible {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* Final button */
-    .final-btn {
-      background: linear-gradient(115deg, #ff5c7e, #c76eff);
+    /* INTERACTION BUTTON (GENTLE) */
+    .gentle-btn {
+      background: linear-gradient(115deg, #ff5c7e, #b96eff);
       border: none;
-      padding: 14px 32px;
+      padding: 12px 28px;
       border-radius: 100px;
-      font-size: 1.1rem;
-      font-weight: 600;
+      font-size: 1rem;
+      font-weight: 500;
       color: white;
-      margin: 20px auto;
+      margin: 25px auto 10px;
       display: block;
       cursor: pointer;
-      box-shadow: 0 0 20px #ff4d6d;
+      box-shadow: 0 0 16px #ff4d6d;
       transition: 0.2s;
     }
-    .final-btn:active { transform: scale(0.96); }
-    .floating-hearts-area {
+    .gentle-btn:active { transform: scale(0.96); }
+
+    /* floating hearts area */
+    .floating-reaction {
       display: flex;
       justify-content: center;
-      gap: 12px;
+      gap: 8px;
       flex-wrap: wrap;
-      margin-top: 1rem;
+      margin: 10px 0;
     }
-    .small-heart {
-      font-size: 1.4rem;
-      animation: flyHeart 1s ease-out forwards;
+    .reaction-heart {
+      font-size: 1.3rem;
+      animation: flyUp 1.2s ease-out forwards;
     }
-    @keyframes flyHeart {
-      0% { opacity: 0; transform: translateY(0) scale(0.5);}
-      50% { opacity: 1; transform: translateY(-30px) scale(1.2);}
-      100% { opacity: 0; transform: translateY(-80px) scale(0.8);}
-    }
-    .soft-ending {
-      text-align: center;
-      font-size: 1rem;
-      color: #cfbef5;
-      margin-top: 2rem;
+    @keyframes flyUp {
+      0% { opacity: 0; transform: translateY(0) scale(0.6);}
+      40% { opacity: 1; transform: translateY(-25px) scale(1.2);}
+      100% { opacity: 0; transform: translateY(-70px) scale(0.9);}
     }
 
-    /* Sound toggle */
+    /* sound toggle */
     .sound-toggle {
       position: fixed;
       bottom: 22px;
       right: 22px;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(10px);
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
       border-radius: 50%;
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 300;
-      font-size: 1.3rem;
-      border: 1px solid rgba(255,77,109,0.5);
+      font-size: 1.2rem;
+      border: 1px solid rgba(255,77,109,0.6);
     }
 
     @media (max-width: 550px) {
-      .typing-text { font-size: 1.3rem; }
-      .cinematic-line { font-size: 1.5rem; }
-      .step-line { font-size: 1rem; }
-      .story-container { padding: 1.5rem; }
+      .main-promise { font-size: 1.8rem; }
+      .flower { font-size: 2.2rem; padding: 8px 14px; }
+      .vase { width: 140px; height: 80px; }
     }
   </style>
 </head>
 <body>
 
-<div class="particles" id="particlesContainer"></div>
-<div class="glow-orb" style="top: -10%; left: -10%;"></div>
-<div class="glow-orb" style="bottom: -20%; right: -10%; animation-duration: 25s;"></div>
+<!-- Background particles / petals -->
+<div class="bg-particles" id="particleField"></div>
 
-<!-- PASSWORD LOCK -->
+<!-- LOCK SCREEN -->
 <div class="lock-screen" id="lockScreen">
   <div class="lock-card">
-    <h2>✦ only for you ✦</h2>
+    <h2>✦ a silent bloom ✦</h2>
     <input type="password" class="lock-input" id="passwordInput" placeholder="Enter something special..." autocomplete="off">
     <div class="hint-text">You already know the answer… 🙂</div>
     <button class="lock-btn" id="unlockBtn">unlock →</button>
@@ -373,295 +326,300 @@
   </div>
 </div>
 
-<!-- MAIN STORY CONTAINER -->
-<div class="story-container" id="storyContainer">
-  <!-- Scene 1: Beginning hook -->
-  <div class="scene" id="scene1">
-    <div class="typing-text" id="hookTyping"></div>
+<!-- MAIN BOUQUET EXPERIENCE -->
+<div class="bouquet-container" id="bouquetMain">
+  <div class="bouquet-display">
+    <div class="flowers-grid" id="flowerGrid">
+      <div class="flower">🌹</div>
+      <div class="flower">🌸</div>
+      <div class="flower">🌼</div>
+      <div class="flower">🌺</div>
+      <div class="flower">💐</div>
+    </div>
+    <div class="vase"></div>
   </div>
 
-  <!-- Scene 2: WhatsApp style chat -->
-  <div class="scene" id="scene2">
-    <div class="chat-container" id="chatContainer"></div>
+  <div class="promise-wrapper">
+    <div class="main-promise" id="mainPromiseSentence">
+      I will wait, even if it takes a year…<br>until the day you can say “I love you” to me.
+    </div>
+    <div class="promise-sub">✦ a quiet promise, no pressure ✦</div>
   </div>
 
-  <!-- Scene 3: Emotional build scrolling text -->
-  <div class="scene" id="scene3">
-    <div class="scroll-text" id="emotionalScroll"></div>
+  <div class="message-card">
+    <p>💬 You don’t have to feel anything right now…<br>
+    💬 I just wanted to give you something beautiful, like you.<br>
+    💬 No expectations, no rush — just a gentle admiration.</p>
   </div>
 
-  <!-- MAIN CINEMATIC MOMENT (Heart) -->
-  <div class="heartbeat-moment" id="heartbeatScene">
-    <div id="cinematicLinesContainer"></div>
+  <div class="message-card">
+    <p>🌸 “Even the smallest messages from you make my day softer.”<br>
+    🌙 “You became someone I silently look forward to.”</p>
   </div>
 
-  <!-- Soft ending lines -->
-  <div class="soft-ending" id="softEnding">
-    <p>No pressure…</p>
-    <p>No expectations…</p>
-    <p>Just something real… if it ever happens.</p>
-  </div>
-
-  <!-- Final button + hearts -->
-  <button class="final-btn" id="finalSmileBtn" style="display: none;">👉 Just smile… that’s enough for me 😊</button>
-  <div id="heartAnimationArea" class="floating-hearts-area"></div>
+  <button class="gentle-btn" id="sendSmileBtn">👉 send a smile? 😊</button>
+  <div id="reactionArea" class="floating-reaction"></div>
+  <div style="text-align: center; font-size: 0.75rem; margin-top: 20px; opacity:0.6;">just for you, Anna</div>
 </div>
 
 <div class="sound-toggle" id="soundToggle">🔊</div>
 
 <script>
-  // ---------- AUDIO ----------
+  // ---------- SOFT MUSIC (low volume, romantic instrumental) ----------
   const audio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8c6c2c0.mp3?filename=soft-piano-ambient-112027.mp3');
   audio.loop = true;
-  audio.volume = 0.15;
+  audio.volume = 0.12;
   let musicStarted = false;
   let muted = false;
   const soundToggle = document.getElementById('soundToggle');
   function startMusic() {
     if (!musicStarted) {
-      audio.play().catch(e => console.log("autoplay blocked, gesture needed"));
+      audio.play().catch(e => console.log("autoplay blocked, but user gesture works"));
       musicStarted = true;
     }
   }
   soundToggle.addEventListener('click', () => {
     if (musicStarted) {
       muted = !muted;
-      audio.volume = muted ? 0 : 0.15;
+      audio.volume = muted ? 0 : 0.12;
       soundToggle.innerHTML = muted ? '🔇' : '🔊';
+    } else {
+      startMusic();
+      soundToggle.innerHTML = '🔊';
     }
   });
 
-  // ---------- PARTICLES ----------
-  function createParticles() {
-    const container = document.getElementById('particlesContainer');
-    for (let i = 0; i < 140; i++) {
-      const p = document.createElement('div');
-      p.classList.add('particle');
-      const size = Math.random() * 4 + 1;
-      p.style.width = size + 'px';
-      p.style.height = size + 'px';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.animationDelay = Math.random() * 12 + 's';
-      p.style.animationDuration = 6 + Math.random() * 12 + 's';
-      p.style.opacity = 0.2 + Math.random() * 0.5;
-      container.appendChild(p);
+  // ---------- BACKGROUND PETALS + STARS ----------
+  function createPetalsAndStars() {
+    const container = document.getElementById('particleField');
+    // petals
+    for (let i = 0; i < 60; i++) {
+      const petal = document.createElement('div');
+      petal.classList.add('petal');
+      const petalsList = ['🌸', '🌼', '🌺', '🌹', '💮', '🌷'];
+      petal.innerHTML = petalsList[Math.floor(Math.random() * petalsList.length)];
+      petal.style.left = Math.random() * 100 + '%';
+      petal.style.fontSize = 0.9 + Math.random() * 1.2 + 'rem';
+      petal.style.animationDuration = 7 + Math.random() * 12 + 's';
+      petal.style.animationDelay = Math.random() * 10 + 's';
+      petal.style.opacity = 0.3 + Math.random() * 0.4;
+      container.appendChild(petal);
+    }
+    // star dust
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star-dust');
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 5 + 's';
+      star.style.animationDuration = 2 + Math.random() * 4 + 's';
+      container.appendChild(star);
     }
   }
-  createParticles();
+  createPetalsAndStars();
 
   // ---------- PASSWORD CHECK ----------
-  const lockScreen = document.getElementById('lockScreen');
+  const lockScreenDiv = document.getElementById('lockScreen');
   const passwordInput = document.getElementById('passwordInput');
   const unlockBtn = document.getElementById('unlockBtn');
-  const errorMsg = document.getElementById('errorMsg');
-  const storyContainer = document.getElementById('storyContainer');
+  const errorMsgSpan = document.getElementById('errorMsg');
+  const bouquetMain = document.getElementById('bouquetMain');
 
-  function checkAndUnlock() {
+  function checkPassword() {
     const pwd = passwordInput.value.trim();
     if (pwd.toUpperCase() === "ANNA") {
-      errorMsg.innerHTML = "";
+      errorMsgSpan.innerHTML = "";
       startMusic();
-      // cinematic transition
-      lockScreen.style.opacity = '0';
+      // fade lock and reveal bouquet with cinematic style
+      lockScreenDiv.style.opacity = '0';
       setTimeout(() => {
-        lockScreen.style.display = 'none';
-        storyContainer.classList.add('visible');
-        // start entire story sequence
-        startStorySequence();
+        lockScreenDiv.style.display = 'none';
+        bouquetMain.classList.add('visible');
+        // extra entrance animation for flowers
+        const flowers = document.querySelectorAll('.flower');
+        flowers.forEach((fl, idx) => {
+          fl.style.animation = 'gentleFloat 3s infinite alternate';
+          fl.style.transform = 'scale(1)';
+        });
+        // subtle confetti of hearts on unlock
+        createHeartBurst();
       }, 800);
     } else {
-      errorMsg.innerHTML = "Hmm… that doesn’t feel right 💔";
+      errorMsgSpan.innerHTML = "Hmm… that doesn’t feel right 💔";
       passwordInput.style.borderColor = "#ff6b8f";
-      setTimeout(() => { passwordInput.style.borderColor = "#ff4d6d"; }, 500);
+      setTimeout(() => { passwordInput.style.borderColor = "#ff4d6d"; }, 400);
     }
   }
-  unlockBtn.addEventListener('click', checkAndUnlock);
-  passwordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAndUnlock(); });
+  unlockBtn.addEventListener('click', checkPassword);
+  passwordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkPassword(); });
 
-  // ---------- STORY SEQUENCE (delays + realistic chat) ----------
-  async function startStorySequence() {
-    // Scene 1: hook typing effect
-    const hookEl = document.getElementById('hookTyping');
-    const hookText = "I didn’t expect this…\n…but somehow, you became someone I look forward to.";
-    hookEl.style.whiteSpace = "pre-line";
-    await typeText(hookEl, hookText, 60);
-    document.getElementById('scene1').classList.add('revealed');
-    
-    // slight delay before scene2
-    await delay(800);
-    document.getElementById('scene2').classList.add('revealed');
-    await simulateWhatsAppChat();
-    
-    await delay(700);
-    document.getElementById('scene3').classList.add('revealed');
-    await showScrollText();
-    
-    await delay(800);
-    await showHeartbeatCinematic();
-    
-    // final button appears after all
-    document.getElementById('finalSmileBtn').style.display = 'block';
-    document.getElementById('softEnding').style.opacity = '1';
-    document.getElementById('softEnding').style.transition = 'opacity 1s';
-  }
-
-  function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-
-  async function typeText(element, text, speed) {
-    element.innerHTML = '';
-    for (let i = 0; i <= text.length; i++) {
-      element.innerHTML = text.substring(0, i) + (i < text.length ? '|' : '');
-      await delay(speed);
-    }
-    element.innerHTML = text;
-  }
-
-  async function simulateWhatsAppChat() {
-    const chatContainer = document.getElementById('chatContainer');
-    chatContainer.innerHTML = '';
-    const messages = [
-      { type: 'incoming', text: "We’re not even that close…", delay: 400 },
-      { type: 'outgoing', text: "But still… I feel comfortable talking to you", delay: 900 },
-      { type: 'incoming', text: "It’s different… in a good way", delay: 1100 }
-    ];
-    // show typing indicator first
-    const typingDiv = document.createElement('div');
-    typingDiv.className = 'typing-indicator';
-    typingDiv.innerHTML = '<span></span><span></span><span></span>';
-    chatContainer.appendChild(typingDiv);
-    await delay(1200);
-    typingDiv.remove();
-    
-    for (let msg of messages) {
-      const msgDiv = document.createElement('div');
-      msgDiv.className = `message ${msg.type}`;
-      msgDiv.innerHTML = `<div class="bubble-wa">${msg.text}</div>`;
-      chatContainer.appendChild(msgDiv);
-      await delay(200);
-      msgDiv.classList.add('show');
-      await delay(msg.delay);
+  function createHeartBurst() {
+    const area = document.getElementById('reactionArea');
+    for (let i = 0; i < 12; i++) {
+      const heart = document.createElement('span');
+      heart.innerHTML = '❤️';
+      heart.className = 'reaction-heart';
+      heart.style.position = 'relative';
+      heart.style.display = 'inline-block';
+      heart.style.margin = '0 4px';
+      heart.style.animation = 'flyUp 1s ease-out forwards';
+      heart.style.animationDelay = `${i * 0.07}s`;
+      area.appendChild(heart);
+      setTimeout(() => heart.remove(), 1200);
     }
   }
 
-  async function showScrollText() {
-    const scrollDiv = document.getElementById('emotionalScroll');
-    const lines = [
-      "I’m not trying to rush anything…",
-      "Not expecting anything from you…",
-      "I just… like being here."
-    ];
-    scrollDiv.innerHTML = '';
-    for (let line of lines) {
-      const p = document.createElement('p');
-      p.textContent = line;
-      p.style.margin = '1rem 0';
-      p.style.opacity = '0';
-      p.style.transform = 'translateY(12px)';
-      p.style.transition = 'all 0.5s ease';
-      scrollDiv.appendChild(p);
-      await delay(300);
-      p.style.opacity = '1';
-      p.style.transform = 'translateY(0)';
-      await delay(600);
-    }
-  }
-
-  async function showHeartbeatCinematic() {
-    const container = document.getElementById('cinematicLinesContainer');
-    container.innerHTML = '';
-    const steps = [
-      "I will wait…",
-      "even if it takes a year…",
-      "until the day…",
-      "you can say ‘I love you’ to me."
-    ];
-    for (let i = 0; i < steps.length; i++) {
-      const div = document.createElement('div');
-      div.className = 'step-line cinematic-line';
-      div.innerHTML = steps[i];
-      if (i === steps.length - 1) div.classList.add('heartbeat-glow');
-      container.appendChild(div);
-      await delay(300);
-      div.classList.add('visible');
-      if (i === 0) await delay(800);
-      else if (i === 1) await delay(700);
-      else if (i === 2) await delay(700);
-      else await delay(500);
-    }
-    // final heartbeat effect continues
-    const lastDiv = container.lastChild;
-    if (lastDiv) lastDiv.style.animation = 'heartbeatPulse 1.3s ease-in-out infinite';
-  }
-
-  // Final button interaction: hearts floating, no pressure
-  const finalBtn = document.getElementById('finalSmileBtn');
-  const heartArea = document.getElementById('heartAnimationArea');
-  finalBtn.addEventListener('click', () => {
-    // create 20 floating hearts
-    for (let i = 0; i < 24; i++) {
+  // ---------- INTERACTIVE SMILE BUTTON + FLOATING HEARTS ----------
+  const smileBtn = document.getElementById('sendSmileBtn');
+  const reactionDiv = document.getElementById('reactionArea');
+  smileBtn.addEventListener('click', () => {
+    for (let i = 0; i < 20; i++) {
       const heartSpan = document.createElement('span');
-      heartSpan.className = 'small-heart';
-      heartSpan.innerHTML = ['❤️', '💖', '🌸', '✨', '💗'][Math.floor(Math.random() * 5)];
-      heartSpan.style.position = 'relative';
+      const emojis = ['❤️', '💖', '🌸', '🌹', '✨', '💗'];
+      heartSpan.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+      heartSpan.className = 'reaction-heart';
       heartSpan.style.display = 'inline-block';
-      heartSpan.style.margin = '0 6px';
-      heartSpan.style.animation = `flyHeart 1.2s ease-out forwards`;
+      heartSpan.style.margin = '0 5px';
+      heartSpan.style.animation = 'flyUp 1.2s ease-out forwards';
       heartSpan.style.animationDelay = `${i * 0.05}s`;
-      heartArea.appendChild(heartSpan);
-      setTimeout(() => heartSpan.remove(), 1300);
+      reactionDiv.appendChild(heartSpan);
+      setTimeout(() => heartSpan.remove(), 1400);
     }
-    // soft fade-out effect not needed, just appreciation
-    const finalMessage = document.createElement('div');
-    finalMessage.style.textAlign = 'center';
-    finalMessage.style.marginTop = '20px';
-    finalMessage.style.fontSize = '0.9rem';
-    finalMessage.style.color = '#ffccdd';
-    finalMessage.innerHTML = '✨ you made my day ✨';
-    heartArea.parentNode.appendChild(finalMessage);
-    setTimeout(() => finalMessage.style.opacity = '0', 2500);
+    // extra soft message after click
+    const tempMsg = document.createElement('div');
+    tempMsg.innerText = '✨ you just made my day ✨';
+    tempMsg.style.textAlign = 'center';
+    tempMsg.style.fontSize = '0.8rem';
+    tempMsg.style.marginTop = '12px';
+    tempMsg.style.color = '#ffccee';
+    reactionDiv.parentNode.insertBefore(tempMsg, reactionDiv.nextSibling);
+    setTimeout(() => tempMsg.remove(), 2000);
   });
 
-  // preload styles for scenes to be hidden initially
+  // ---------- ENSURE THE MAIN PROMISE SENTENCE IS SUPER DECORATED, GLOWING, AND EMPHASIZED ----------
+  const promiseSentence = document.getElementById('mainPromiseSentence');
+  // add additional shimmer effect
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    .main-promise {
+      position: relative;
+      transition: all 0.3s;
+    }
+    .main-promise::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 10%;
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #ff4d6d, #c77dff, transparent);
+      border-radius: 2px;
+      animation: shimmerLine 2s infinite;
+    }
+    @keyframes shimmerLine {
+      0% { opacity: 0.2; width: 20%; left: 40%;}
+      50% { opacity: 1; width: 70%; left: 15%;}
+      100% { opacity: 0.2; width: 20%; left: 40%;}
+    }
+    .flower {
+      transition: transform 0.2s;
+    }
+    .flower:hover {
+      transform: scale(1.1) rotate(5deg);
+      cursor: default;
+    }
+  `;
+  document.head.appendChild(styleSheet);
+
+  // ---------- ADD EXTRA FLOWER BOUNCE ON MOUSE MOVE (Subtle) ----------
+  const flowersList = document.querySelectorAll('.flower');
+  document.body.addEventListener('mousemove', (e) => {
+    const x = e.clientX / window.innerWidth;
+    flowersList.forEach((flower, idx) => {
+      const offset = (x - 0.5) * 8;
+      flower.style.transform = `translateY(${offset * (idx % 2 === 0 ? 1 : -0.5)}px) rotate(${offset * 2}deg)`;
+    });
+  });
+  // reset after mouse leave
+  document.body.addEventListener('mouseleave', () => {
+    flowersList.forEach(fl => fl.style.transform = 'translateY(0px) rotate(0deg)');
+  });
+
+  // additional floating effect for vase
+  const vaseDiv = document.querySelector('.vase');
+  if (vaseDiv) {
+    setInterval(() => {
+      if (bouquetMain.classList.contains('visible')) {
+        vaseDiv.style.transform = `translateY(${Math.sin(Date.now() / 1500) * 2}px)`;
+      }
+    }, 100);
+  }
+
+  // preload, ensure main promise gets extra heartbeat focus
   window.addEventListener('load', () => {
-    document.getElementById('scene1').style.opacity = '0';
-    document.getElementById('scene2').style.opacity = '0';
-    document.getElementById('scene3').style.opacity = '0';
-    document.getElementById('heartbeatScene').style.opacity = '0';
-    document.getElementById('softEnding').style.opacity = '0';
-    // make heartbeat scene visible later via class
-    const scenes = document.querySelectorAll('.scene, .heartbeat-moment');
-    scenes.forEach(scene => scene.style.opacity = '0');
-    // re-assign after reveal class
-    const observer = new MutationObserver(() => {
-      document.getElementById('scene1').classList.contains('revealed') ? document.getElementById('scene1').style.opacity = '1' : null;
-      document.getElementById('scene2').classList.contains('revealed') ? document.getElementById('scene2').style.opacity = '1' : null;
-      document.getElementById('scene3').classList.contains('revealed') ? document.getElementById('scene3').style.opacity = '1' : null;
-    });
-    observer.observe(document.getElementById('scene1'), { attributes: true });
-    observer.observe(document.getElementById('scene2'), { attributes: true });
-    observer.observe(document.getElementById('scene3'), { attributes: true });
+    // ensure all background elements are smooth
+    const mainPromise = document.querySelector('.main-promise');
+    if (mainPromise) {
+      mainPromise.style.animation = 'heartbeatGlow 1.6s infinite ease-in-out';
+    }
+    // set container visibility hidden initially
+    bouquetMain.classList.remove('visible');
+    bouquetMain.style.visibility = 'hidden';
   });
 
-  // adjust heartbeat scene visibility
-  const heartbeatSceneDiv = document.getElementById('heartbeatScene');
-  const originalShow = showHeartbeatCinematic;
-  window.showHeartbeatCinematic = async function() {
-    heartbeatSceneDiv.style.opacity = '1';
-    await originalShow();
-  };
-  showHeartbeatCinematic = window.showHeartbeatCinematic;
-
-  // fix final display: ensure soft ending appears properly
-  document.getElementById('softEnding').style.transition = 'opacity 0.8s';
-  
-  // additional background parallax effect on scroll
-  window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const orbs = document.querySelectorAll('.glow-orb');
-    orbs.forEach((orb, idx) => {
-      orb.style.transform = `translate(${scrolled * 0.02 * (idx+1)}px, ${scrolled * 0.01}px)`;
+  // make sure that the main sentence is extra emphasized after unlock (already)
+  // Also adding a few subtle falling petals after unlock to enhance bouquet feeling
+  function startContinuousPetals() {
+    setInterval(() => {
+      if (bouquetMain.classList.contains('visible')) {
+        const petalContainer = document.getElementById('particleField');
+        const petal = document.createElement('div');
+        petal.classList.add('petal');
+        const petalsList = ['🌹', '🌸', '🌼', '🌺', '💐'];
+        petal.innerHTML = petalsList[Math.floor(Math.random() * petalsList.length)];
+        petal.style.left = Math.random() * 100 + '%';
+        petal.style.fontSize = 0.8 + Math.random() * 1.2 + 'rem';
+        petal.style.animationDuration = 5 + Math.random() * 8 + 's';
+        petal.style.opacity = 0.5;
+        petalContainer.appendChild(petal);
+        setTimeout(() => petal.remove(), 7000);
+      }
+    }, 2200);
+  }
+  // observer to start when visible
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mut) => {
+      if (mut.attributeName === 'class' && bouquetMain.classList.contains('visible')) {
+        startContinuousPetals();
+        observer.disconnect();
+      }
     });
+  });
+  observer.observe(bouquetMain, { attributes: true });
+
+  // ensure music can be started on first click on screen if not started yet (but unlock triggers startMusic)
+  document.body.addEventListener('touchstart', () => {
+    if (!musicStarted && !lockScreenDiv.style.display === 'none') {
+      // optional
+    }
+  }, { once: true });
+
+  // additional detail: floating sparkles on sentence click (gentle)
+  promiseSentence.addEventListener('click', () => {
+    for (let i = 0; i < 12; i++) {
+      const spark = document.createElement('span');
+      spark.innerHTML = '✨';
+      spark.style.position = 'fixed';
+      spark.style.left = (Math.random() * 80 + 10) + '%';
+      spark.style.top = (Math.random() * 60 + 20) + '%';
+      spark.style.fontSize = '1rem';
+      spark.style.pointerEvents = 'none';
+      spark.style.animation = 'flyUp 0.8s ease-out forwards';
+      spark.style.zIndex = 999;
+      document.body.appendChild(spark);
+      setTimeout(() => spark.remove(), 800);
+    }
   });
 </script>
 </body>
-</html>
+  </html>
