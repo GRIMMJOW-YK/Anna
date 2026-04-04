@@ -2,326 +2,708 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Echoes of Patience | cinematic experience</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <style>
-        /* General Reset and Body */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            background: linear-gradient(135deg, #050510, #1a0b1c, #0a0a2a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            height: 100vh;
-            overflow: hidden; /* Prevents scrolling */
+            background: #0a0a14;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- PASSWORD GATE (Premium Cinematic) --- */
+        .password-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 10%, #0e0c1a, #030105);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            transition: opacity 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1), visibility 0.3s;
+            will-change: opacity;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .glass-card {
+            background: rgba(20, 15, 35, 0.55);
+            backdrop-filter: blur(18px);
+            border-radius: 2rem;
+            padding: 2.5rem 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid rgba(255, 210, 220, 0.25);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 140, 170, 0.2);
+            animation: gentleFloat 2.8s infinite alternate;
         }
 
-        /* --- PASSWORD SCREEN --- */
-        #lock-screen {
-            position: absolute;
-            z-index: 100;
+        @keyframes gentleFloat {
+            0% { transform: translateY(0px); box-shadow: 0 25px 45px rgba(0,0,0,0.4);}
+            100% { transform: translateY(-8px); box-shadow: 0 30px 55px rgba(255,80,120,0.2);}
+        }
+
+        .glass-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffe6f0, #ffb7cb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .glass-card p {
+            color: #cdc6e0;
+            font-size: 0.85rem;
+            margin-bottom: 1.8rem;
+            opacity: 0.8;
+        }
+
+        .password-input {
+            width: 100%;
+            background: rgba(20, 12, 28, 0.7);
+            border: 1px solid #ff99b4;
+            padding: 14px 20px;
+            border-radius: 60px;
+            color: #ffeef4;
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .password-input:focus {
+            border-color: #ff5e8b;
+            box-shadow: 0 0 15px #ff6b8b;
+            background: rgba(30, 18, 40, 0.9);
+        }
+
+        .unlock-btn {
+            background: linear-gradient(95deg, #ff6b8b, #ff3460);
+            border: none;
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 12px;
+            border-radius: 60px;
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 18px rgba(255, 50, 90, 0.4);
+        }
+
+        .unlock-btn:hover {
+            transform: scale(0.98);
+            box-shadow: 0 2px 12px rgba(255, 80, 110, 0.7);
+        }
+
+        .error-msg {
+            color: #ffa0b5;
+            font-size: 0.75rem;
+            margin-top: 1rem;
+            min-height: 30px;
+        }
+
+        /* --- MAIN CINEMATIC SITE (hidden until unlock) --- */
+        .cinematic-site {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease 0.2s;
+        }
+
+        .cinematic-site.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* scroll-snap container */
+        .scenes-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        .scene {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            height: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            transition: opacity 2s ease-out;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .glass-card h2 {
-            font-family: 'Cinzel', serif;
-            font-weight: 400;
-            letter-spacing: 3px;
-            margin-bottom: 30px;
-            color: #f8e5e5;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: white;
-            font-size: 16px;
-            text-align: center;
-            outline: none;
-            transition: 0.3s;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-            text-transform: none;
-        }
-
-        input:focus {
-            border-color: #ff9a9e;
-            box-shadow: 0 0 15px rgba(255, 154, 158, 0.3);
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: transparent;
-            border: 1px solid #ff9a9e;
-            color: #ff9a9e;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 2px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: 0.4s;
-        }
-
-        button:hover {
-            background: #ff9a9e;
-            color: #1a0b1c;
-            box-shadow: 0 0 20px rgba(255, 154, 158, 0.5);
-        }
-
-        .error-msg {
-            margin-top: 15px;
-            color: #ff4d4d;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .shake {
-            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
-
-        /* --- MAIN EXPERIENCE (BOUQUET & MESSAGE) --- */
-        #main-site {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: none; /* Hidden until unlocked */
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 3s ease-in;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .content-container {
-            z-index: 10;
+            padding: 2rem 1.5rem;
             position: relative;
+            background: rgba(8, 5, 16, 0.65);
+            backdrop-filter: blur(3px);
+            border-bottom: 1px solid rgba(255, 180, 200, 0.1);
         }
 
-        /* The glowing flower/centerpiece */
-        .glowing-flower {
-            font-size: 60px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px rgba(255, 154, 158, 0.8));
-            animation: float 4s ease-in-out infinite;
+        /* Parallax background layers */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: radial-gradient(circle at 50% 30%, #1f1428, #020108);
+            z-index: -2;
+            will-change: transform;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* The Main Super Decorated Sentence */
-        .core-message {
-            font-family: 'Great Vibes', cursive;
-            font-size: 3.5rem;
-            color: #ffe6e6;
-            line-height: 1.4;
-            max-width: 800px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 
-                         0 0 20px rgba(255, 154, 158, 0.6), 
-                         0 0 40px rgba(255, 154, 158, 0.4);
-        }
-
-        /* Mobile responsiveness for the text */
-        @media (max-width: 600px) {
-            .core-message {
-                font-size: 2.2rem;
-            }
-        }
-
-        /* Word-by-word fade animation classes */
-        .word {
-            opacity: 0;
-            display: inline-block;
-            transform: translateY(20px);
-            animation: fadeWordUp 1.5s forwards ease-out;
-        }
-
-        @keyframes fadeWordUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Falling Petals & Dust Particles */
-        .particle {
-            position: absolute;
-            top: -10%;
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            z-index: 1;
-            opacity: 0.6;
-            animation: fall linear forwards;
+            z-index: -1;
         }
 
-        @keyframes fall {
-            to {
-                transform: translateY(110vh) rotate(360deg);
-            }
+        /* Text styles */
+        .cinematic-text {
+            max-width: 700px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 500;
+            line-height: 1.4;
+            font-family: 'Playfair Display', serif;
+            color: #fff0f5;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .typing-area {
+            min-height: 150px;
+        }
+
+        /* WhatsApp style */
+        .whatsapp-container {
+            background: rgba(20, 25, 35, 0.65);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,245,0.15);
+        }
+
+        .chat-bubble {
+            background: #1e2a32;
+            border-radius: 22px;
+            padding: 12px 18px;
+            margin: 12px 0;
+            max-width: 85%;
+            color: #eef2ff;
+            font-size: 0.95rem;
+            animation: fadeSlideUp 0.4s ease forwards;
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .chat-bubble.sent {
+            background: #2a3a44;
+            margin-left: auto;
+            border-bottom-right-radius: 6px;
+        }
+
+        .chat-bubble.received {
+            background: #1f2a33;
+            border-bottom-left-radius: 6px;
+            margin-right: auto;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 6px;
+            padding: 12px 18px;
+            background: #1e2a32;
+            width: fit-content;
+            border-radius: 24px;
+            margin: 8px 0;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #cddbe9;
+            border-radius: 50%;
+            animation: blinkTyping 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes blinkTyping {
+            0%, 60%, 100% { opacity: 0.3; transform: scale(0.9);}
+            30% { opacity: 1; transform: scale(1.2);}
+        }
+
+        @keyframes fadeSlideUp {
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Heartbeat & main moment */
+        .main-moment {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .heartbeat-text {
+            font-size: 2rem;
+            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #ffe6f0, #ffb0c3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            animation: gentleHeartbeat 1.6s infinite ease-in-out;
+            text-shadow: 0 0 15px rgba(255, 100, 130, 0.4);
+        }
+
+        @keyframes gentleHeartbeat {
+            0%, 100% { transform: scale(1); letter-spacing: normal; opacity: 0.95;}
+            50% { transform: scale(1.03); letter-spacing: 1px; opacity: 1; text-shadow: 0 0 25px #ff7b9c;}
+        }
+
+        .line-reveal {
+            display: block;
+            margin: 0.6rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease;
+        }
+
+        .line-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .final-btn {
+            background: rgba(255, 110, 140, 0.2);
+            border: 1.5px solid #ff8eaa;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #ffdfe8;
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s;
+        }
+
+        .final-btn:hover {
+            background: #ff6b8b;
+            color: white;
+            box-shadow: 0 0 22px #ff6b8b;
+            transform: scale(1.02);
+        }
+
+        .floating-heart-animation {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.5rem;
+            animation: floatHeart 2s forwards;
+            z-index: 999;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(0) scale(0.6); opacity: 1;}
+            100% { transform: translateY(-120px) scale(1.4); opacity: 0;}
+        }
+
+        .extra-surprise {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #ffbfd0;
+            background: rgba(0,0,0,0.4);
+            padding: 8px 16px;
+            border-radius: 60px;
+            display: inline-block;
+            backdrop-filter: blur(4px);
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .cinematic-text { font-size: 1.4rem; }
+            .heartbeat-text { font-size: 1.6rem; }
+            .whatsapp-container { max-width: 90%; }
         }
     </style>
 </head>
 <body>
 
-    <div id="lock-screen">
-        <div class="glass-card" id="card">
-            <h2>Secret Name</h2>
-            <input type="password" id="pass-input" placeholder="Who holds the key?">
-            <button onclick="checkPassword()">Unlock</button>
-            <p id="error-msg" class="error-msg">Only she holds the key.</p>
-        </div>
+<!-- PASSWORD GATE -->
+<div id="passwordGate" class="password-gate">
+    <div class="glass-card">
+        <h2>✦ resonance ✦</h2>
+        <p>a whisper behind the light</p>
+        <input type="password" id="passInput" class="password-input" placeholder="Enter something special..." autocomplete="off">
+        <button id="unlockButton" class="unlock-btn">unfold →</button>
+        <div id="errorMsgPass" class="error-msg"></div>
     </div>
+</div>
 
-    <div id="main-site">
-        <div class="content-container">
-            <div class="glowing-flower">✨🌸✨</div>
-            <h1 class="core-message" id="message">I will wait if it takes a year until the day you can say I love you to me.</h1>
-        </div>
+<!-- MAIN CINEMATIC EXPERIENCE -->
+<div id="cinemaSite" class="cinematic-site">
+    <div class="parallax-bg" id="parallaxBg"></div>
+    <canvas id="particleCanvas" class="floating-particles"></canvas>
+    
+    <div class="scenes-container" id="scenesContainer">
+        <!-- Scene 1: beginning hook (typing) -->
+        <section class="scene" id="scene1">
+            <div class="cinematic-text typing-area" id="typingHook">
+                <span id="hookLine1"></span><br>
+                <span id="hookLine2"></span>
+            </div>
+        </section>
+
+        <!-- Scene 2: WhatsApp realistic chat -->
+        <section class="scene" id="scene2">
+            <div class="whatsapp-container" id="whatsappBox">
+                <div style="font-size:0.7rem; color:#ffb7c5; margin-bottom: 10px;">📱 chat · today</div>
+                <div id="chatMessages"></div>
+                <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 3: emotional build scrolling text -->
+        <section class="scene" id="scene3">
+            <div class="cinematic-text" id="emotionalText">
+                <div class="build-line">"I'm not trying to rush anything…"</div>
+                <div class="build-line">"Not expecting anything from you…"</div>
+                <div class="build-line">"I just… like being here."</div>
+            </div>
+        </section>
+
+        <!-- Scene 4: MAIN CINEMATIC MOMENT (Heart) -->
+        <section class="scene" id="scene4">
+            <div class="main-moment">
+                <div id="mainPromiseLines">
+                    <div class="line-reveal" data-line="0">“I will wait…”</div>
+                    <div class="line-reveal" data-line="1">“even if it takes a year…”</div>
+                    <div class="line-reveal" data-line="2">“until the day…”</div>
+                    <div class="line-reveal" data-line="3">“you can say ‘I love you’ to me.”</div>
+                </div>
+                <div id="heartbeatGlow" style="margin-top: 30px;"></div>
+            </div>
+        </section>
+
+        <!-- Scene 5: soft ending + final button -->
+        <section class="scene" id="scene5">
+            <div class="cinematic-text" style="font-size:1.6rem;">
+                <p>“No pressure…”</p>
+                <p>“No expectations…”</p>
+                <p>“Just something real… if it ever happens.”</p>
+                <button id="finalSmileBtn" class="final-btn">👉 “Just smile… that’s enough for me 😊”</button>
+                <div id="extraSurpriseContainer" style="margin-top: 20px;"></div>
+            </div>
+        </section>
     </div>
+</div>
 
-    <script>
-        function checkPassword() {
-            const input = document.getElementById("pass-input").value.trim().toUpperCase();
-            const errorMsg = document.getElementById("error-msg");
-            const card = document.getElementById("card");
-            const lockScreen = document.getElementById("lock-screen");
-            const mainSite = document.getElementById("main-site");
+<script>
+    (function(){
+        // ---------- PASSWORD LOGIC ----------
+        const gate = document.getElementById('passwordGate');
+        const cinemaSite = document.getElementById('cinemaSite');
+        const unlockBtn = document.getElementById('unlockButton');
+        const passInput = document.getElementById('passInput');
+        const errorMsgSpan = document.getElementById('errorMsgPass');
 
-            if (input === "ANNA") {
-                // Correct Password
-                errorMsg.style.opacity = "0";
+        let musicStarted = false;
+        let audioCtx = null;
+        let musicLoopActive = false;
+
+        function startAmbientMusic() {
+            if (musicStarted) return;
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const masterGain = audioCtx.createGain();
+                masterGain.gain.value = 0.18; // very low volume
+                masterGain.connect(audioCtx.destination);
                 
-                // Fade out lock screen
-                lockScreen.style.opacity = "0";
-                
-                setTimeout(() => {
-                    lockScreen.style.display = "none";
-                    mainSite.style.display = "flex";
+                // Create soft piano-like pad using sine waves + gentle detuned chords
+                const playSoftPad = () => {
+                    const now = audioCtx.currentTime;
+                    const osc1 = audioCtx.createOscillator();
+                    const osc2 = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    gainNode.gain.value = 0.08;
+                    osc1.type = 'sine';
+                    osc2.type = 'sine';
+                    osc1.frequency.value = 261.63; // C4
+                    osc2.frequency.value = 329.63; // E4
+                    osc1.connect(gainNode);
+                    osc2.connect(gainNode);
+                    gainNode.connect(masterGain);
+                    osc1.start();
+                    osc2.start();
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 5.5);
+                    osc1.stop(now + 5.5);
+                    osc2.stop(now + 5.5);
                     
-                    // Small delay before fading in the main site for dramatic effect
                     setTimeout(() => {
-                        mainSite.style.opacity = "1";
-                        animateText();
-                        createParticles();
-                    }, 500);
+                        if (musicLoopActive) playSoftPad();
+                    }, 6200);
+                };
+                musicLoopActive = true;
+                playSoftPad();
+                musicStarted = true;
+                audioCtx.resume();
+            } catch(e) { console.warn("audio not supported"); }
+        }
 
-                }, 2000); // Wait for fade out
+        function unlock() {
+            const entered = passInput.value.trim().toUpperCase();
+            if (entered === "ANNA") {
+                gate.style.opacity = "0";
+                setTimeout(() => {
+                    gate.style.display = "none";
+                    cinemaSite.classList.add("active");
+                    startAmbientMusic();
+                    initParticles();
+                    startCinematicFlow();
+                }, 1000);
             } else {
-                // Wrong Password
-                errorMsg.style.opacity = "1";
-                card.classList.remove("shake");
-                void card.offsetWidth; // Trigger reflow to restart animation
-                card.classList.add("shake");
-                document.getElementById("pass-input").value = "";
+                errorMsgSpan.innerText = "❀ not yet… try the right key: ANNA";
+                passInput.value = '';
             }
         }
 
-        // Allow pressing "Enter" key on keyboard
-        document.getElementById("pass-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                checkPassword();
+        unlockBtn.addEventListener('click', unlock);
+        passInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') unlock(); });
+
+        // ---------- PARTICLES (Canvas) ----------
+        let particleCanvas, ctx, particles = [], animationId;
+        function initParticles() {
+            particleCanvas = document.getElementById('particleCanvas');
+            if (!particleCanvas) return;
+            function resizeCanvas() {
+                particleCanvas.width = window.innerWidth;
+                particleCanvas.height = window.innerHeight;
             }
-        });
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            ctx = particleCanvas.getContext('2d');
+            const PARTICLE_COUNT = 110;
+            for(let i=0; i<PARTICLE_COUNT; i++) {
+                particles.push({
+                    x: Math.random() * particleCanvas.width,
+                    y: Math.random() * particleCanvas.height,
+                    radius: Math.random() * 2.5 + 1,
+                    alpha: Math.random() * 0.5 + 0.2,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.2 + 0.1,
+                    color: `rgba(255, 180, 200, ${0.3+Math.random()*0.4})`
+                });
+            }
+            function draw() {
+                if(!ctx) return;
+                ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                for(let p of particles) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if(p.x < 0) p.x = particleCanvas.width;
+                    if(p.x > particleCanvas.width) p.x = 0;
+                    if(p.y < 0) p.y = particleCanvas.height;
+                    if(p.y > particleCanvas.height) p.y = 0;
+                }
+                animationId = requestAnimationFrame(draw);
+            }
+            draw();
+        }
 
-        // Break the sentence into spans to animate word by word slowly
-        function animateText() {
-            const msgElement = document.getElementById("message");
-            const text = msgElement.innerText;
-            const words = text.split(" ");
-            msgElement.innerHTML = ""; // clear original text
-
-            words.forEach((word, index) => {
-                let span = document.createElement("span");
-                span.classList.add("word");
-                span.innerText = word + " ";
-                // Delay each word by 0.6 seconds to make it emotional and slow
-                span.style.animationDelay = `${index * 0.6}s`;
-                msgElement.appendChild(span);
+        // ---------- CINEMATIC SEQUENCE (Intersection Observer + delays) ----------
+        let typingTimeout = null;
+        let chatMessagesQueue = [];
+        
+        function startCinematicFlow() {
+            // scene 1 typing effect
+            const line1El = document.getElementById('hookLine1');
+            const line2El = document.getElementById('hookLine2');
+            const text1 = "I didn't expect this…";
+            const text2 = "…but somehow, you became someone I look forward to.";
+            let i = 0;
+            function typeLine(element, text, callback) {
+                let idx = 0;
+                element.textContent = '';
+                function typeChar() {
+                    if(idx < text.length) {
+                        element.textContent += text.charAt(idx);
+                        idx++;
+                        setTimeout(typeChar, 45);
+                    } else if(callback) callback();
+                }
+                typeChar();
+            }
+            typeLine(line1El, text1, () => {
+                setTimeout(() => {
+                    typeLine(line2El, text2);
+                }, 400);
+            });
+            
+            // Scene 2: WhatsApp chat simulation
+            const chatContainer = document.getElementById('chatMessages');
+            const typingDiv = document.getElementById('typingIndicator');
+            const messages = [
+                { type: 'received', text: "We're not even that close…", delayAfter: 1200 },
+                { type: 'sent', text: "But still… I feel comfortable talking to you", delayAfter: 1400 },
+                { type: 'received', text: "It's different… in a good way", delayAfter: 1500 }
+            ];
+            
+            let msgIndex = 0;
+            function showNextMessage() {
+                if(msgIndex >= messages.length) return;
+                const msg = messages[msgIndex];
+                typingDiv.style.display = 'flex';
+                setTimeout(() => {
+                    typingDiv.style.display = 'none';
+                    const bubble = document.createElement('div');
+                    bubble.className = `chat-bubble ${msg.type === 'sent' ? 'sent' : 'received'}`;
+                    bubble.textContent = msg.text;
+                    chatContainer.appendChild(bubble);
+                    bubble.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    msgIndex++;
+                    setTimeout(() => {
+                        if(msgIndex < messages.length) showNextMessage();
+                    }, msg.delayAfter);
+                }, 1400);
+            }
+            
+            // Scene 3 lines fade-up on scroll
+            const buildLines = document.querySelectorAll('#emotionalText .build-line');
+            // Scene 4 lines reveal with heartbeat
+            const promiseLines = document.querySelectorAll('#mainPromiseLines .line-reveal');
+            
+            // Intersection Observer for scene-triggered animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        const sceneId = entry.target.id;
+                        if(sceneId === 'scene2' && chatContainer.children.length === 0) {
+                            showNextMessage(); // start chat
+                        }
+                        if(sceneId === 'scene3') {
+                            buildLines.forEach((line, idx) => {
+                                setTimeout(() => {
+                                    line.style.opacity = '1';
+                                    line.style.transform = 'translateY(0)';
+                                }, idx * 400);
+                            });
+                        }
+                        if(sceneId === 'scene4') {
+                            promiseLines.forEach((line, idx) => {
+                                setTimeout(() => {
+                                    line.classList.add('revealed');
+                                    if(idx === 3) {
+                                        // add extra heartbeat effect on container
+                                        const heartbeatDiv = document.getElementById('heartbeatGlow');
+                                        heartbeatDiv.innerHTML = '<div class="heartbeat-text" style="font-size:1.3rem; margin-top:20px;">❤️ patience is sincere ❤️</div>';
+                                    }
+                                }, idx * 700 + 300);
+                            });
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.querySelectorAll('.scene').forEach(scene => observer.observe(scene));
+            
+            // Parallax effect on scroll
+            const parallaxBg = document.getElementById('parallaxBg');
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                if(parallaxBg) {
+                    parallaxBg.style.transform = `translateY(${scrollY * 0.2}px) scale(1.02)`;
+                }
+            });
+            
+            // camera zoom via subtle scale on text scenes (cinematic)
+            const scenes = document.querySelectorAll('.scene');
+            const zoomObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        const targetText = entry.target.querySelector('.cinematic-text, .main-moment');
+                        if(targetText) {
+                            targetText.style.transition = 'transform 1.2s cubic-bezier(0.2,0.9,0.4,1.1)';
+                            targetText.style.transform = 'scale(1.02)';
+                            setTimeout(() => { if(targetText) targetText.style.transform = 'scale(1)'; }, 1200);
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            scenes.forEach(s => zoomObserver.observe(s));
+            
+            // final button hearts + extra surprise "another that you can do"
+            const finalBtn = document.getElementById('finalSmileBtn');
+            const extraDiv = document.getElementById('extraSurpriseContainer');
+            finalBtn.addEventListener('click', (e) => {
+                for(let i=0;i<28;i++) {
+                    createFloatingHeart();
+                }
+                // extra special: "add another that you can do" — hidden memory note
+                if(extraDiv && !extraDiv.innerHTML) {
+                    const surpriseMsg = document.createElement('div');
+                    surpriseMsg.className = 'extra-surprise';
+                    surpriseMsg.innerHTML = '✨ another thing i can do: always be here, quietly rooting for you ✨';
+                    surpriseMsg.style.animation = 'fadeSlideUp 0.6s ease';
+                    extraDiv.appendChild(surpriseMsg);
+                    // also show additional tiny floating hearts after 1 sec
+                    setTimeout(() => {
+                        for(let i=0;i<18;i++) createFloatingHeart();
+                    }, 500);
+                } else {
+                    for(let i=0;i<12;i++) createFloatingHeart();
+                }
             });
         }
-
-        // Generate glowing dust and falling petals in the background
-        function createParticles() {
-            const symbols = ["🌸", "✨", "💫", "🤍"];
-            setInterval(() => {
-                const particle = document.createElement("div");
-                particle.classList.add("particle");
-                
-                // Randomize symbol
-                particle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                
-                // Randomize size
-                const size = Math.random() * 15 + 10;
-                particle.style.fontSize = `${size}px`;
-                
-                // Randomize starting X position
-                particle.style.left = `${Math.random() * 100}vw`;
-                
-                // Randomize fall duration (between 10s and 20s)
-                const duration = Math.random() * 10 + 10;
-                particle.style.animationDuration = `${duration}s`;
-                
-                document.getElementById("main-site").appendChild(particle);
-                
-                // Remove particle after it falls to prevent lag
-                setTimeout(() => {
-                    particle.remove();
-                }, duration * 1000);
-            }, 400); // Generate a new particle every 400ms
+        
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart-animation';
+            heart.innerHTML = ['❤️','💖','🌸','💗','✨','💞'][Math.floor(Math.random()*6)];
+            heart.style.left = Math.random() * 90 + '%';
+            heart.style.bottom = '10px';
+            heart.style.fontSize = (Math.random() * 20 + 18) + 'px';
+            heart.style.position = 'fixed';
+            heart.style.zIndex = '9999';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2100);
         }
-    </script>
+        
+        // preload but not needed
+        // small mobile fix for scrolling snap
+        let style = document.createElement('style');
+        style.textContent = `.scenes-container { scroll-snap-type: y mandatory; overflow-y: auto; height: 100vh; }`;
+        document.head.appendChild(style);
+    })();
+</script>
 </body>
 </html>
