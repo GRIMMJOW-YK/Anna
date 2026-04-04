@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Echoes of Patience | cinematic experience</title>
-    <!-- Google Fonts -->
+    <title>whispers of patience | cinematic experience</title>
+    <!-- Google Fonts: Poppins + Playfair Display -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         * {
@@ -20,7 +20,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- PASSWORD GATE (Premium Cinematic) --- */
+        /* ---------- PASSWORD GATE (Premium Cinematic) ---------- */
         .password-gate {
             position: fixed;
             top: 0;
@@ -28,7 +28,7 @@
             width: 100%;
             height: 100%;
             background: radial-gradient(circle at 30% 10%, #0e0c1a, #030105);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(14px);
             z-index: 2000;
             display: flex;
             align-items: center;
@@ -39,13 +39,13 @@
 
         .glass-card {
             background: rgba(20, 15, 35, 0.55);
-            backdrop-filter: blur(18px);
+            backdrop-filter: blur(20px);
             border-radius: 2rem;
             padding: 2.5rem 2rem;
             width: 90%;
             max-width: 400px;
             text-align: center;
-            border: 1px solid rgba(255, 210, 220, 0.25);
+            border: 1px solid rgba(255, 210, 220, 0.3);
             box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 140, 170, 0.2);
             animation: gentleFloat 2.8s infinite alternate;
         }
@@ -120,7 +120,7 @@
             min-height: 30px;
         }
 
-        /* --- MAIN CINEMATIC SITE (hidden until unlock) --- */
+        /* ---------- MAIN CINEMATIC SITE ---------- */
         .cinematic-site {
             opacity: 0;
             visibility: hidden;
@@ -132,7 +132,7 @@
             visibility: visible;
         }
 
-        /* scroll-snap container */
+        /* scroll-snap smooth container */
         .scenes-container {
             scroll-snap-type: y mandatory;
             overflow-y: scroll;
@@ -150,12 +150,12 @@
             align-items: center;
             padding: 2rem 1.5rem;
             position: relative;
-            background: rgba(8, 5, 16, 0.65);
-            backdrop-filter: blur(3px);
-            border-bottom: 1px solid rgba(255, 180, 200, 0.1);
+            background: rgba(8, 5, 16, 0.55);
+            backdrop-filter: blur(2px);
+            border-bottom: 1px solid rgba(255, 180, 200, 0.08);
         }
 
-        /* Parallax background layers */
+        /* Parallax background layer */
         .parallax-bg {
             position: fixed;
             top: 0;
@@ -177,7 +177,7 @@
             z-index: -1;
         }
 
-        /* Text styles */
+        /* Typography */
         .cinematic-text {
             max-width: 700px;
             text-align: center;
@@ -195,12 +195,12 @@
 
         /* WhatsApp style */
         .whatsapp-container {
-            background: rgba(20, 25, 35, 0.65);
+            background: rgba(20, 25, 35, 0.7);
             backdrop-filter: blur(16px);
             border-radius: 28px;
             padding: 1.5rem;
             width: 100%;
-            max-width: 450px;
+            max-width: 460px;
             margin: 0 auto;
             box-shadow: 0 20px 35px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,245,0.15);
@@ -261,10 +261,10 @@
             to { opacity: 1; transform: translateY(0);}
         }
 
-        /* Heartbeat & main moment */
+        /* Main cinematic moment */
         .main-moment {
             text-align: center;
-            padding: 2rem;
+            padding: 1rem;
         }
 
         .heartbeat-text {
@@ -287,10 +287,11 @@
 
         .line-reveal {
             display: block;
-            margin: 0.6rem 0;
+            margin: 0.8rem 0;
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(25px);
             transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1), transform 0.6s ease;
+            font-size: 1.9rem;
         }
 
         .line-reveal.revealed {
@@ -328,25 +329,23 @@
         }
 
         @keyframes floatHeart {
-            0% { transform: translateY(0) scale(0.6); opacity: 1;}
-            100% { transform: translateY(-120px) scale(1.4); opacity: 0;}
+            0% { transform: translateY(0) scale(0.5); opacity: 0.9;}
+            100% { transform: translateY(-120px) scale(1.3); opacity: 0;}
         }
 
-        .extra-surprise {
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: #ffbfd0;
-            background: rgba(0,0,0,0.4);
-            padding: 8px 16px;
-            border-radius: 60px;
-            display: inline-block;
-            backdrop-filter: blur(4px);
+        .extra-touch {
+            margin-top: 1.2rem;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            font-style: italic;
+            letter-spacing: 0.3px;
+            transition: opacity 0.3s;
         }
 
-        /* responsive */
         @media (max-width: 700px) {
             .cinematic-text { font-size: 1.4rem; }
-            .heartbeat-text { font-size: 1.6rem; }
+            .line-reveal { font-size: 1.4rem; }
+            .heartbeat-text { font-size: 1.5rem; }
             .whatsapp-container { max-width: 90%; }
         }
     </style>
@@ -370,7 +369,7 @@
     <canvas id="particleCanvas" class="floating-particles"></canvas>
     
     <div class="scenes-container" id="scenesContainer">
-        <!-- Scene 1: beginning hook (typing) -->
+        <!-- Scene 1: Beginning hook (typing) -->
         <section class="scene" id="scene1">
             <div class="cinematic-text typing-area" id="typingHook">
                 <span id="hookLine1"></span><br>
@@ -389,7 +388,7 @@
             </div>
         </section>
 
-        <!-- Scene 3: emotional build scrolling text -->
+        <!-- Scene 3: emotional build (fade lines) -->
         <section class="scene" id="scene3">
             <div class="cinematic-text" id="emotionalText">
                 <div class="build-line">"I'm not trying to rush anything…"</div>
@@ -402,12 +401,13 @@
         <section class="scene" id="scene4">
             <div class="main-moment">
                 <div id="mainPromiseLines">
-                    <div class="line-reveal" data-line="0">“I will wait…”</div>
-                    <div class="line-reveal" data-line="1">“even if it takes a year…”</div>
-                    <div class="line-reveal" data-line="2">“until the day…”</div>
+                    <div class="line-reveal" data-line="0">“I’ll wait…”</div>
+                    <div class="line-reveal" data-line="1">“even if it takes a year,”</div>
+                    <div class="line-reveal" data-line="2">“until the day”</div>
                     <div class="line-reveal" data-line="3">“you can say ‘I love you’ to me.”</div>
                 </div>
-                <div id="heartbeatGlow" style="margin-top: 30px;"></div>
+                <div id="heartbeatGlow" style="margin-top: 20px;"></div>
+                <div class="extra-touch" id="quietExtra">“some feelings grow in silence…”</div>
             </div>
         </section>
 
@@ -426,7 +426,7 @@
 
 <script>
     (function(){
-        // ---------- PASSWORD LOGIC ----------
+        // ---------- PASSWORD LOGIC + MUSIC (soft piano) ----------
         const gate = document.getElementById('passwordGate');
         const cinemaSite = document.getElementById('cinemaSite');
         const unlockBtn = document.getElementById('unlockButton');
@@ -436,41 +436,50 @@
         let musicStarted = false;
         let audioCtx = null;
         let musicLoopActive = false;
+        let masterGain = null;
 
+        // Gentle ambient piano-like pad (web audio, low volume, loops)
         function startAmbientMusic() {
             if (musicStarted) return;
             try {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const masterGain = audioCtx.createGain();
-                masterGain.gain.value = 0.18; // very low volume
+                masterGain = audioCtx.createGain();
+                masterGain.gain.value = 0.14; // very soft background
                 masterGain.connect(audioCtx.destination);
                 
-                // Create soft piano-like pad using sine waves + gentle detuned chords
-                const playSoftPad = () => {
+                const playSoftChord = () => {
+                    if (!musicLoopActive) return;
                     const now = audioCtx.currentTime;
+                    // Create two oscillators for a soft piano-like pad
                     const osc1 = audioCtx.createOscillator();
                     const osc2 = audioCtx.createOscillator();
+                    const osc3 = audioCtx.createOscillator();
                     const gainNode = audioCtx.createGain();
-                    gainNode.gain.value = 0.08;
+                    gainNode.gain.value = 0.06;
                     osc1.type = 'sine';
                     osc2.type = 'sine';
+                    osc3.type = 'sine';
                     osc1.frequency.value = 261.63; // C4
                     osc2.frequency.value = 329.63; // E4
+                    osc3.frequency.value = 392.00; // G4
                     osc1.connect(gainNode);
                     osc2.connect(gainNode);
+                    osc3.connect(gainNode);
                     gainNode.connect(masterGain);
                     osc1.start();
                     osc2.start();
-                    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 5.5);
-                    osc1.stop(now + 5.5);
-                    osc2.stop(now + 5.5);
+                    osc3.start();
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 6.0);
+                    osc1.stop(now + 6.0);
+                    osc2.stop(now + 6.0);
+                    osc3.stop(now + 6.0);
                     
                     setTimeout(() => {
-                        if (musicLoopActive) playSoftPad();
-                    }, 6200);
+                        if (musicLoopActive) playSoftChord();
+                    }, 7000);
                 };
                 musicLoopActive = true;
-                playSoftPad();
+                playSoftChord();
                 musicStarted = true;
                 audioCtx.resume();
             } catch(e) { console.warn("audio not supported"); }
@@ -488,7 +497,7 @@
                     startCinematicFlow();
                 }, 1000);
             } else {
-                errorMsgSpan.innerText = "❀ not yet… try the right key: ANNA";
+                errorMsgSpan.innerText = "❀ not yet… the right key is ANNA";
                 passInput.value = '';
             }
         }
@@ -496,7 +505,7 @@
         unlockBtn.addEventListener('click', unlock);
         passInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') unlock(); });
 
-        // ---------- PARTICLES (Canvas) ----------
+        // ---------- PARTICLES (floating soft glow) ----------
         let particleCanvas, ctx, particles = [], animationId;
         function initParticles() {
             particleCanvas = document.getElementById('particleCanvas');
@@ -508,16 +517,16 @@
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
             ctx = particleCanvas.getContext('2d');
-            const PARTICLE_COUNT = 110;
+            const PARTICLE_COUNT = 130;
             for(let i=0; i<PARTICLE_COUNT; i++) {
                 particles.push({
                     x: Math.random() * particleCanvas.width,
                     y: Math.random() * particleCanvas.height,
-                    radius: Math.random() * 2.5 + 1,
+                    radius: Math.random() * 2.8 + 1,
                     alpha: Math.random() * 0.5 + 0.2,
-                    vx: (Math.random() - 0.5) * 0.3,
+                    vx: (Math.random() - 0.5) * 0.25,
                     vy: (Math.random() - 0.5) * 0.2 + 0.1,
-                    color: `rgba(255, 180, 200, ${0.3+Math.random()*0.4})`
+                    color: `rgba(255, 190, 210, ${0.2+Math.random()*0.4})`
                 });
             }
             function draw() {
@@ -540,17 +549,13 @@
             draw();
         }
 
-        // ---------- CINEMATIC SEQUENCE (Intersection Observer + delays) ----------
-        let typingTimeout = null;
-        let chatMessagesQueue = [];
-        
+        // ---------- CINEMATIC STORY FLOW (Observer + Animations) ----------
         function startCinematicFlow() {
-            // scene 1 typing effect
+            // Scene 1: Typewriter effect
             const line1El = document.getElementById('hookLine1');
             const line2El = document.getElementById('hookLine2');
             const text1 = "I didn't expect this…";
             const text2 = "…but somehow, you became someone I look forward to.";
-            let i = 0;
             function typeLine(element, text, callback) {
                 let idx = 0;
                 element.textContent = '';
@@ -558,7 +563,7 @@
                     if(idx < text.length) {
                         element.textContent += text.charAt(idx);
                         idx++;
-                        setTimeout(typeChar, 45);
+                        setTimeout(typeChar, 42);
                     } else if(callback) callback();
                 }
                 typeChar();
@@ -569,16 +574,16 @@
                 }, 400);
             });
             
-            // Scene 2: WhatsApp chat simulation
+            // Scene 2: WhatsApp realistic chat with typing indicator
             const chatContainer = document.getElementById('chatMessages');
             const typingDiv = document.getElementById('typingIndicator');
             const messages = [
-                { type: 'received', text: "We're not even that close…", delayAfter: 1200 },
-                { type: 'sent', text: "But still… I feel comfortable talking to you", delayAfter: 1400 },
+                { type: 'received', text: "We're not even that close…", delayAfter: 1300 },
+                { type: 'sent', text: "But still… I feel comfortable talking to you", delayAfter: 1500 },
                 { type: 'received', text: "It's different… in a good way", delayAfter: 1500 }
             ];
-            
             let msgIndex = 0;
+            let chatStarted = false;
             function showNextMessage() {
                 if(msgIndex >= messages.length) return;
                 const msg = messages[msgIndex];
@@ -594,49 +599,51 @@
                     setTimeout(() => {
                         if(msgIndex < messages.length) showNextMessage();
                     }, msg.delayAfter);
-                }, 1400);
+                }, 1200);
             }
             
-            // Scene 3 lines fade-up on scroll
+            // Scene 3 lines fade-in on scroll
             const buildLines = document.querySelectorAll('#emotionalText .build-line');
-            // Scene 4 lines reveal with heartbeat
+            // Scene 4 main promise lines with heartbeat effect
             const promiseLines = document.querySelectorAll('#mainPromiseLines .line-reveal');
             
-            // Intersection Observer for scene-triggered animations
+            // Intersection Observer for each scene
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if(entry.isIntersecting) {
                         const sceneId = entry.target.id;
-                        if(sceneId === 'scene2' && chatContainer.children.length === 0) {
-                            showNextMessage(); // start chat
+                        if(sceneId === 'scene2' && !chatStarted && chatContainer.children.length === 0) {
+                            chatStarted = true;
+                            showNextMessage();
                         }
                         if(sceneId === 'scene3') {
                             buildLines.forEach((line, idx) => {
                                 setTimeout(() => {
                                     line.style.opacity = '1';
                                     line.style.transform = 'translateY(0)';
-                                }, idx * 400);
+                                    line.style.transition = 'opacity 0.7s ease, transform 0.6s ease';
+                                }, idx * 350);
                             });
                         }
                         if(sceneId === 'scene4') {
+                            // Reveal lines step-by-step with pause and heartbeat
                             promiseLines.forEach((line, idx) => {
                                 setTimeout(() => {
                                     line.classList.add('revealed');
                                     if(idx === 3) {
-                                        // add extra heartbeat effect on container
                                         const heartbeatDiv = document.getElementById('heartbeatGlow');
-                                        heartbeatDiv.innerHTML = '<div class="heartbeat-text" style="font-size:1.3rem; margin-top:20px;">❤️ patience is sincere ❤️</div>';
+                                        heartbeatDiv.innerHTML = '<div class="heartbeat-text" style="font-size:1.2rem; margin-top:15px;">❤️ patience is sincere ❤️</div>';
                                     }
-                                }, idx * 700 + 300);
+                                }, idx * 750 + 400);
                             });
                         }
                     }
                 });
-            }, { threshold: 0.5 });
+            }, { threshold: 0.45 });
             
             document.querySelectorAll('.scene').forEach(scene => observer.observe(scene));
             
-            // Parallax effect on scroll
+            // Parallax scrolling effect
             const parallaxBg = document.getElementById('parallaxBg');
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
@@ -645,7 +652,7 @@
                 }
             });
             
-            // camera zoom via subtle scale on text scenes (cinematic)
+            // Cinematic zoom effect when each scene enters
             const scenes = document.querySelectorAll('.scene');
             const zoomObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -654,41 +661,71 @@
                         if(targetText) {
                             targetText.style.transition = 'transform 1.2s cubic-bezier(0.2,0.9,0.4,1.1)';
                             targetText.style.transform = 'scale(1.02)';
-                            setTimeout(() => { if(targetText) targetText.style.transform = 'scale(1)'; }, 1200);
+                            setTimeout(() => { if(targetText) targetText.style.transform = 'scale(1)'; }, 1100);
                         }
                     }
                 });
             }, { threshold: 0.5 });
             scenes.forEach(s => zoomObserver.observe(s));
             
-            // final button hearts + extra surprise "another that you can do"
+            // ----- FINAL BUTTON: floating hearts + soft fade ending (subtle message) -----
             const finalBtn = document.getElementById('finalSmileBtn');
             const extraDiv = document.getElementById('extraSurpriseContainer');
             finalBtn.addEventListener('click', (e) => {
-                for(let i=0;i<28;i++) {
+                // burst of floating hearts
+                for(let i=0;i<36;i++) {
                     createFloatingHeart();
                 }
-                // extra special: "add another that you can do" — hidden memory note
+                // Soft fade-out ending: create a gentle overlay message that fades
                 if(extraDiv && !extraDiv.innerHTML) {
-                    const surpriseMsg = document.createElement('div');
-                    surpriseMsg.className = 'extra-surprise';
-                    surpriseMsg.innerHTML = '✨ another thing i can do: always be here, quietly rooting for you ✨';
-                    surpriseMsg.style.animation = 'fadeSlideUp 0.6s ease';
-                    extraDiv.appendChild(surpriseMsg);
-                    // also show additional tiny floating hearts after 1 sec
+                    const endingMsg = document.createElement('div');
+                    endingMsg.className = 'extra-surprise';
+                    endingMsg.style.background = 'rgba(0,0,0,0.6)';
+                    endingMsg.style.backdropFilter = 'blur(8px)';
+                    endingMsg.style.padding = '10px 20px';
+                    endingMsg.style.borderRadius = '50px';
+                    endingMsg.style.marginTop = '20px';
+                    endingMsg.style.fontSize = '0.9rem';
+                    endingMsg.style.animation = 'fadeSlideUp 0.6s ease';
+                    endingMsg.innerHTML = '✨ a soft moment, nothing else matters ✨';
+                    extraDiv.appendChild(endingMsg);
                     setTimeout(() => {
-                        for(let i=0;i<18;i++) createFloatingHeart();
-                    }, 500);
+                        endingMsg.style.opacity = '0';
+                        setTimeout(() => endingMsg.remove(), 1500);
+                    }, 2800);
                 } else {
-                    for(let i=0;i<12;i++) createFloatingHeart();
+                    for(let i=0;i<16;i++) createFloatingHeart();
                 }
             });
+            
+            // extra subtle interactive: quietExtra click gives gentle reminder (calm)
+            const quietElem = document.getElementById('quietExtra');
+            if(quietElem) {
+                quietElem.addEventListener('click', () => {
+                    const whisper = document.createElement('div');
+                    whisper.className = 'extra-surprise';
+                    whisper.style.position = 'fixed';
+                    whisper.style.bottom = '15%';
+                    whisper.style.left = '50%';
+                    whisper.style.transform = 'translateX(-50%)';
+                    whisper.style.background = 'rgba(0,0,0,0.7)';
+                    whisper.style.padding = '8px 18px';
+                    whisper.style.borderRadius = '40px';
+                    whisper.style.fontSize = '0.75rem';
+                    whisper.style.zIndex = '1000';
+                    whisper.innerText = '🌙 no pressure. just something real.';
+                    document.body.appendChild(whisper);
+                    setTimeout(() => whisper.remove(), 2200);
+                    createFloatingHeart();
+                });
+            }
         }
         
         function createFloatingHeart() {
             const heart = document.createElement('div');
             heart.className = 'floating-heart-animation';
-            heart.innerHTML = ['❤️','💖','🌸','💗','✨','💞'][Math.floor(Math.random()*6)];
+            const icons = ['❤️','💖','🌸','💗','✨','💞','🌙','⭐'];
+            heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
             heart.style.left = Math.random() * 90 + '%';
             heart.style.bottom = '10px';
             heart.style.fontSize = (Math.random() * 20 + 18) + 'px';
@@ -698,12 +735,11 @@
             setTimeout(() => heart.remove(), 2100);
         }
         
-        // preload but not needed
-        // small mobile fix for scrolling snap
+        // Ensure scroll snap style and smoothness
         let style = document.createElement('style');
-        style.textContent = `.scenes-container { scroll-snap-type: y mandatory; overflow-y: auto; height: 100vh; }`;
+        style.textContent = `.scenes-container { scroll-snap-type: y mandatory; overflow-y: auto; height: 100vh; } .build-line { opacity: 0; transform: translateY(15px); transition: all 0.5s ease; margin: 1rem 0; }`;
         document.head.appendChild(style);
     })();
 </script>
 </body>
-</html>
+    </html>
