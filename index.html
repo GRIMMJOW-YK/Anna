@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>fragments of us | a quiet film</title>
-    <!-- Fonts: Playfair Display + Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>whispers of eternity | cinematic patience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,200;14..32,300;14..32,400;14..32,500;14..32,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,726 +13,822 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: #080b14;
+            background: #0a0a14;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            min-height: 100vh;
-            color: #f2ede8;
-            transition: background 1.2s ease;
+            scroll-behavior: smooth;
+            cursor: default;
         }
 
-        /* moving light gradient background */
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 40%, rgba(70, 40, 90, 0.55), rgba(8, 12, 22, 0.92)),
-                        repeating-linear-gradient(125deg, rgba(255, 190, 170, 0.02) 0px, rgba(255, 190, 170, 0.02) 3px, transparent 3px, transparent 12px);
-            animation: slowDrift 22s infinite alternate;
-            z-index: -2;
-            pointer-events: none;
+        /* custom cursor with ethereal trail effect (simulated via JS) */
+        body, button, .interactive {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="%23ffc0d5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v4M22 12h-4M12 20v-4M4 12H2"/><circle cx="12" cy="12" r="2.5" fill="%23ffb7c5" stroke="none"/></svg>') 12 12, auto;
         }
 
-        @keyframes slowDrift {
-            0% { background-position: 0% 0%; filter: hue-rotate(0deg) brightness(1); }
-            100% { background-position: 12% 8%; filter: hue-rotate(6deg) brightness(1.02); }
-        }
-
-        /* particle canvas (floating) */
-        #particleCanvas, #starCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-        }
-        #starCanvas { z-index: 12; }
-
-        /* password gate glassmorphism */
+        /* ---------- ENHANCED PASSWORD GATE (COSMIC) ---------- */
         .password-gate {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(18px);
-            background: rgba(5, 5, 15, 0.55);
+            background: radial-gradient(ellipse at 40% 30%, #0f0b1c, #010002);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 200;
-            transition: opacity 1.1s ease, transform 1s ease;
+            transition: opacity 1.5s cubic-bezier(0.2, 0.9, 0.3, 1.2), visibility 0.4s;
+            will-change: opacity;
         }
 
         .glass-card {
-            background: rgba(20, 22, 38, 0.55);
-            backdrop-filter: blur(16px);
-            border-radius: 2rem;
-            padding: 2rem 1.8rem;
-            width: 86%;
-            max-width: 380px;
-            border: 1px solid rgba(255, 230, 210, 0.2);
-            box-shadow: 0 30px 45px rgba(0,0,0,0.4);
+            background: rgba(15, 10, 28, 0.6);
+            backdrop-filter: blur(28px);
+            border-radius: 3rem;
+            padding: 3rem 2rem;
+            width: 90%;
+            max-width: 440px;
             text-align: center;
+            border: 1px solid rgba(255, 210, 230, 0.5);
+            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 130, 170, 0.25) inset, 0 0 35px rgba(255, 80, 120, 0.3);
+            animation: celestialGlow 3.2s infinite alternate ease-in-out;
         }
 
-        .glass-card input {
-            width: 100%;
-            background: rgba(12, 14, 28, 0.8);
-            border: 1px solid rgba(255, 200, 170, 0.5);
-            padding: 14px 18px;
-            border-radius: 50px;
-            font-family: 'Poppins', monospace;
-            font-size: 1rem;
-            color: #fff2e6;
-            text-align: center;
-            letter-spacing: 1px;
-            transition: 0.2s;
+        @keyframes celestialGlow {
+            0% { transform: translateY(0px) scale(1); box-shadow: 0 25px 45px rgba(0,0,0,0.4); border-color: rgba(255,200,220,0.3);}
+            100% { transform: translateY(-10px) scale(1.01); box-shadow: 0 40px 70px rgba(255,90,140,0.3); border-color: rgba(255,160,190,0.7);}
         }
 
-        .glass-card input:focus {
-            outline: none;
-            border-color: #ffbc9a;
-            box-shadow: 0 0 14px rgba(255, 150, 110, 0.4);
-        }
-
-        .glass-card button {
-            margin-top: 22px;
-            background: rgba(255, 235, 220, 0.12);
-            border: 1px solid rgba(255, 210, 180, 0.6);
-            padding: 12px 20px;
-            border-radius: 60px;
-            font-weight: 500;
-            color: #ffe8dd;
-            font-family: 'Poppins', sans-serif;
-            cursor: pointer;
-            transition: 0.25s;
-            width: 100%;
-        }
-
-        .glass-card button:hover {
-            background: rgba(255, 190, 150, 0.3);
-            letter-spacing: 0.8px;
-        }
-
-        /* main experience container */
-        .experience {
-            opacity: 0;
-            transform: scale(0.97);
-            transition: opacity 1.2s cubic-bezier(0.2, 0.9, 0.3, 1.2), transform 1.1s ease;
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 2rem 1.2rem 5rem;
-            position: relative;
-            z-index: 20;
-        }
-
-        .experience.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* scenes styling */
-        .scene-block {
-            margin-bottom: 3.5rem;
-        }
-
-        /* typing scene */
-        .typing-container {
+        .glass-card h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 500;
-            line-height: 1.4;
-            text-shadow: 0 0 10px rgba(255, 210, 170, 0.4);
-            min-height: 280px;
+            font-size: 2.6rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(125deg, #fff0f5, #ffc0d5, #ff9abb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.6rem;
+        }
+
+        .glass-card p {
+            color: #ddd2ea;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            opacity: 0.85;
+            letter-spacing: 0.3px;
+        }
+
+        .password-input {
+            width: 100%;
+            background: rgba(12, 5, 22, 0.8);
+            border: 1.5px solid #ffa0bc;
+            padding: 15px 22px;
+            border-radius: 80px;
+            color: #fff0f5;
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 3px;
+            outline: none;
+            transition: all 0.3s;
+            font-weight: 400;
+        }
+
+        .password-input:focus {
+            border-color: #ff4d7a;
+            box-shadow: 0 0 22px #ff6b8b, 0 0 6px #ffb0c5 inset;
+            background: rgba(25, 10, 40, 0.95);
+        }
+
+        .unlock-btn {
+            background: linear-gradient(105deg, #ff5a82, #ff2357);
+            border: none;
+            width: 100%;
+            margin-top: 2rem;
+            padding: 14px;
+            border-radius: 80px;
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 10px 28px rgba(255, 40, 80, 0.6);
+        }
+
+        .unlock-btn:hover {
+            transform: scale(0.97);
+            box-shadow: 0 5px 20px rgba(255, 70, 110, 0.9);
+            background: linear-gradient(105deg, #ff6b8f, #ff1f55);
+        }
+
+        .error-msg {
+            color: #ffb7cb;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            min-height: 32px;
+            font-style: italic;
+        }
+
+        /* ---------- MAIN CINEMATIC SITE (ULTRA ENHANCED) ---------- */
+        .cinematic-site {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.3s ease 0.2s;
+        }
+
+        .cinematic-site.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scenes-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        .scene {
+            scroll-snap-align: start;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
+            padding: 2rem 1.8rem;
+            position: relative;
+            background: rgba(3, 1, 10, 0.35);
+            backdrop-filter: blur(4px);
+            border-bottom: 1px solid rgba(255, 180, 210, 0.1);
         }
-        .typed-line {
-            white-space: pre-wrap;
-        }
-        .cursor-blink {
-            display: inline-block;
-            width: 2px;
-            background-color: #ffd2b5;
-            margin-left: 3px;
-            animation: blinkCursor 1s infinite;
-        }
-        @keyframes blinkCursor { 0%,100%{ opacity: 1; } 50%{ opacity: 0; } }
 
-        /* WhatsApp chat style */
-        .whatsapp-container {
-            background: #0f121e;
-            border-radius: 32px;
-            padding: 20px 16px;
-            border: 1px solid rgba(255, 200, 170, 0.12);
-            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.5);
+        /* dynamic background layers */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 130%;
+            background: radial-gradient(circle at 30% 20%, #1f122c, #020006);
+            z-index: -4;
+            will-change: transform;
+            animation: cosmicBreath 24s infinite alternate;
         }
-        .message {
-            max-width: 86%;
-            padding: 10px 16px;
-            border-radius: 22px;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-            font-weight: 400;
-            width: fit-content;
-            animation: messagePop 0.35s ease;
-            background: #1e253b;
-            border-bottom-left-radius: 6px;
+        @keyframes cosmicBreath {
+            0% { background: radial-gradient(circle at 25% 25%, #1f122c, #020006); opacity: 0.9;}
+            100% { background: radial-gradient(circle at 75% 70%, #321e3c, #010002); opacity: 1;}
         }
-        .message.left {
-            background: #1e253b;
-            margin-right: auto;
+
+        .starfield-deep {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(1.5px 1.5px at 20% 40%, rgba(255,210,230,0.5) 1px, transparent 1px),
+                              radial-gradient(2px 2px at 70% 85%, rgba(255,170,200,0.4) 1px, transparent 1px),
+                              radial-gradient(1px 1px at 45% 15%, rgba(255,220,240,0.6) 1px, transparent 1px);
+            background-size: 75px 75px, 120px 120px, 90px 90px;
+            pointer-events: none;
+            z-index: -3;
+            opacity: 0.6;
+            animation: twinkleStarsSlow 12s infinite alternate;
         }
-        @keyframes messagePop {
-            0% { opacity: 0; transform: translateY(10px) scale(0.96); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes twinkleStarsSlow {
+            0% { opacity: 0.4; }
+            100% { opacity: 0.8; }
         }
-        .vibrate-message {
-            animation: gentleShake 0.2s ease-in-out 0s 1;
+
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 55%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+            z-index: 4;
         }
-        @keyframes gentleShake {
-            0% { transform: translateX(0px); }
-            25% { transform: translateX(2px); }
-            75% { transform: translateX(-2px); }
-            100% { transform: translateX(0); }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
-        .typing-dots {
-            display: flex;
-            gap: 6px;
-            padding: 10px 18px;
-            background: #1e253b;
-            width: fit-content;
-            border-radius: 28px;
-            margin-bottom: 12px;
-        }
-        .dot {
-            width: 7px;
-            height: 7px;
-            background: #bbbcd8;
+
+        .floating-orb {
+            position: fixed;
             border-radius: 50%;
-            animation: bounceDot 1.3s infinite;
+            background: radial-gradient(circle, rgba(255,150,190,0.25), rgba(255,70,110,0.05));
+            filter: blur(50px);
+            pointer-events: none;
+            z-index: 0;
+            animation: orbFloat 28s infinite alternate;
         }
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounceDot { 0%,60%,100%{ transform: translateY(0); opacity: 0.6; } 30%{ transform: translateY(-6px); opacity: 1; } }
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+            100% { transform: translate(50px, -50px) scale(1.4); opacity: 0.6; }
+        }
 
-        /* inner feelings cinematic text */
+        /* cinematic text styles */
         .cinematic-text {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            border-radius: 40px;
-            padding: 2rem 1.5rem;
+            max-width: 800px;
             text-align: center;
-            font-size: 1.4rem;
+            font-size: 2rem;
+            font-weight: 450;
+            line-height: 1.45;
             font-family: 'Playfair Display', serif;
+            color: #fff5fb;
+            text-shadow: 0 5px 22px rgba(0,0,0,0.6);
+            letter-spacing: -0.2px;
         }
-        .feel-line {
-            opacity: 0;
-            transform: translateY(28px);
-            animation: fadeUp 0.8s forwards;
-            margin: 1.1rem 0;
-        }
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* masterpiece moment */
-        .masterpiece-area {
-            text-align: center;
-            padding: 2rem 1rem;
-            background: radial-gradient(ellipse 70% 50% at center, rgba(45, 28, 70, 0.65), transparent);
-            border-radius: 56px;
-            margin: 1rem 0;
+        .typing-area span {
+            display: inline-block;
+            font-weight: 500;
         }
-        .master-line {
-            font-size: 1.6rem;
+
+        /* WhatsApp container premium */
+        .whatsapp-container {
+            background: rgba(16, 20, 30, 0.8);
+            backdrop-filter: blur(24px);
+            border-radius: 42px;
+            padding: 1.8rem;
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+            box-shadow: 0 35px 55px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,190,210,0.2);
+            border: 1px solid rgba(255,235,245,0.12);
+        }
+
+        .chat-bubble {
+            background: #1e2c36;
+            border-radius: 28px;
+            padding: 12px 20px;
+            margin: 14px 0;
+            max-width: 85%;
+            color: #f0ecff;
+            font-size: 0.95rem;
+            animation: fadeSlideUp 0.45s cubic-bezier(0.2,0.9,0.4,1.2) forwards;
+            opacity: 0;
+            transform: translateY(12px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+
+        .chat-bubble.sent {
+            background: linear-gradient(115deg, #2f4858, #253e4c);
+            margin-left: auto;
+            border-bottom-right-radius: 8px;
+        }
+
+        .chat-bubble.received {
+            background: #1f2f3a;
+            border-bottom-left-radius: 8px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 8px;
+            padding: 12px 22px;
+            background: #1e2c36;
+            width: fit-content;
+            border-radius: 36px;
+            margin: 8px 0;
+        }
+
+        .typing-indicator span {
+            width: 9px;
+            height: 9px;
+            background: #ffc0da;
+            border-radius: 50%;
+            animation: blinkTyping 1.4s infinite;
+        }
+
+        @keyframes blinkTyping {
+            0%, 60%, 100% { opacity: 0.3; transform: scale(0.9);}
+            30% { opacity: 1; transform: scale(1.2); background: #ff9bbc;}
+        }
+
+        @keyframes fadeSlideUp {
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* MAIN HEARTBEAT SENTENCE (ENHANCED) */
+        .glowing-heartbeat {
+            font-size: 2.3rem;
             font-weight: 600;
             font-family: 'Playfair Display', serif;
-            margin: 1rem 0;
-            opacity: 0;
-            transform: scale(0.96);
-            animation: zoomFade 0.7s forwards;
-            text-shadow: 0 0 5px rgba(255, 180, 140, 0.6);
-        }
-        @keyframes zoomFade {
-            to { opacity: 1; transform: scale(1); }
-        }
-        .heart-glow {
-            animation: subtleHeart 2s infinite ease;
-        }
-        @keyframes subtleHeart {
-            0% { text-shadow: 0 0 0px rgba(255, 130, 100, 0);}
-            50% { text-shadow: 0 0 16px rgba(255, 150, 120, 0.8);}
-            100% { text-shadow: 0 0 0px rgba(255, 130, 100, 0);}
-        }
-
-        .soft-ending-box {
-            text-align: center;
-            font-style: italic;
-            background: rgba(255, 210, 190, 0.05);
-            border-radius: 48px;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-        .final-button {
-            background: rgba(255, 225, 200, 0.15);
-            border: 1px solid rgba(255, 180, 140, 0.6);
-            padding: 14px 28px;
-            border-radius: 60px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            font-size: 1rem;
-            color: #ffe6d9;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            transition: all 0.3s;
-            margin: 1rem auto;
+            background: linear-gradient(125deg, #ffeef5, #ffc0d5, #ff8fae);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             display: inline-block;
+            animation: heartbeatPulse 1.8s infinite ease-in-out;
+            text-shadow: 0 0 18px rgba(255, 90, 130, 0.6);
+            line-height: 1.35;
+            position: relative;
+            max-width: 90%;
         }
-        .final-button:hover {
-            background: rgba(255, 180, 140, 0.35);
-            transform: scale(1.02);
+        .glowing-heartbeat::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 15%;
+            width: 70%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffb7cb, #ff5e86, #ffb7cb, transparent);
+            border-radius: 4px;
+            animation: shimmerFlow 2.2s infinite;
+        }
+        @keyframes shimmerFlow {
+            0% { opacity: 0.2; width: 30%; left: 35%;}
+            50% { opacity: 1; width: 70%; left: 15%;}
+            100% { opacity: 0.2; width: 30%; left: 35%;}
         }
 
-        /* camera zoom effect */
-        .camera-zoom {
-            animation: gentleCamZoom 18s infinite alternate ease-in-out;
+        @keyframes heartbeatPulse {
+            0%, 100% { transform: scale(1); letter-spacing: -0.3px; text-shadow: 0 0 15px rgba(255,100,140,0.7);}
+            50% { transform: scale(1.02); letter-spacing: 0.3px; text-shadow: 0 0 32px #ff6e92;}
         }
-        @keyframes gentleCamZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.02); }
+
+        .build-line {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+            margin: 1.2rem 0;
+            font-size: 1.7rem;
         }
-        /* responsive */
-        @media (max-width: 620px) {
-            .typing-container { font-size: 1.5rem; }
-            .master-line { font-size: 1.35rem; }
-            .cinematic-text { font-size: 1.2rem; }
+
+        .final-btn {
+            background: rgba(255, 100, 130, 0.25);
+            border: 1.8px solid #ff8eaa;
+            padding: 14px 38px;
+            border-radius: 80px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #ffeef4;
+            backdrop-filter: blur(14px);
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.35s;
+            letter-spacing: 0.5px;
+        }
+        .final-btn:hover {
+            background: #ff6b8b;
+            color: white;
+            box-shadow: 0 0 32px #ff6b8b;
+            transform: scale(1.02) translateY(-3px);
+            border-color: #fff0f5;
+        }
+
+        /* new interactive elements: music toggle, secret letter, mood light */
+        .music-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 95px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 8px 18px;
+            font-size: 1rem;
+            color: #ffc0d5;
+            border: 1px solid #ffb0c5;
+            cursor: pointer;
+            z-index: 200;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .music-toggle:hover { background: rgba(255,100,130,0.5); transform: scale(1.02);}
+
+        .secret-letter {
+            position: fixed;
+            bottom: 25px;
+            left: 95px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 1rem;
+            color: #ffd9e5;
+            border: 1px solid #ffb7cb;
+            cursor: pointer;
+            z-index: 200;
+            font-family: monospace;
+            transition: 0.2s;
+        }
+        .secret-letter:hover { background: rgba(200,150,180,0.4); transform: translateY(-3px);}
+
+        .floating-star, .paper-lantern, .candle, .memory-jar {
+            position: fixed;
+            z-index: 150;
+            background: rgba(8, 6, 18, 0.55);
+            backdrop-filter: blur(12px);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 80px;
+            border: 1px solid rgba(255,190,210,0.5);
+            box-shadow: 0 5px 18px rgba(0,0,0,0.3);
+        }
+        .floating-star { bottom: 22px; right: 22px; font-size: 2rem; width: 58px; height: 58px; border-radius: 50%; }
+        .floating-star:hover { transform: scale(1.15) rotate(12deg); background: rgba(255,215,0,0.5); border-color: gold; box-shadow: 0 0 28px #ffcd94; }
+        .paper-lantern { bottom: 22px; left: 22px; font-size: 1.5rem; padding: 10px 20px; gap: 8px; }
+        .paper-lantern:hover { background: rgba(255,160,190,0.45); transform: translateY(-6px); }
+        .candle { bottom: 100px; right: 22px; font-size: 1.8rem; padding: 8px 20px; }
+        .candle:hover { background: rgba(255,110,80,0.45); transform: scale(1.05); }
+        .memory-jar { bottom: 100px; left: 22px; font-size: 1.6rem; padding: 8px 20px; gap: 8px; }
+        .memory-jar:hover { background: rgba(110,180,230,0.45); transform: scale(1.05); }
+
+        .time-sands {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: #ffd9e5;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+            z-index: 99;
+            white-space: nowrap;
+            font-weight: 300;
+            letter-spacing: 1.2px;
+        }
+        .extra-touch {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            opacity: 0.75;
+            font-style: italic;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .extra-touch:hover { opacity: 1; text-shadow: 0 0 8px #ffa5c0; }
+
+        .floating-heart-animation {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.6rem;
+            animation: floatHeartLove 2.2s forwards;
+            z-index: 9999;
+            filter: drop-shadow(0 0 8px #ffb7c5);
+        }
+        @keyframes floatHeartLove {
+            0% { transform: translateY(0) scale(0.3); opacity: 0.9;}
+            100% { transform: translateY(-150px) scale(1.5); opacity: 0;}
+        }
+
+        .petal-shower {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.2rem;
+            animation: petalFall 1.8s forwards;
+            z-index: 9998;
+        }
+        @keyframes petalFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(200px) rotate(40deg); opacity: 0; }
+        }
+
+        @media (max-width: 700px) {
+            .cinematic-text { font-size: 1.45rem; }
+            .glowing-heartbeat { font-size: 1.55rem; }
+            .build-line { font-size: 1.2rem; }
+            .floating-star, .paper-lantern, .candle, .memory-jar { transform: scale(0.9); }
+            .time-sands { font-size: 0.55rem; white-space: nowrap; }
+            .music-toggle, .secret-letter { font-size: 0.7rem; padding: 5px 12px; bottom: 18px; }
+            .music-toggle { right: 75px; }
+            .secret-letter { left: 75px; }
         }
     </style>
 </head>
 <body>
 
-<div class="animated-bg"></div>
-<canvas id="particleCanvas"></canvas>
-<canvas id="starCanvas"></canvas>
-
-<!-- PASSWORD GATE -->
 <div id="passwordGate" class="password-gate">
     <div class="glass-card">
-        <h2 style="font-family: Playfair Display; font-weight: 500; margin-bottom: 1.4rem;">✧ 静谧的门 ✧</h2>
-        <input type="password" id="pwdInput" placeholder="Enter something special…" autocomplete="off">
-        <button id="unlockButton">unlock →</button>
-        <p style="font-size: 0.7rem; margin-top: 1rem; opacity: 0.55;">a quiet film · no pressure</p>
+        <h2>✦ eternal resonance ✦</h2>
+        <p>a whisper woven in stardust</p>
+        <input type="password" id="passInput" class="password-input" placeholder="the sacred key" autocomplete="off">
+        <button id="unlockButton" class="unlock-btn">unfold the heart →</button>
+        <div id="errorMsgPass" class="error-msg"></div>
     </div>
 </div>
 
-<!-- MAIN CINEMATIC EXPERIENCE -->
-<div id="experience" class="experience">
-    <div id="storyRoot"></div>
-    <div id="extraButtonZone" style="text-align: center;"></div>
+<div id="cinemaSite" class="cinematic-site">
+    <div class="parallax-bg"></div>
+    <div class="starfield-deep"></div>
+    <canvas id="particleCanvas" class="floating-particles"></canvas>
+    <div class="vignette"></div>
+    
+    <div class="scenes-container" id="scenesContainer">
+        <section class="scene" id="scene1">
+            <div class="cinematic-text typing-area" id="typingHook">
+                <span id="hookLine1"></span><br>
+                <span id="hookLine2"></span>
+            </div>
+        </section>
+        <section class="scene" id="scene2">
+            <div class="whatsapp-container">
+                <div style="font-size:0.7rem; color:#ffc0d5; margin-bottom: 12px; letter-spacing:1px;">📱 · quiet echoes · today</div>
+                <div id="chatMessages"></div>
+                <div id="typingIndicator" class="typing-indicator" style="display: none;"><span></span><span></span><span></span></div>
+            </div>
+        </section>
+        <section class="scene" id="scene3">
+            <div class="cinematic-text" id="emotionalText">
+                <div class="build-line">"I'm not trying to rush anything…"</div>
+                <div class="build-line">"Not expecting anything from you…"</div>
+                <div class="build-line">"I just… like being here."</div>
+            </div>
+        </section>
+        <section class="scene" id="scene4">
+            <div class="main-sentence-container">
+                <div class="glowing-heartbeat" id="unifiedPromiseText">
+                    “I’ll wait… even if it takes a year, until the day you can say ‘I love you’ to me.”
+                </div>
+                <div id="heartbeatGlow" style="margin-top: 20px;"></div>
+                <div class="extra-touch" id="quietExtra">🌙 some feelings grow in silence … touch me</div>
+            </div>
+        </section>
+        <section class="scene" id="scene5">
+            <div class="cinematic-text" style="font-size:1.6rem;">
+                <p>“No pressure…”</p>
+                <p>“No expectations…”</p>
+                <p>“Just something real… if it ever happens.”</p>
+                <button id="finalSmileBtn" class="final-btn">👉 “Just smile… that’s enough for me 😊”</button>
+                <div id="extraSurpriseContainer" style="margin-top: 25px;"></div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- interactive icons -->
+    <div class="floating-star" id="wishStar">⭐️</div>
+    <div class="paper-lantern" id="lanternMsg">🏮 whisper</div>
+    <div class="candle" id="patienceCandle">🕯️</div>
+    <div class="memory-jar" id="memoryJar">🏺✨</div>
+    <div class="time-sands" id="timeSands">⌛︎ patience is a gentle star — a quiet year is just a season</div>
+    <div class="music-toggle" id="musicToggleBtn">🎵 silence melody</div>
+    <div class="secret-letter" id="secretLetterBtn">✉️ sealed promise</div>
 </div>
 
 <script>
     (function(){
-        // DOM elements
+        // PASSWORD GATE
         const gate = document.getElementById('passwordGate');
-        const expContainer = document.getElementById('experience');
-        const storyRoot = document.getElementById('storyRoot');
-        const finalBtnZone = document.getElementById('extraButtonZone');
-        
-        let musicStarted = false;
-        let audioPlayer = null;
-        let soundCtx = null; // for optional notification beep
-        let storySequence = [];
-        let currentStep = 0;
-        let isUnlocked = false;
-        
-        // ---------- Particles (floating) ----------
-        const particleCanvas = document.getElementById('particleCanvas');
-        let pCtx = particleCanvas.getContext('2d');
-        let particles = [];
-        
-        function resizeParticles() {
-            particleCanvas.width = window.innerWidth;
-            particleCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeParticles);
-        resizeParticles();
-        
-        class Particle {
-            constructor() {
-                this.x = Math.random() * particleCanvas.width;
-                this.y = Math.random() * particleCanvas.height;
-                this.size = Math.random() * 2.5 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.15;
-                this.speedY = (Math.random() - 0.5) * 0.08;
-                this.alpha = Math.random() * 0.45 + 0.2;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0) this.x = particleCanvas.width;
-                if (this.x > particleCanvas.width) this.x = 0;
-                if (this.y < 0) this.y = particleCanvas.height;
-                if (this.y > particleCanvas.height) this.y = 0;
-            }
-            draw() {
-                pCtx.beginPath();
-                pCtx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                pCtx.fillStyle = `rgba(255, 210, 180, ${this.alpha * 0.7})`;
-                pCtx.fill();
-            }
-        }
-        function initParticles() {
-            particles = [];
-            for(let i=0;i<110;i++) particles.push(new Particle());
-        }
-        function animateParticles() {
-            if(!pCtx) return;
-            pCtx.clearRect(0,0, particleCanvas.width, particleCanvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animateParticles);
-        }
-        initParticles();
-        animateParticles();
-        
-        // ---------- STARS: ANNA in stars (bonus) ----------
-        const starCanvas = document.getElementById('starCanvas');
-        let sCtx = starCanvas.getContext('2d');
-        let starAnimId = null;
-        function resizeStars() { starCanvas.width = window.innerWidth; starCanvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeStars);
-        resizeStars();
-        
-        function drawAnnaStars() {
-            sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-            const w = starCanvas.width, h = starCanvas.height;
-            const points = [];
-            // Design ANNA constellation pattern (relative dots)
-            const pattern = [
-                // A
-                {x: 0, y:0}, {x: 0, y:1}, {x: 0, y:2}, {x: 1, y:1}, {x: 2, y:0}, {x: 2, y:1}, {x: 2, y:2}, {x: 3, y:0}, {x: 3, y:2}, {x: 4, y:0}, {x: 4, y:2},
-                // N
-                {x: 6, y:0}, {x: 6, y:1}, {x: 6, y:2}, {x: 7, y:1}, {x: 8, y:0}, {x: 8, y:1}, {x: 8, y:2}, {x: 9, y:1}, {x: 10, y:0}, {x: 10, y:1}, {x: 10, y:2},
-                // N (second)
-                {x: 12, y:0}, {x: 12, y:1}, {x: 12, y:2}, {x: 13, y:1}, {x: 14, y:0}, {x: 14, y:1}, {x: 14, y:2}, {x: 15, y:1}, {x: 16, y:0}, {x: 16, y:1}, {x: 16, y:2},
-                // A
-                {x: 18, y:0}, {x: 18, y:1}, {x: 18, y:2}, {x: 19, y:1}, {x: 20, y:0}, {x: 20, y:1}, {x: 20, y:2}, {x: 21, y:0}, {x: 21, y:2}, {x: 22, y:0}, {x: 22, y:2}
-            ];
-            const startX = w/2 - 150;
-            const startY = h/2 - 35;
-            const step = 10;
-            pattern.forEach(p => {
-                const xPos = startX + p.x * step;
-                const yPos = startY + p.y * step;
-                points.push({x: xPos, y: yPos, size: 2.2 + Math.random()*1.2});
-            });
-            let startTime = Date.now();
-            function twinkleStars() {
-                sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
-                const elapsed = Date.now() - startTime;
-                if(elapsed > 5000) {
-                    if(starAnimId) cancelAnimationFrame(starAnimId);
-                    sCtx.clearRect(0,0,starCanvas.width,starCanvas.height);
-                    return;
-                }
-                points.forEach(pt => {
-                    const intensity = 0.6 + Math.sin(Date.now() * 0.005 + pt.x) * 0.4;
-                    const alpha = Math.min(0.95, 0.6 + intensity*0.3);
-                    sCtx.beginPath();
-                    sCtx.arc(pt.x, pt.y, pt.size * (0.8 + Math.sin(Date.now()*0.004 + pt.y)*0.2), 0, Math.PI*2);
-                    sCtx.fillStyle = `rgba(255, 225, 180, ${alpha})`;
-                    sCtx.fill();
-                    sCtx.shadowBlur = 8;
-                    sCtx.shadowColor = "#ffccaa";
-                });
-                starAnimId = requestAnimationFrame(twinkleStars);
-            }
-            if(starAnimId) cancelAnimationFrame(starAnimId);
-            twinkleStars();
-        }
-        
-        // soft notification sound (optional but subtle)
-        function initSoundContext() {
-            if(soundCtx) return;
-            soundCtx = new (window.AudioContext || window.webkitAudioContext)();
-            soundCtx.resume();
-        }
-        function playMessagePing() {
-            if(!soundCtx) return;
+        const cinemaSite = document.getElementById('cinemaSite');
+        const unlockBtn = document.getElementById('unlockButton');
+        const passInput = document.getElementById('passInput');
+        const errorMsgSpan = document.getElementById('errorMsgPass');
+
+        let audioCtx = null, musicLoopActive = false, masterGain = null, musicStarted = false;
+        let musicEnabled = true;
+
+        function startAmbientMusic() {
+            if (musicStarted) return;
             try {
-                const osc = soundCtx.createOscillator();
-                const gain = soundCtx.createGain();
-                osc.connect(gain);
-                gain.connect(soundCtx.destination);
-                osc.frequency.value = 880;
-                gain.gain.value = 0.08;
-                osc.type = 'sine';
-                gain.gain.exponentialRampToValueAtTime(0.00001, soundCtx.currentTime + 0.5);
-                osc.start();
-                osc.stop(soundCtx.currentTime + 0.2);
-            } catch(e) {}
-        }
-        
-        // unlock transition
-        function unlockApp() {
-            if(isUnlocked) return;
-            isUnlocked = true;
-            gate.style.transition = "opacity 1s ease, transform 1s ease";
-            gate.style.opacity = "0";
-            gate.style.transform = "scale(1.04)";
-            setTimeout(() => { gate.style.display = "none"; }, 1200);
-            expContainer.classList.add('active');
-            
-            // soft piano background starts
-            if(!musicStarted) {
-                audioPlayer = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_6aefc7e5b4.mp3?filename=gentle-piano-loop-107374.mp3');
-                audioPlayer.loop = true;
-                audioPlayer.volume = 0.12;
-                audioPlayer.play().catch(e=>console.log("autoplay blocked, but bg later"));
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                masterGain = audioCtx.createGain();
+                masterGain.gain.value = 0.12;
+                masterGain.connect(audioCtx.destination);
+                const playSoftChord = () => {
+                    if (!musicLoopActive || !musicEnabled) { if(!musicEnabled) setTimeout(() => { if(musicEnabled && musicLoopActive) playSoftChord(); }, 3000); return; }
+                    const now = audioCtx.currentTime;
+                    const osc1 = audioCtx.createOscillator();
+                    const osc2 = audioCtx.createOscillator();
+                    const osc3 = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    gainNode.gain.value = 0.05;
+                    osc1.type = 'sine'; osc2.type = 'sine'; osc3.type = 'sine';
+                    osc1.frequency.value = 261.63; osc2.frequency.value = 329.63; osc3.frequency.value = 392.00;
+                    osc1.connect(gainNode); osc2.connect(gainNode); osc3.connect(gainNode);
+                    gainNode.connect(masterGain);
+                    osc1.start(); osc2.start(); osc3.start();
+                    gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 6.5);
+                    osc1.stop(now + 6.5); osc2.stop(now + 6.5); osc3.stop(now + 6.5);
+                    setTimeout(() => { if (musicLoopActive) playSoftChord(); }, 7500);
+                };
+                musicLoopActive = true;
+                playSoftChord();
                 musicStarted = true;
-            }
-            // subtle light glow: add overlay glow
-            const glowDiv = document.createElement('div');
-            glowDiv.style.position = 'fixed';
-            glowDiv.style.top = '0';
-            glowDiv.style.left = '0';
-            glowDiv.style.width = '100%';
-            glowDiv.style.height = '100%';
-            glowDiv.style.background = 'radial-gradient(circle at center, rgba(255,210,180,0.12) 0%, transparent 70%)';
-            glowDiv.style.pointerEvents = 'none';
-            glowDiv.style.zIndex = '8';
-            document.body.appendChild(glowDiv);
-            setTimeout(() => glowDiv.style.opacity = '0', 1800);
-            setTimeout(() => glowDiv.remove(), 3500);
-            
-            drawAnnaStars(); // Bonus: ANNA in stars
-            initSoundContext(); // prepare sound ctx for optional ping
-            startStory();
+                audioCtx.resume();
+            } catch(e) { console.warn("audio not supported"); }
         }
-        
-        // Story flow manager
-        function startStory() {
-            // scene 1: typing
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'scene-block';
-            typingDiv.innerHTML = `<div class="typing-container"><span id="dynamicTyping" class="typed-line"></span><span class="cursor-blink"></span></div>`;
-            storyRoot.appendChild(typingDiv);
-            const targetSpan = document.getElementById('dynamicTyping');
-            const fullPhrases = ["I didn't expect this…", "…but somehow…", "…you became someone I look forward to."];
-            let phraseIdx = 0, charIdx = 0, currentHtml = '';
-            function typeNext() {
-                if(phraseIdx >= fullPhrases.length) {
-                    setTimeout(() => startChatScene(), 1100);
-                    return;
-                }
-                let phrase = fullPhrases[phraseIdx];
-                if(charIdx === 0) {
-                    if(phraseIdx > 0) currentHtml += '<br><br>';
-                }
-                if(charIdx < phrase.length) {
-                    currentHtml += phrase[charIdx];
-                    targetSpan.innerHTML = currentHtml;
-                    charIdx++;
-                    setTimeout(typeNext, 55 + Math.random()*30);
-                } else {
-                    phraseIdx++;
-                    charIdx = 0;
-                    setTimeout(typeNext, 650);
-                }
-            }
-            typeNext();
-        }
-        
-        function startChatScene() {
-            const chatBlock = document.createElement('div');
-            chatBlock.className = 'scene-block';
-            chatBlock.innerHTML = `<div class="whatsapp-container" id="whatsappBox"></div>`;
-            storyRoot.appendChild(chatBlock);
-            const chatBox = document.getElementById('whatsappBox');
-            const messages = [
-                {text: "We're not even that close…", side: 'left', delay: 500},
-                {text: "Still…", side: 'left', delay: 850},
-                {text: "Talking to you feels easy", side: 'left', delay: 1000},
-                {text: "No pressure… no awkwardness…", side: 'left', delay: 1150},
-                {text: "Just… calm", side: 'left', delay: 1100},
-                {type: 'typing', delay: 1300},
-                {text: "And I don't know why…", side: 'left', delay: 1750},
-                {text: "But I started liking that feeling", side: 'left', delay: 1400}
-            ];
-            let idx = 0;
-            function addMessage(msg, side) {
-                const msgDiv = document.createElement('div');
-                msgDiv.className = `message left`;
-                msgDiv.innerText = msg;
-                chatBox.appendChild(msgDiv);
-                msgDiv.classList.add('vibrate-message');
-                setTimeout(()=> msgDiv.classList.remove('vibrate-message'), 250);
-                if(soundCtx && soundCtx.state === 'running') playMessagePing();
-                chatBox.scrollIntoView({behavior: 'smooth', block: 'nearest'});
-            }
-            function addTypingIndicator() {
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'typing-dots';
-                typingDiv.id = 'tempTypingInd';
-                typingDiv.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
-                chatBox.appendChild(typingDiv);
+
+        function unlock() {
+            const entered = passInput.value.trim().toUpperCase();
+            if (entered === "ANNA") {
+                gate.style.opacity = "0";
                 setTimeout(() => {
-                    const el = document.getElementById('tempTypingInd');
-                    if(el) el.remove();
-                }, 1800);
-            }
-            function processQueue() {
-                if(idx >= messages.length) {
-                    setTimeout(() => startInnerFeelings(), 1000);
-                    return;
-                }
-                const item = messages[idx];
-                if(item.type === 'typing') {
-                    addTypingIndicator();
-                    idx++;
-                    setTimeout(processQueue, 1800);
-                } else {
-                    setTimeout(() => {
-                        addMessage(item.text, item.side);
-                        idx++;
-                        processQueue();
-                    }, item.delay);
-                }
-            }
-            processQueue();
-        }
-        
-        function startInnerFeelings() {
-            const feelBlock = document.createElement('div');
-            feelBlock.className = 'scene-block';
-            feelBlock.innerHTML = `<div class="cinematic-text" id="cinematicFeel"><div class="feel-line">I’m not trying to rush anything…</div><div class="feel-line">I’m not expecting something big…</div><div class="feel-line">I just…</div><div class="feel-line">…don’t want to lose this.</div><div class="feel-line">Because what we have…</div><div class="feel-line">…feels rare.</div></div>`;
-            storyRoot.appendChild(feelBlock);
-            const lines = document.querySelectorAll('.feel-line');
-            lines.forEach((line, i) => { line.style.animationDelay = `${i * 0.35}s`; });
-            // background slightly darkens
-            document.body.style.background = "#03050c";
-            setTimeout(() => startMasterpiece(), 2800);
-        }
-        
-        function startMasterpiece() {
-            const masterBlock = document.createElement('div');
-            masterBlock.className = 'scene-block';
-            masterBlock.innerHTML = `<div class="masterpiece-area" id="masterpieceZone"></div>`;
-            storyRoot.appendChild(masterBlock);
-            const masterZone = document.getElementById('masterpieceZone');
-            const masterLines = [
-                "👉 “I’ll wait…”",
-                "👉 “even if it takes a year…”",
-                "👉 “until the day…”",
-                "👉 “you can say ‘I love you’ to me.”"
-            ];
-            let lineIdx = 0;
-            function showNext() {
-                if(lineIdx >= masterLines.length) {
-                    setTimeout(() => extraMoment(), 1000);
-                    return;
-                }
-                const lineDiv = document.createElement('div');
-                lineDiv.className = 'master-line';
-                lineDiv.innerText = masterLines[lineIdx];
-                masterZone.appendChild(lineDiv);
-                if(lineIdx === masterLines.length-1) {
-                    lineDiv.classList.add('heart-glow');
-                }
-                lineIdx++;
-                setTimeout(showNext, 950);
-            }
-            showNext();
-        }
-        
-        function extraMoment() {
-            const extraDiv = document.createElement('div');
-            extraDiv.className = 'scene-block';
-            extraDiv.innerHTML = `<div class="masterpiece-area" style="background: radial-gradient(ellipse 70% 50% at center, rgba(35,20,60,0.7), transparent);"><div class="master-line" style="animation-delay:0s;">“And even if that day never comes…”</div><div class="master-line" style="animation-delay:0.7s;">“…I’ll still be glad…”</div><div class="master-line" style="animation-delay:1.3s;">“…that I got to know you like this.”</div></div>`;
-            storyRoot.appendChild(extraDiv);
-            setTimeout(() => softEnding(), 3100);
-        }
-        
-        function softEnding() {
-            const endBlock = document.createElement('div');
-            endBlock.className = 'scene-block';
-            endBlock.innerHTML = `<div class="soft-ending-box"><p>No pressure…</p><p>No expectations…</p><p>Just something real…</p><p>…if it ever happens.</p></div>`;
-            storyRoot.appendChild(endBlock);
-            // warmer background (slight pink glow)
-            document.body.style.transition = "background 1.2s";
-            document.body.style.background = "#140f1a";
-            const warmGlow = document.createElement('style');
-            warmGlow.textContent = `.animated-bg { filter: hue-rotate(12deg) brightness(1.02); }`;
-            document.head.appendChild(warmGlow);
-            // add final button
-            finalBtnZone.innerHTML = `<button id="finalSmileBtn" class="final-button">👉 “Just smile… that’s enough for me 😊”</button>`;
-            const smileBtn = document.getElementById('finalSmileBtn');
-            smileBtn.addEventListener('click', finalHeartsAndFade);
-        }
-        
-        function finalHeartsAndFade() {
-            // floating hearts & sparkles
-            for(let i=0;i<44;i++) {
-                const heart = document.createElement('div');
-                const icons = ['❤️','💖','✨','⭐','💫','🌸'];
-                heart.innerHTML = icons[Math.floor(Math.random()*icons.length)];
-                heart.style.position = 'fixed';
-                heart.style.bottom = '5%';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.fontSize = (Math.random() * 28 + 18) + 'px';
-                heart.style.pointerEvents = 'none';
-                heart.style.zIndex = '999';
-                heart.style.animation = `floatUp ${Math.random() * 1.8 + 1.2}s forwards ease-out`;
-                document.body.appendChild(heart);
-                setTimeout(()=> heart.remove(), 2500);
-            }
-            const styleAnim = document.createElement('style');
-            styleAnim.textContent = `@keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-450px) rotate(12deg); opacity: 0; } }`;
-            document.head.appendChild(styleAnim);
-            // screen slowly fades out
-            const fadeOverlay = document.createElement('div');
-            fadeOverlay.style.position = 'fixed';
-            fadeOverlay.style.top = 0;
-            fadeOverlay.style.left = 0;
-            fadeOverlay.style.width = '100%';
-            fadeOverlay.style.height = '100%';
-            fadeOverlay.style.backgroundColor = '#080411';
-            fadeOverlay.style.zIndex = 10000;
-            fadeOverlay.style.opacity = 0;
-            fadeOverlay.style.transition = 'opacity 2.2s ease';
-            fadeOverlay.style.pointerEvents = 'none';
-            document.body.appendChild(fadeOverlay);
-            setTimeout(() => { fadeOverlay.style.opacity = 1; }, 40);
-        }
-        
-        // Password check
-        document.getElementById('unlockButton').addEventListener('click', () => {
-            const inputVal = document.getElementById('pwdInput').value;
-            if(inputVal === "ANNA") {
-                unlockApp();
+                    gate.style.display = "none";
+                    cinemaSite.classList.add("active");
+                    startAmbientMusic();
+                    initParticles();
+                    createFloatingOrbs();
+                    startCinematicFlow();
+                }, 1100);
             } else {
-                const inpField = document.getElementById('pwdInput');
-                inpField.style.borderColor = "#ffa296";
-                setTimeout(() => inpField.style.borderColor = "", 700);
+                errorMsgSpan.innerText = "❀ not yet… the secret key is ANNA";
+                passInput.value = '';
+                passInput.style.borderColor = "#ff6b8b";
+                setTimeout(() => { passInput.style.borderColor = "#ffa0bc"; }, 800);
             }
-        });
-        document.getElementById('pwdInput').addEventListener('keypress', (e) => {
-            if(e.key === 'Enter') document.getElementById('unlockButton').click();
-        });
-        
-        // camera-like slow zoom on body
-        document.body.classList.add('camera-zoom');
-        // parallax depth: background moves slightly slower on mousemove
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth) * 6;
-            const y = (e.clientY / window.innerHeight) * 6;
-            document.querySelector('.animated-bg').style.transform = `translate(${x*0.3}px, ${y*0.2}px) scale(1.02)`;
-        });
+        }
+        unlockBtn.addEventListener('click', unlock);
+        passInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') unlock(); });
+
+        // particle system
+        let particleCanvas, ctx, particles = [], animationId;
+        function initParticles() {
+            particleCanvas = document.getElementById('particleCanvas');
+            if (!particleCanvas) return;
+            function resizeCanvas() { particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight; }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            ctx = particleCanvas.getContext('2d');
+            const PARTICLE_COUNT = 280;
+            for(let i=0; i<PARTICLE_COUNT; i++) {
+                particles.push({
+                    x: Math.random() * particleCanvas.width,
+                    y: Math.random() * particleCanvas.height,
+                    radius: Math.random() * 4 + 0.8,
+                    alpha: Math.random() * 0.7 + 0.2,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.18 + 0.03,
+                    color: `rgba(255, 190, 215, ${0.2+Math.random()*0.6})`
+                });
+            }
+            function draw() {
+                if(!ctx) return;
+                ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                for(let p of particles) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if(p.x < 0) p.x = particleCanvas.width;
+                    if(p.x > particleCanvas.width) p.x = 0;
+                    if(p.y < 0) p.y = particleCanvas.height;
+                    if(p.y > particleCanvas.height) p.y = 0;
+                }
+                animationId = requestAnimationFrame(draw);
+            }
+            draw();
+        }
+        function createFloatingOrbs() {
+            for (let i = 0; i < 9; i++) {
+                const orb = document.createElement('div');
+                orb.className = 'floating-orb';
+                orb.style.width = Math.random() * 250 + 120 + 'px';
+                orb.style.height = orb.style.width;
+                orb.style.left = Math.random() * 100 + '%';
+                orb.style.top = Math.random() * 100 + '%';
+                orb.style.animationDuration = Math.random() * 26 + 18 + 's';
+                orb.style.animationDelay = Math.random() * 7 + 's';
+                document.body.appendChild(orb);
+            }
+        }
+
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart-animation';
+            const icons = ['❤️','💖','🌸','💗','✨','💞','🌙','⭐','🕯️','🌹','💫'];
+            heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+            heart.style.left = Math.random() * 90 + '%';
+            heart.style.bottom = '10px';
+            heart.style.fontSize = (Math.random() * 26 + 18) + 'px';
+            heart.style.position = 'fixed';
+            heart.style.zIndex = '9999';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2100);
+        }
+        function createPetalShower() {
+            for(let i=0;i<12;i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal-shower';
+                petal.innerHTML = ['🌸','🌼','🌺','🍃','✨','💮'][Math.floor(Math.random()*6)];
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.top = '-20px';
+                petal.style.fontSize = (Math.random() * 16 + 14) + 'px';
+                petal.style.position = 'fixed';
+                document.body.appendChild(petal);
+                setTimeout(() => petal.remove(), 1800);
+            }
+        }
+
+        // Main cinematic engine
+        function startCinematicFlow() {
+            const line1El = document.getElementById('hookLine1');
+            const line2El = document.getElementById('hookLine2');
+            const text1 = "I didn't expect this…";
+            const text2 = "…but somehow, you became someone I look forward to.";
+            function typeLine(element, text, callback) {
+                let idx = 0;
+                element.textContent = '';
+                function typeChar() {
+                    if(idx < text.length) {
+                        element.textContent += text.charAt(idx);
+                        idx++;
+                        setTimeout(typeChar, 42);
+                    } else if(callback) callback();
+                }
+                typeChar();
+            }
+            typeLine(line1El, text1, () => { setTimeout(() => { typeLine(line2El, text2); }, 450); });
+            
+            const chatContainer = document.getElementById('chatMessages');
+            const typingDiv = document.getElementById('typingIndicator');
+            const messages = [
+                { type: 'received', text: "We're not even that close…", delayAfter: 1400 },
+                { type: 'sent', text: "But still… I feel comfortable talking to you", delayAfter: 1600 },
+                { type: 'received', text: "It's different… in a good way", delayAfter: 1600 }
+            ];
+            let msgIndex = 0, chatStarted = false;
+            function showNextMessage() {
+                if(msgIndex >= messages.length) return;
+                const msg = messages[msgIndex];
+                typingDiv.style.display = 'flex';
+                setTimeout(() => {
+                    typingDiv.style.display = 'none';
+                    const bubble = document.createElement('div');
+                    bubble.className = `chat-bubble ${msg.type === 'sent' ? 'sent' : 'received'}`;
+                    bubble.textContent = msg.text;
+                    chatContainer.appendChild(bubble);
+                    bubble.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    msgIndex++;
+                    setTimeout(() => { if(msgIndex < messages.length) showNextMessage(); }, msg.delayAfter);
+                }, 1300);
+            }
+            const buildLines = document.querySelectorAll('#emotionalText .build-line');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        const sceneId = entry.target.id;
+                        if(sceneId === 'scene2' && !chatStarted && chatContainer.children.length === 0) { chatStarted = true; showNextMessage(); }
+                        if(sceneId === 'scene3') buildLines.forEach((line, idx) => { setTimeout(() => { line.style.opacity = '1'; line.style.transform = 'translateY(0)'; }, idx * 320); });
+                        if(sceneId === 'scene4') setTimeout(() => { const glowDiv = document.getElementById('heartbeatGlow'); if(glowDiv && !glowDiv.innerHTML) glowDiv.innerHTML = '<div class="glowing-heartbeat" style="font-size:1.2rem;">❤️ patience is sincere ❤️</div>'; }, 400);
+                    }
+                });
+            }, { threshold: 0.45 });
+            document.querySelectorAll('.scene').forEach(scene => observer.observe(scene));
+            
+            const parallaxBg = document.getElementById('parallaxBg');
+            window.addEventListener('scroll', () => { if(parallaxBg) parallaxBg.style.transform = `translateY(${window.scrollY * 0.15}px) scale(1.02)`; });
+            
+            // Final button
+            const finalBtn = document.getElementById('finalSmileBtn');
+            const extraDiv = document.getElementById('extraSurpriseContainer');
+            finalBtn.addEventListener('click', () => {
+                for(let i=0;i<48;i++) setTimeout(() => createFloatingHeart(), i*40);
+                createPetalShower();
+                if(extraDiv && !extraDiv.innerHTML) {
+                    const endingMsg = document.createElement('div');
+                    endingMsg.style.background = 'rgba(0,0,0,0.65)'; endingMsg.style.backdropFilter = 'blur(12px)';
+                    endingMsg.style.padding = '12px 28px'; endingMsg.style.borderRadius = '70px'; endingMsg.style.marginTop = '20px';
+                    endingMsg.style.fontSize = '0.9rem'; endingMsg.innerHTML = '✨ a soft moment, nothing else matters ✨';
+                    extraDiv.appendChild(endingMsg);
+                    setTimeout(() => { endingMsg.style.opacity = '0'; setTimeout(() => endingMsg.remove(), 1500); }, 2800);
+                }
+            });
+            
+            const quietElem = document.getElementById('quietExtra');
+            if(quietElem) quietElem.addEventListener('click', () => { createFloatingHeart(); createPetalShower(); const whisper = document.createElement('div'); whisper.style.position='fixed'; whisper.style.bottom='18%'; whisper.style.left='50%'; whisper.style.transform='translateX(-50%)'; whisper.style.background='rgba(0,0,0,0.7)'; whisper.style.padding='8px 20px'; whisper.style.borderRadius='50px'; whisper.innerText='🌙 no pressure. just something real.'; document.body.appendChild(whisper); setTimeout(() => whisper.remove(), 2200); });
+            
+            // Interactive widgets
+            const wishStar = document.getElementById('wishStar');
+            let wishCount = 0;
+            wishStar.addEventListener('click', () => { wishCount++; for(let i=0;i<18;i++) createFloatingHeart(); const starMsg = document.createElement('div'); starMsg.style.position='fixed'; starMsg.style.top='25%'; starMsg.style.right='40px'; starMsg.style.background='rgba(0,0,0,0.6)'; starMsg.style.padding='6px 16px'; starMsg.style.borderRadius='40px'; starMsg.innerText=`⭐ wish ${wishCount} · silently kept`; document.body.appendChild(starMsg); setTimeout(() => starMsg.remove(), 1800); });
+            
+            const lantern = document.getElementById('lanternMsg');
+            const phrases = ["🕯️ time doesn't rush", "🌸 a quiet year is still precious", "🌙 patience is gentle", "✨ no need to hurry", "🍃 feelings can grow slowly", "💫 your presence is enough"];
+            lantern.addEventListener('click', () => { const rand = phrases[Math.floor(Math.random() * phrases.length)]; const floatMsg = document.createElement('div'); floatMsg.style.position='fixed'; floatMsg.style.bottom='90px'; floatMsg.style.left='40px'; floatMsg.style.background='rgba(30,20,48,0.85)'; floatMsg.style.backdropFilter='blur(8px)'; floatMsg.style.padding='8px 18px'; floatMsg.style.borderRadius='40px'; floatMsg.innerText = rand; document.body.appendChild(floatMsg); setTimeout(() => floatMsg.remove(), 2000); createFloatingHeart(); });
+            
+            const candle = document.getElementById('patienceCandle');
+            let candleLit = false;
+            candle.addEventListener('click', () => { if(!candleLit) { candle.innerHTML = '🕯️🔥'; candleLit = true; const flameMsg = document.createElement('div'); flameMsg.style.position='fixed'; flameMsg.style.bottom='150px'; flameMsg.style.right='40px'; flameMsg.style.background='rgba(255,140,80,0.35)'; flameMsg.style.padding='5px 14px'; flameMsg.style.borderRadius='30px'; flameMsg.innerText='🔥 a quiet flame of patience burns'; document.body.appendChild(flameMsg); setTimeout(() => flameMsg.remove(), 2500); for(let i=0;i<12;i++) createFloatingHeart(); } else { candle.innerHTML = '🕯️'; candleLit = false; } });
+            
+            const jar = document.getElementById('memoryJar');
+            let jarCount = 0;
+            jar.addEventListener('click', () => { jarCount++; jar.innerHTML = `🏺✨ ${jarCount}`; const jarMsg = document.createElement('div'); jarMsg.style.position='fixed'; jarMsg.style.bottom='150px'; jarMsg.style.left='40px'; jarMsg.style.background='rgba(100,160,210,0.4)'; jarMsg.style.padding='5px 14px'; jarMsg.style.borderRadius='30px'; jarMsg.innerText = `📦 memory ${jarCount} · softly kept`; document.body.appendChild(jarMsg); setTimeout(() => jarMsg.remove(), 2000); createFloatingHeart(); });
+            
+            // music toggle
+            const musicBtn = document.getElementById('musicToggleBtn');
+            musicBtn.addEventListener('click', () => { musicEnabled = !musicEnabled; if(masterGain) masterGain.gain.value = musicEnabled ? 0.12 : 0; musicBtn.innerHTML = musicEnabled ? '🎵 melody drifts' : '🔇 silence falls'; if(musicEnabled && !musicLoopActive && audioCtx) { musicLoopActive=true; startAmbientMusic(); } });
+            
+            // secret letter: reveals poetic note
+            const secretBtn = document.getElementById('secretLetterBtn');
+            secretBtn.addEventListener('click', () => { createPetalShower(); for(let i=0;i<8;i++) createFloatingHeart(); const secretMsg = document.createElement('div'); secretMsg.style.position='fixed'; secretMsg.style.top='40%'; secretMsg.style.left='50%'; secretMsg.style.transform='translate(-50%, -50%)'; secretMsg.style.background='rgba(10,5,20,0.9)'; secretMsg.style.backdropFilter='blur(16px)'; secretMsg.style.padding='20px 32px'; secretMsg.style.borderRadius='48px'; secretMsg.style.border='1px solid #ffb7c5'; secretMsg.style.textAlign='center'; secretMsg.style.zIndex='10000'; secretMsg.innerHTML = '✧ "In the garden of patience, every silent moment blooms into a constellation of hope." ✧'; document.body.appendChild(secretMsg); setTimeout(() => secretMsg.remove(), 3800); });
+            
+            setInterval(() => { const timeEl = document.getElementById('timeSands'); if(timeEl) { timeEl.style.opacity = '0.6'; setTimeout(() => { if(timeEl) timeEl.style.opacity = '1'; }, 300); } }, 5000);
+        }
     })();
 </script>
 </body>
