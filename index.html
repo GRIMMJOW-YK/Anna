@@ -1,627 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Heart Catchers 💕</title>
-<style>
-  :root{ --pink:#ff4d8d; --plum:#5b2a52; }
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%;margin:0}
-  body{
-    display:flex;align-items:center;justify-content:center;
-    background:radial-gradient(circle at 50% 0%,#ffe3f0,#f7c8e0 40%,#e7b7e0 100%);
-    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-    color:var(--plum);overflow:hidden;padding:12px;
-  }
-  .wrap{
-    position:relative;width:min(96vw,900px);aspect-ratio:4/3;
-    border-radius:24px;overflow:hidden;touch-action:none;
-    box-shadow:0 24px 60px rgba(120,40,90,.35),0 0 0 6px rgba(255,255,255,.55);
-  }
-  canvas{display:block;width:100%;height:100%}
-  .overlay{
-    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    background:rgba(60,20,55,.55);backdrop-filter:blur(6px);padding:16px;text-align:center;
-  }
-  .overlay.hidden{display:none}
-  .panel{
-    background:linear-gradient(180deg,#fff,#ffeef6);
-    border-radius:22px;padding:26px 24px;max-width:430px;width:100%;
-    box-shadow:0 18px 40px rgba(90,20,70,.3);animation:pop .25s ease;
-  }
-  @keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
-  .panel.hidden{display:none}
-  h1{margin:0 0 6px;font-size:30px;letter-spacing:-.5px}
-  .sub{margin:0 0 18px;font-size:14px;opacity:.7}
-  button{
-    font:inherit;font-weight:700;cursor:pointer;border:0;
-    padding:14px 22px;border-radius:14px;width:100%;
-    background:linear-gradient(180deg,#ff6ba3,#e8266f);color:#fff;
-    box-shadow:0 6px 0 #b8195a,0 10px 18px rgba(200,30,90,.35);
-    transition:transform .08s,box-shadow .08s;
-  }
-  button:active{transform:translateY(4px);box-shadow:0 2px 0 #b8195a,0 4px 10px rgba(200,30,90,.3)}
-  button.ghost{background:linear-gradient(180deg,#fff,#f3e6f7);color:var(--plum);box-shadow:0 6px 0 #d9c3e4,0 10px 18px rgba(120,60,140,.18)}
-  .row{display:flex;gap:10px;margin-top:12px}
-  input{
-    font:inherit;font-weight:700;text-align:center;text-transform:uppercase;
-    letter-spacing:4px;padding:14px;border-radius:14px;border:2px solid #f0c9e0;
-    width:100%;outline:none;background:#fff;color:var(--plum);
-  }
-  input:focus{border-color:var(--pink)}
-  .row input{flex:1}
-  .row button{width:auto;flex:0 0 auto;padding-left:26px;padding-right:26px}
-  .status{min-height:20px;font-size:13px;margin:14px 0 0;opacity:.85;font-weight:600}
-  .code{font-size:44px;font-weight:800;letter-spacing:10px;color:var(--pink);margin:8px 0 4px;text-transform:uppercase}
-  .hint{font-size:13px;opacity:.65;margin-top:16px;line-height:1.5}
-  .big{font-size:52px;font-weight:800;color:var(--pink);margin:6px 0}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sansad Showdown - 2D Prototype</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        #game-container {
+            position: relative;
+            width: 800px;
+            height: 400px;
+            background: linear-gradient(to bottom, #f2a65a, #ffcc66);
+            overflow: hidden;
+            border: 4px solid #333;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        /* UI - Health and Shakti Bars */
+        .ui-container {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+
+        .player-ui {
+            width: 40%;
+        }
+
+        .name {
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #000;
+            margin-bottom: 5px;
+        }
+
+        .health-bar-bg {
+            width: 100%;
+            height: 20px;
+            background-color: #333;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .health-bar {
+            height: 100%;
+            width: 100%;
+            background-color: #ffcc00;
+            transition: width 0.2s;
+        }
+
+        .shakti-bar-bg {
+            width: 80%;
+            height: 10px;
+            background-color: #333;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .shakti-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #00ccff;
+            transition: width 0.2s;
+        }
+
+        /* Controls Overlay */
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+        
+        .btn {
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 5px;
+            border: 2px solid white;
+        }
+
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            z-index: 10;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #ffcc00;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-<div class="wrap" id="wrap">
-  <canvas id="cv"></canvas>
 
-  <div class="overlay" id="overlay">
+    <div id="game-container">
+        <!-- UI Elements -->
+        <div class="ui-container">
+            <div class="player-ui">
+                <div class="name">MITRAMAN (YOU)</div>
+                <div class="health-bar-bg"><div class="health-bar" id="p1-health"></div></div>
+                <div class="shakti-bar-bg"><div class="shakti-bar" id="p1-shakti"></div></div>
+            </div>
+            <div class="player-ui" style="text-align: right;">
+                <div class="name">YATRA BOY (CPU)</div>
+                <div class="health-bar-bg"><div class="health-bar" id="p2-health" style="float: right;"></div></div>
+                <div class="shakti-bar-bg" style="float: right;"><div class="shakti-bar" id="p2-shakti" style="float: right;"></div></div>
+            </div>
+        </div>
 
-    <div class="panel" id="pMenu">
-      <h1>💕 Heart Catchers 💕</h1>
-      <p class="sub">Catch the hearts together — dodge the bombs!</p>
-      <button id="btnCreate">Create Room</button>
-      <div class="row">
-        <input id="codeInput" maxlength="4" placeholder="CODE" autocomplete="off" autocapitalize="characters">
-        <button id="btnJoin">Join</button>
-      </div>
-      <p class="status" id="status"></p>
-      <p class="hint">One of you taps <b>Create Room</b> and shares the 4-letter code.<br>
-      The other types the code and taps <b>Join</b>.<br>
-      Move with <b>← →</b> or <b>A / D</b> (or drag on touch).</p>
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+        <!-- On-screen Controls (Visual only for this prototype) -->
+        <div class="controls">
+            <div>
+                <div class="btn" style="margin-bottom: 5px;">W</div>
+                <div style="display:flex;">
+                    <div class="btn">A</div>
+                    <div class="btn">S</div>
+                    <div class="btn">D</div>
+                </div>
+            </div>
+            <div style="display:flex; align-items: flex-end;">
+                <div class="btn" style="background: #ff6666;">P<br>F</div>
+                <div class="btn" style="background: #66b3ff;">K<br>G</div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over">
+            <h2 id="winner-text">MITRAMAN WINS!</h2>
+            <button onclick="resetGame()">PLAY AGAIN</button>
+        </div>
     </div>
 
-    <div class="panel hidden" id="pRoom">
-      <h1>Room created</h1>
-      <p class="sub">Send this code to your partner</p>
-      <div class="code" id="roomCode">----</div>
-      <p class="status" id="roomStatus">Waiting for your partner to join…</p>
-      <button class="ghost" id="btnCancelRoom" style="margin-top:18px">Cancel</button>
-    </div>
-
-    <div class="panel hidden" id="pOver">
-      <h1 id="overTitle">Time's up!</h1>
-      <div class="big" id="overScore">0</div>
-      <p class="sub">hearts collected together</p>
-      <button id="btnAgain">Play Again</button>
-      <button class="ghost" id="btnQuit" style="margin-top:10px">Back to menu</button>
-    </div>
-
-  </div>
-</div>
-
-<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
-<script>
-(() => {
-'use strict';
-
-/* ================= Canvas ================= */
-const cv = document.getElementById('cv');
-const ctx = cv.getContext('2d');
-const W = 800, H = 600;
-const DPR = Math.min(window.devicePixelRatio || 1, 2);
-cv.width = W * DPR; cv.height = H * DPR;
-ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-
-/* ================= Constants ================= */
-const BW = 112, BH = 54, BY = H - 100;   // basket size & Y
-const PREFIX = 'hcat-v1-';               // peer id prefix
-const DURATION = 60;                     // seconds per round
-
-/* ================= DOM ================= */
-const overlay   = document.getElementById('overlay');
-const pMenu     = document.getElementById('pMenu');
-const pRoom     = document.getElementById('pRoom');
-const pOver     = document.getElementById('pOver');
-const statusEl  = document.getElementById('status');
-const roomCodeEl= document.getElementById('roomCode');
-const roomStat  = document.getElementById('roomStatus');
-const overScore = document.getElementById('overScore');
-const overTitle = document.getElementById('overTitle');
-const btnAgain  = document.getElementById('btnAgain');
-const btnQuit   = document.getElementById('btnQuit');
-const btnCancel = document.getElementById('btnCancelRoom');
-const codeInput = document.getElementById('codeInput');
-
-/* ================= Game state (authoritative on host) ================= */
-const G = {
-  running:false, over:false,
-  score:0, lives:3, time:DURATION, level:1,
-  p1:{x: W/2 - 260}, p2:{x: W/2 + 148},
-  objs:[], events:[], spawnT:0.6, shake:0
-};
-
-/* ================= Net state ================= */
-let peer = null, conn = null, isHost = false;
-let remoteInput = { l:false, r:false };
-let view = null;               // guest's latest snapshot
-let inputTimer = null;
-let screen = 'menu';
-
-/* ================= Input ================= */
-const keys = Object.create(null);
-addEventListener('keydown', e => {
-  const k = e.key.toLowerCase();
-  if (['arrowleft','arrowright','a','d',' '].includes(k)) e.preventDefault();
-  keys[k] = true;
-});
-addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
-
-let touchX = null;
-const wrap = document.getElementById('wrap');
-function toLogicalX(clientX){
-  const r = cv.getBoundingClientRect();
-  return (clientX - r.left) / r.width * W;
-}
-wrap.addEventListener('touchstart', e => { touchX = toLogicalX(e.touches[0].clientX); }, {passive:true});
-wrap.addEventListener('touchmove',  e => { touchX = toLogicalX(e.touches[0].clientX); }, {passive:true});
-wrap.addEventListener('touchend',   () => { touchX = null; }, {passive:true});
-wrap.addEventListener('touchcancel',() => { touchX = null; }, {passive:true});
-
-function myBasketX(){
-  if (isHost) return G.p1.x;
-  return view ? view.p2 : W/2 - BW/2;
-}
-function localInput(){
-  let l = !!(keys['arrowleft'] || keys['a']);
-  let r = !!(keys['arrowright'] || keys['d']);
-  if (touchX !== null){
-    const c = myBasketX() + BW/2;
-    if (touchX < c - 12){ l = true; r = false; }
-    else if (touchX > c + 12){ r = true; l = false; }
-    else { l = false; r = false; }
-  }
-  return { l, r };
-}
-
-/* ================= Helpers ================= */
-function roundRect(x,y,w,h,r){
-  r = Math.min(r, w/2, h/2);
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);
-  ctx.arcTo(x+w,y,x+w,y+h,r);
-  ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);
-  ctx.arcTo(x,y,x+w,y,r);
-  ctx.closePath();
-}
-function randCode(){
-  const c = 'abcdefghjkmnpqrstuvwxyz23456789';
-  let s = '';
-  for (let i=0;i<4;i++) s += c[Math.floor(Math.random()*c.length)];
-  return s;
-}
-
-/* ================= Screens ================= */
-function setScreen(s){
-  screen = s;
-  overlay.classList.toggle('hidden', s === 'play');
-  pMenu.classList.toggle('hidden', s !== 'menu');
-  pRoom.classList.toggle('hidden', s !== 'room');
-  pOver.classList.toggle('hidden', s !== 'over');
-}
-function setStatus(t){ statusEl.textContent = t || ''; }
-
-/* ================= Particles ================= */
-const parts = [];
-function spawnParts(x,y,type){
-  const n = type === 2 ? 18 : 10;
-  for (let i=0;i<n;i++){
-    const a = Math.random()*Math.PI*2, sp = 60 + Math.random()*200;
-    parts.push({
-      x, y,
-      vx: Math.cos(a)*sp, vy: Math.sin(a)*sp - 70,
-      life: .75, max: .75,
-      c: type === 2 ? '#ff5252' : type === 1 ? '#ffcf3f' : '#ff5fa2'
-    });
-  }
-}
-function updateParts(dt){
-  for (let i=parts.length-1;i>=0;i--){
-    const p = parts[i];
-    p.x += p.vx*dt; p.y += p.vy*dt; p.vy += 500*dt; p.life -= dt;
-    if (p.life <= 0) parts.splice(i,1);
-  }
-}
-function drawParts(){
-  for (const p of parts){
-    ctx.globalAlpha = Math.max(0, p.life/p.max);
-    ctx.fillStyle = p.c;
-    ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, 7); ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-}
-
-/* ================= Background decoration ================= */
-const deco = [];
-for (let i=0;i<16;i++){
-  deco.push({
-    x: Math.random()*W, y: Math.random()*H,
-    s: 14 + Math.random()*26, v: 10 + Math.random()*24,
-    a: .07 + Math.random()*.10,
-    e: Math.random() < .5 ? '💗' : '💕'
-  });
-}
-function updateDeco(dt){
-  for (const d of deco){
-    d.y += d.v*dt;
-    if (d.y > H + 40){ d.y = -40; d.x = Math.random()*W; }
-  }
-}
-
-/* ================= Host simulation ================= */
-function resetGame(){
-  G.running = true; G.over = false;
-  G.score = 0; G.lives = 3; G.time = DURATION; G.level = 1;
-  G.p1.x = W/2 - 260; G.p2.x = W/2 + 148;
-  G.objs = []; G.events = []; G.spawnT = .6; G.shake = 0;
-  parts.length = 0;
-}
-
-function moveBasket(p, inp, dt){
-  const sp = 560;
-  let dx = 0;
-  if (inp.l) dx -= 1;
-  if (inp.r) dx += 1;
-  p.x += dx*sp*dt;
-  p.x = Math.max(0, Math.min(W - BW, p.x));
-}
-
-function spawnObj(){
-  const roll = Math.random();
-  let type = 0;                      // 0 heart, 1 gold, 2 bomb
-  if (roll < .07) type = 1;
-  else if (roll < .30) type = 2;
-  G.objs.push({
-    x: 40 + Math.random()*(W-80),
-    y: -30,
-    v: 130 + G.level*22 + Math.random()*50,
-    r: 18,
-    type
-  });
-}
-
-function overlaps(o, p){
-  return o.x + o.r > p.x && o.x - o.r < p.x + BW &&
-         o.y + o.r > BY && o.y - o.r < BY + BH;
-}
-
-function collect(o, i){
-  G.objs.splice(i,1);
-  spawnParts(o.x, o.y, o.type);
-  if (o.type === 2){
-    G.lives--; G.shake = 1;
-    G.events.push([Math.round(o.x), Math.round(o.y), 2]);
-    if (G.lives <= 0) endGame();
-  } else {
-    G.score += (o.type === 1 ? 5 : 1);
-    G.events.push([Math.round(o.x), Math.round(o.y), o.type]);
-  }
-}
-
-function updateHost(dt){
-  const inp1 = localInput();
-  const inp2 = remoteInput;
-
-  G.time -= dt;
-  if (G.time <= 0){ G.time = 0; endGame(); return; }
-  G.level = 1 + Math.floor((DURATION - G.time)/14);
-
-  moveBasket(G.p1, inp1, dt);
-  moveBasket(G.p2, inp2, dt);
-
-  G.spawnT -= dt;
-  if (G.spawnT <= 0){
-    G.spawnT = Math.max(.30, .90 - G.level*.09);
-    spawnObj();
-    if (G.level >= 3 && Math.random() < .35) spawnObj();
-  }
-
-  for (let i = G.objs.length-1; i >= 0; i--){
-    const o = G.objs[i];
-    o.y += o.v*dt;
-    if (o.y - o.r > H){ G.objs.splice(i,1); continue; }
-    if (overlaps(o, G.p1) || overlaps(o, G.p2)) collect(o, i);
-  }
-
-  G.shake = Math.max(0, G.shake - dt*3);
-}
-
-function hostView(){
-  return {
-    s: G.score, l: G.lives, tm: G.time, lv: G.level, sk: G.shake, over: G.over,
-    p1: G.p1.x, p2: G.p2.x,
-    o: G.objs.map(o => [o.x, o.y, o.type])
-  };
-}
-
-/* ================= Networking ================= */
-let sendAcc = 0;
-function sendTick(dt){
-  if (!conn || !conn.open){ G.events.length = 0; return; }
-  sendAcc += dt;
-  if (sendAcc < 0.033) return;
-  sendAcc = 0;
-  conn.send({
-    s: G.score, l: G.lives, tm: +G.time.toFixed(1), lv: G.level,
-    sk: +G.shake.toFixed(2), over: G.over,
-    p1: +G.p1.x.toFixed(1), p2: +G.p2.x.toFixed(1),
-    o: G.objs.map(o => [Math.round(o.x), Math.round(o.y), o.type]),
-    ev: G.events.length ? G.events : undefined
-  });
-  G.events = [];
-}
-
-function endGame(){
-  if (G.over) return;
-  G.running = false; G.over = true;
-  if (conn && conn.open){
-    conn.send({
-      s: G.score, l: G.lives, tm: 0, lv: G.level, sk: 0, over: true,
-      p1: +G.p1.x.toFixed(1), p2: +G.p2.x.toFixed(1),
-      o: G.objs.map(o => [Math.round(o.x), Math.round(o.y), o.type]),
-      ev: G.events
-    });
-    G.events = [];
-  }
-  showOverHost();
-}
-
-function leaveAll(){
-  if (inputTimer){ clearInterval(inputTimer); inputTimer = null; }
-  try { if (conn) conn.close(); } catch(e){}
-  try { if (peer) peer.destroy(); } catch(e){}
-  conn = null; peer = null; isHost = false; view = null;
-  G.running = false; G.over = false; G.objs = []; parts.length = 0;
-  setScreen('menu');
-}
-
-function onDisconnect(){
-  if (screen === 'menu') return;
-  leaveAll();
-  setStatus('Your partner disconnected.');
-}
-
-/* ---- Host ---- */
-document.getElementById('btnCreate').onclick = () => {
-  setStatus('Creating room…');
-  const code = randCode();
-  peer = new Peer(PREFIX + code, { debug: 1 });
-
-  peer.on('open', () => {
-    isHost = true;
-    roomCodeEl.textContent = code;
-    roomStat.textContent = 'Waiting for your partner to join…';
-    setScreen('room');
-  });
-
-  peer.on('connection', c => {
-    if (conn && conn.open){ c.close(); return; }
-    conn = c;
-    conn.on('open', () => {
-      setStatus('');
-      resetGame();
-      setScreen('play');
-    });
-    conn.on('data', d => {
-      if (d && typeof d.l === 'boolean') remoteInput = { l: d.l, r: d.r };
-    });
-    conn.on('close', onDisconnect);
-    conn.on('error', onDisconnect);
-  });
-
-  peer.on('error', e => {
-    if (e.type === 'unavailable-id'){
-      try { peer.destroy(); } catch(_){}
-      document.getElementById('btnCreate').onclick();
-      return;
-    }
-    setStatus('Connection error: ' + e.type);
-    setScreen('menu');
-  });
-};
-
-/* ---- Guest ---- */
-document.getElementById('btnJoin').onclick = () => {
-  const code = codeInput.value.trim().toLowerCase();
-  if (code.length !== 4){ setStatus('Enter the 4-letter code.'); return; }
-  setStatus('Connecting…');
-
-  peer = new Peer({ debug: 1 });
-
-  peer.on('open', () => {
-    conn = peer.connect(PREFIX + code, { reliable: true });
-
-    conn.on('open', () => {
-      isHost = false;
-      setStatus('');
-      if (inputTimer) clearInterval(inputTimer);
-      inputTimer = setInterval(() => {
-        if (conn && conn.open) conn.send(localInput());
-      }, 50);
-      // wait for the first snapshot before showing the game
-    });
-
-    conn.on('data', d => {
-      view = d;
-      if (d.ev) for (const e of d.ev) spawnParts(e[0], e[1], e[2]);
-      if (d.over){
-        if (screen !== 'over') showOverGuest(d.s);
-      } else if (screen !== 'play'){
-        setScreen('play');
-      }
-    });
-
-    conn.on('close', onDisconnect);
-    conn.on('error', onDisconnect);
-  });
-
-  peer.on('error', e => {
-    if (e.type === 'peer-unavailable') setStatus('Room not found — check the code.');
-    else setStatus('Connection error: ' + e.type);
-    try { if (peer) peer.destroy(); } catch(_){}
-    peer = null; conn = null;
-  });
-};
-
-/* ---- Over panels ---- */
-function showOverHost(){
-  overTitle.textContent = G.lives <= 0 ? 'Boom! 💣' : "Time's up! ⏰";
-  overScore.textContent = G.score;
-  btnAgain.style.display = '';
-  btnAgain.textContent = 'Play Again';
-  setScreen('over');
-}
-function showOverGuest(score){
-  overTitle.textContent = "Time's up! ⏰";
-  overScore.textContent = score;
-  btnAgain.style.display = 'none';
-  const note = document.querySelector('#pOver .sub');
-  if (note) note.textContent = 'waiting for your partner to start again…';
-  setScreen('over');
-}
-
-btnAgain.onclick = () => {
-  if (!isHost) return;
-  resetGame();
-  setScreen('play');
-};
-btnQuit.onclick = leaveAll;
-btnCancel.onclick = leaveAll;
-
-/* ================= Rendering ================= */
-function drawBg(){
-  const g = ctx.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, '#ffc6e0');
-  g.addColorStop(.55, '#ffd9e8');
-  g.addColorStop(1, '#ffeccf');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, W, H);
-
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  for (const d of deco){
-    ctx.globalAlpha = d.a;
-    ctx.font = d.s + 'px serif';
-    ctx.fillText(d.e, d.x, d.y);
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawBasket(x, c1, c2, label){
-  const y = BY;
-  ctx.fillStyle = 'rgba(90,30,70,.14)';
-  roundRect(x + 6, y + 10, BW, BH, 16); ctx.fill();
-
-  const g = ctx.createLinearGradient(x, y, x, y + BH);
-  g.addColorStop(0, c1); g.addColorStop(1, c2);
-  ctx.fillStyle = g;
-  roundRect(x, y, BW, BH, 16); ctx.fill();
-
-  ctx.fillStyle = 'rgba(255,255,255,.55)';
-  roundRect(x + 8, y + 7, BW - 16, 10, 5); ctx.fill();
-
-  ctx.font = '22px serif';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText('💗', x + BW/2, y + BH/2 + 5);
-
-  ctx.font = 'bold 14px system-ui,sans-serif';
-  ctx.fillStyle = 'rgba(91,42,82,.75)';
-  ctx.fillText(label, x + BW/2, y + BH + 18);
-}
-
-function drawHud(v){
-  ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-  ctx.font = 'bold 26px system-ui,sans-serif';
-  ctx.fillStyle = '#5b2a52';
-  ctx.fillText('Score ' + v.s, 24, 20);
-
-  const bw = 260, bx = (W - bw)/2, by = 26;
-  ctx.fillStyle = 'rgba(255,255,255,.65)';
-  roundRect(bx, by, bw, 14, 7); ctx.fill();
-  ctx.fillStyle = '#ff4d8d';
-  roundRect(bx, by, Math.max(0, bw * (v.tm / DURATION)), 14, 7); ctx.fill();
-
-  ctx.textAlign = 'center';
-  ctx.font = 'bold 15px system-ui,sans-serif';
-  ctx.fillStyle = '#5b2a52';
-  ctx.fillText(Math.ceil(v.tm) + 's', W/2, by + 20);
-
-  ctx.textAlign = 'right';
-  ctx.font = '24px serif';
-  ctx.fillText('❤️'.repeat(Math.max(0, v.l)), W - 24, 18);
-
-  ctx.textAlign = 'center';
-  ctx.font = 'bold 14px system-ui,sans-serif';
-  ctx.fillStyle = 'rgba(91,42,82,.55)';
-  ctx.fillText('LEVEL ' + v.lv, W/2, 70);
-}
-
-function drawScene(v){
-  ctx.save();
-  if (v.sk > 0){
-    ctx.translate((Math.random()-.5)*12*v.sk, (Math.random()-.5)*12*v.sk);
-  }
-
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  for (const o of v.o){
-    ctx.font = '34px serif';
-    ctx.fillText(o[2] === 2 ? '💣' : o[2] === 1 ? '💎' : '💗', o[0], o[1]);
-  }
-
-  const p1Label = isHost ? 'You' : 'Partner';
-  const p2Label = isHost ? 'Partner' : 'You';
-  drawBasket(v.p1, '#ff8fb1', '#e8467c', p1Label);
-  drawBasket(v.p2, '#a394ff', '#5f45d6', p2Label);
-
-  ctx.restore();
-  drawHud(v);
-  drawParts();
-}
-
-function render(){
-  drawBg();
-  const v = isHost ? hostView() : view;
-  if (!v) return;
-  drawScene(v);
-}
-
-/* ================= Main loop ================= */
-let prevTs = 0;
-function loop(ts){
-  requestAnimationFrame(loop);
-  if (!prevTs) prevTs = ts;
-  let dt = (ts - prevTs) / 1000;
-  prevTs = ts;
-  if (dt > 0.05) dt = 0.05;
-
-  updateParts(dt);
-  updateDeco(dt);
-
-  if (isHost && G.running){
-    updateHost(dt);
-    sendTick(dt);
-  }
-
-  render();
-}
-requestAnimationFrame(loop);
-
-/* ================= Init ================= */
-setScreen('menu');
-addEventListener('beforeunload', () => {
-  try { if (conn) conn.close(); } catch(e){}
-  try { if (peer) peer.destroy(); } catch(e){}
-});
-
-})();
-</script>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const p1HealthEl = document.getElementById('p1-health');
+        const p2HealthEl = document.getElementById('p2-health');
+        const p1ShaktiEl = document.getElementById('p1-shakti');
+        const p2ShaktiEl = document.getElementById('p2-shakti');
+        const gameOverScreen = document.getElementById('game-over');
+        const winnerText = document.getElementById('winner-text');
+
+        // Game State
+        let gameRunning = true;
+        const gravity = 0.5;
+        const groundY = 330;
+
+        // Input Handling
+        const keys = {};
+        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        // Fighter Class
+        class Fighter {
+            constructor(x, y, color, isPlayer) {
+                this.x = x;
+                this.y = y;
+                this.width = 40;
+                this.height = 70;
+                this.color = color;
+                this.vy = 0;
+                this.speed = 4;
+                this.isPlayer = isPlayer;
+                this.health = 100;
+                this.shakti = 0;
+                this.facing = isPlayer ? 1 : -1;
+                this.isAttacking = false;
+                this.attackTimer = 0;
+                this.attackType = '';
+                this.hitCooldown = 0;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+                
+                // Draw "head"
+                ctx.fillStyle = '#ffdbac';
+                ctx.beginPath();
+                ctx.arc(this.x + this.width/2, this.y - 10, 15, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw attack hitbox
+                if (this.isAttacking) {
+                    ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                    if (this.attackType === 'punch') {
+                        let hitX = this.facing === 1 ? this.x + this.width : this.x - 30;
+                        ctx.fillRect(hitX, this.y + 10, 30, 20);
+                    } else if (this.attackType === 'kick') {
+                        let hitX = this.facing === 1 ? this.x + this.width : this.x - 40;
+                        ctx.fillRect(hitX, this.y + 40, 40, 20);
+                    }
+                }
+            }
+
+            update() {
+                // Gravity
+                this.y += this.vy;
+                if (this.y + this.height < groundY) {
+                    this.vy += gravity;
+                } else {
+                    this.y = groundY - this.height;
+                    this.vy = 0;
+                }
+
+                // Attack cooldown
+                if (this.hitCooldown > 0) this.hitCooldown--;
+                
+                if (this.isAttacking) {
+                    this.attackTimer--;
+                    if (this.attackTimer <= 0) this.isAttacking = false;
+                }
+
+                // Player Controls
+                if (this.isPlayer && gameRunning) {
+                    if (keys['a'] && this.x > 0) { this.x -= this.speed; this.facing = -1; }
+                    if (keys['d'] && this.x < canvas.width - this.width) { this.x += this.speed; this.facing = 1; }
+                    if (keys['w'] && this.y >= groundY - this.height) { this.vy = -10; }
+                    
+                    // Attacks
+                    if (!this.isAttacking) {
+                        if (keys['f']) this.attack('punch');
+                        if (keys['g']) this.attack('kick');
+                    }
+                }
+            }
+
+            attack(type) {
+                this.isAttacking = true;
+                this.attackType = type;
+                this.attackTimer = 15; // frames
+                this.hitCooldown = 30; 
+                checkHit(this, this.isPlayer ? enemy : player, type);
+            }
+        }
+
+        // Initialize Fighters
+        let player = new Fighter(200, groundY - 70, '#f28c28', true); // Orange (Mitraman)
+        let enemy = new Fighter(550, groundY - 70, '#e0e0e0', false); // White (Yatra Boy)
+
+        // Basic AI for Enemy
+        function updateAI() {
+            if (!gameRunning) return;
+            
+            let distance = Math.abs(player.x - enemy.x);
+            
+            // Face the player
+            enemy.facing = player.x > enemy.x ? 1 : -1;
+
+            // Move towards player if far
+            if (distance > 80) {
+                if (enemy.facing === 1) enemy.x += 2;
+                if (enemy.facing === -1) enemy.x -= 2;
+            } 
+            // Attack if close
+            else if (!enemy.isAttacking && enemy.hitCooldown <= 0) {
+                if (Math.random() < 0.05) { // 5% chance per frame to attack
+                    enemy.attack(Math.random() < 0.5 ? 'punch' : 'kick');
+                }
+            }
+        }
+
+        // Collision Detection & Damage
+        function checkHit(attacker, defender, type) {
+            // Simple AABB collision for the hitbox
+            let hitX, hitW;
+            if (type === 'punch') {
+                hitX = attacker.facing === 1 ? attacker.x + attacker.width : attacker.x - 30;
+                hitW = 30;
+            } else {
+                hitX = attacker.facing === 1 ? attacker.x + attacker.width : attacker.x - 40;
+                hitW = 40;
+            }
+            
+            let hitY = type === 'punch' ? attacker.y + 10 : attacker.y + 40;
+            let hitH = 20;
+
+            if (
+                hitX < defender.x + defender.width &&
+                hitX + hitW > defender.x &&
+                hitY < defender.y + defender.height &&
+                hitY + hitH > defender.y
+            ) {
+                // Hit landed!
+                if (defender.hitCooldown <= 0) {
+                    let damage = type === 'punch' ? 8 : 12;
+                    defender.health -= damage;
+                    defender.hitCooldown = 20; // i-frames
+                    
+                    // Add Shakti
+                    attacker.shakti = Math.min(100, attacker.shakti + 15);
+                    
+                    updateUI();
+                    checkWinCondition();
+                }
+            }
+        }
+
+        function updateUI() {
+            p1HealthEl.style.width = Math.max(0, player.health) + '%';
+            p2HealthEl.style.width = Math.max(0, enemy.health) + '%';
+            p1ShaktiEl.style.width = player.shakti + '%';
+            p2ShaktiEl.style.width = enemy.shakti + '%';
+        }
+
+        function checkWinCondition() {
+            if (player.health <= 0 || enemy.health <= 0) {
+                gameRunning = false;
+                gameOverScreen.style.display = 'block';
+                winnerText.innerText = player.health <= 0 ? 'YATRA BOY WINS!' : 'MITRAMAN WINS!';
+            }
+        }
+
+        function resetGame() {
+            player = new Fighter(200, groundY - 70, '#f28c28', true);
+            enemy = new Fighter(550, groundY - 70, '#e0e0e0', false);
+            gameRunning = true;
+            gameOverScreen.style.display = 'none';
+            updateUI();
+        }
+
+        // Game Loop
+        function gameLoop() {
+            // Clear Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Background (Parliament style)
+            ctx.fillStyle = '#d4a373';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw Floor
+            ctx.fillStyle = '#faedcd';
+            ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
+            
+            // Draw some lines on floor
+            ctx.strokeStyle = '#e9edc9';
+            ctx.lineWidth = 2;
+            for(let i=0; i<canvas.width; i+=40) {
+                ctx.beginPath();
+                ctx.moveTo(i, groundY);
+                ctx.lineTo(i - 50, canvas.height);
+                ctx.stroke();
+            }
+
+            if (gameRunning) {
+                player.update();
+                enemy.update();
+                updateAI();
+            }
+
+            player.draw();
+            enemy.draw();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start Game
+        resetGame();
+        gameLoop();
+
+    </script>
 </body>
-</html>
+  </html>
