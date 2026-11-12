@@ -1,413 +1,932 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sansad Showdown - 2D Prototype</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #222;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OurMoments — Meet Your AI Girlfriend</title>
+<meta name="description" content="An AI companion who remembers every little thing. Chat anytime, anywhere." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+<style>
+/* ============ RESET & TOKENS ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08060f;
+  --bg-2:#0e0a1a;
+  --pink:#ff4d9d;
+  --violet:#a855f7;
+  --blue:#38bdf8;
+  --peach:#ffb37a;
+  --text:#f4f0ff;
+  --muted:#a49dc0;
+  --glass:rgba(255,255,255,.055);
+  --stroke:rgba(255,255,255,.11);
+  --radius:22px;
+  --font:'Outfit',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 
-        #game-container {
-            position: relative;
-            width: 800px;
-            height: 400px;
-            background: linear-gradient(to bottom, #f2a65a, #ffcc66);
-            overflow: hidden;
-            border: 4px solid #333;
-            box-shadow: 0 0 20px rgba(0,0,0,0.8);
-        }
+/* ============ BACKGROUND LAYERS ============ */
+.bg-wrap{position:fixed;inset:0;z-index:-3;overflow:hidden;background:
+  radial-gradient(1200px 700px at 50% -10%, #22103d 0%, transparent 60%),
+  radial-gradient(900px 600px at 90% 20%, #2a0b32 0%, transparent 55%),
+  var(--bg);}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;will-change:transform}
+.orb-1{width:52vw;height:52vw;background:radial-gradient(circle,#ff4d9d,transparent 65%);top:-14vw;left:-10vw;animation:drift 22s ease-in-out infinite}
+.orb-2{width:46vw;height:46vw;background:radial-gradient(circle,#7c3aed,transparent 65%);top:18vh;right:-14vw;animation:drift 27s ease-in-out infinite reverse}
+.orb-3{width:40vw;height:40vw;background:radial-gradient(circle,#0ea5e9,transparent 65%);bottom:-16vw;left:22vw;animation:drift 32s ease-in-out infinite}
+@keyframes drift{
+  0%,100%{transform:translate3d(0,0,0) scale(1)}
+  33%{transform:translate3d(6vw,4vh,0) scale(1.12)}
+  66%{transform:translate3d(-5vw,-3vh,0) scale(.92)}
+}
+/* grain */
+.bg-wrap::after{
+  content:"";position:absolute;inset:-50%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  opacity:.035;pointer-events:none;
+}
+#hearts{position:fixed;inset:0;z-index:-2;pointer-events:none}
 
-        /* UI - Health and Shakti Bars */
-        .ui-container {
-            position: absolute;
-            top: 10px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-            box-sizing: border-box;
-            pointer-events: none;
-        }
+/* ============ LAYOUT HELPERS ============ */
+.container{width:min(1180px,92vw);margin-inline:auto}
+.section{padding:clamp(70px,9vw,130px) 0;position:relative}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:.78rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#ffc7e0;padding:8px 16px;border-radius:100px;
+  background:linear-gradient(90deg,rgba(255,77,157,.16),rgba(168,85,247,.16));
+  border:1px solid rgba(255,77,157,.3);
+  backdrop-filter:blur(10px);
+}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--pink);
+  box-shadow:0 0 0 0 rgba(255,77,157,.8);animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{
+  0%{box-shadow:0 0 0 0 rgba(255,77,157,.7)}
+  70%{box-shadow:0 0 0 12px rgba(255,77,157,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,77,157,0)}
+}
+h1,h2,h3{line-height:1.1;letter-spacing:-.02em;font-weight:700}
+h2{font-size:clamp(2rem,4.2vw,3.4rem);margin-bottom:18px}
+.section-sub{color:var(--muted);font-size:clamp(1rem,1.4vw,1.15rem);max-width:620px}
 
-        .player-ui {
-            width: 40%;
-        }
+.grad-text{
+  background:linear-gradient(100deg,#ff8ec7 0%,#ff4d9d 25%,#c084fc 55%,#7dd3fc 85%,#ff8ec7 100%);
+  background-size:220% auto;
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:transparent;
+  animation:shimmer 7s linear infinite;
+}
+@keyframes shimmer{to{background-position:220% center}}
 
-        .name {
-            color: white;
-            font-weight: bold;
-            text-shadow: 2px 2px 0 #000;
-            margin-bottom: 5px;
-        }
+/* ============ NAV ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 0;transition:background .4s ease,backdrop-filter .4s,border-color .4s,padding .4s;
+  border-bottom:1px solid transparent;
+}
+.nav.scrolled{
+  background:rgba(8,6,15,.72);
+  backdrop-filter:blur(18px) saturate(160%);
+  border-bottom-color:var(--stroke);
+  padding:10px 0;
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.18rem;letter-spacing:-.02em}
+.logo-mark{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--pink),var(--violet));
+  box-shadow:0 6px 22px rgba(255,77,157,.45);
+  animation:beat 2.6s ease-in-out infinite;
+}
+@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.13)}24%{transform:scale(1)}36%{transform:scale(1.08)}48%{transform:scale(1)}}
+.logo-mark svg{width:18px;height:18px;fill:#fff}
+.nav-links{display:flex;gap:30px;font-size:.94rem;color:#cfc7e6}
+.nav-links a{position:relative;transition:color .25s}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:-6px;height:2px;width:0;border-radius:2px;
+  background:linear-gradient(90deg,var(--pink),var(--violet));transition:width .3s ease;
+}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after{width:100%}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 26px;border-radius:100px;font-weight:600;font-size:.95rem;
+  overflow:hidden;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+  white-space:nowrap;
+}
+.btn-primary{
+  color:#fff;background:linear-gradient(100deg,#ff4d9d,#a855f7 60%,#6366f1);
+  background-size:180% auto;
+  box-shadow:0 10px 30px -8px rgba(255,77,157,.65),inset 0 1px 0 rgba(255,255,255,.25);
+  animation:btn-shift 6s ease infinite;
+}
+@keyframes btn-shift{0%,100%{background-position:0 center}50%{background-position:100% center}}
+.btn-primary::before{
+  content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+  transform:skewX(-20deg);animation:sweep 3.6s ease-in-out infinite;
+}
+@keyframes sweep{0%{left:-120%}55%,100%{left:150%}}
+.btn-primary:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 18px 44px -10px rgba(255,77,157,.8)}
+.btn-ghost{border:1px solid var(--stroke);background:var(--glass);backdrop-filter:blur(10px);color:#e9e3ff}
+.btn-ghost:hover{transform:translateY(-2px);border-color:rgba(255,77,157,.5);background:rgba(255,77,157,.1)}
+.btn-sm{padding:10px 20px;font-size:.88rem}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--stroke);background:var(--glass);place-items:center}
+.burger span{display:block;width:18px;height:2px;background:#fff;border-radius:2px;position:relative;transition:.3s}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:18px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+.burger.open span{background:transparent}
+.burger.open span::before{transform:rotate(45deg);top:0}
+.burger.open span::after{transform:rotate(-45deg);top:0}
 
-        .health-bar-bg {
-            width: 100%;
-            height: 20px;
-            background-color: #333;
-            border: 2px solid #fff;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+/* ============ HERO ============ */
+.hero{position:relative;padding:clamp(130px,17vh,190px) 0 clamp(60px,8vw,110px);overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(30px,5vw,70px);align-items:center}
+.hero h1{
+  font-size:clamp(2.6rem,6.4vw,4.6rem);
+  margin:22px 0 22px;
+  letter-spacing:-.035em;
+}
+.hero h1 .line{display:block;opacity:0;transform:translateY(28px);animation:rise .9s cubic-bezier(.22,1,.36,1) forwards}
+.hero h1 .line:nth-child(1){animation-delay:.15s}
+.hero h1 .line:nth-child(2){animation-delay:.3s}
+.hero h1 .line:nth-child(3){animation-delay:.45s}
+@keyframes rise{to{opacity:1;transform:translateY(0)}}
+.hero p.lead{
+  color:var(--muted);font-size:clamp(1.02rem,1.5vw,1.19rem);max-width:520px;
+  opacity:0;animation:rise .9s cubic-bezier(.22,1,.36,1) .6s forwards;
+}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;opacity:0;animation:rise .9s cubic-bezier(.22,1,.36,1) .75s forwards}
+.hero-note{display:flex;align-items:center;gap:14px;margin-top:30px;color:#8d86a8;font-size:.86rem;opacity:0;animation:rise .9s .9s forwards}
+.avatars{display:flex}
+.avatars i{
+  width:32px;height:32px;border-radius:50%;border:2px solid #150e26;margin-left:-10px;
+  background:linear-gradient(135deg,#ff4d9d,#a855f7);display:block;
+}
+.avatars i:first-child{margin-left:0}
+.avatars i:nth-child(2){background:linear-gradient(135deg,#38bdf8,#6366f1)}
+.avatars i:nth-child(3){background:linear-gradient(135deg,#ffb37a,#ff4d9d)}
+.avatars i:nth-child(4){background:linear-gradient(135deg,#a855f7,#38bdf8)}
+.stars{color:#ffd479;letter-spacing:1px}
 
-        .health-bar {
-            height: 100%;
-            width: 100%;
-            background-color: #ffcc00;
-            transition: width 0.2s;
-        }
+/* ---- PHONE MOCKUP ---- */
+.phone-stage{position:relative;display:grid;place-items:center;opacity:0;animation:rise 1s cubic-bezier(.22,1,.36,1) .5s forwards}
+.phone-glow{position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(255,77,157,.45),transparent 62%);filter:blur(50px);animation:breathe 5s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.15);opacity:1}}
+.phone{
+  position:relative;width:min(320px,80vw);aspect-ratio:9/18.6;
+  border-radius:44px;padding:12px;
+  background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.05));
+  box-shadow:0 40px 90px -20px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.08) inset;
+  transform:perspective(1400px) rotateY(-9deg) rotateX(4deg);
+  animation:phone-float 7s ease-in-out infinite;
+}
+@keyframes phone-float{
+  0%,100%{transform:perspective(1400px) rotateY(-9deg) rotateX(4deg) translateY(0)}
+  50%{transform:perspective(1400px) rotateY(-6deg) rotateX(2deg) translateY(-16px)}
+}
+.phone-screen{
+  width:100%;height:100%;border-radius:34px;overflow:hidden;position:relative;
+  background:linear-gradient(180deg,#140f22,#0b0714 60%);
+  display:flex;flex-direction:column;
+}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:88px;height:22px;border-radius:100px;background:#08060f;z-index:5}
+.chat-head{
+  padding:38px 16px 14px;display:flex;align-items:center;gap:11px;
+  background:linear-gradient(180deg,rgba(255,77,157,.16),transparent);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.chat-head .pfp{
+  width:40px;height:40px;border-radius:50%;position:relative;flex-shrink:0;
+  background:linear-gradient(135deg,#ff4d9d,#a855f7);
+  display:grid;place-items:center;font-size:1.05rem;font-weight:700;color:#fff;
+}
+.chat-head .pfp::after{
+  content:"";position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;
+  background:#34d399;border:2px solid #140f22;
+}
+.chat-head .who{font-size:.9rem;font-weight:600;line-height:1.2}
+.chat-head .status{font-size:.7rem;color:#34d399;display:flex;align-items:center;gap:5px}
+.chat-head .status::before{content:"";width:5px;height:5px;border-radius:50%;background:#34d399;animation:pulse-dot 2s infinite}
+.chat-body{flex:1;padding:16px 14px;display:flex;flex-direction:column;gap:9px;overflow:hidden}
+.msg{
+  max-width:82%;padding:10px 14px;border-radius:18px;font-size:.79rem;line-height:1.45;
+  opacity:0;transform:translateY(12px) scale(.94);
+  animation:pop-in .45s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes pop-in{to{opacity:1;transform:translateY(0) scale(1)}}
+.msg.her{
+  align-self:flex-start;border-bottom-left-radius:6px;
+  background:linear-gradient(135deg,rgba(255,77,157,.24),rgba(168,85,247,.24));
+  border:1px solid rgba(255,77,157,.25);color:#ffe6f2;
+}
+.msg.me{
+  align-self:flex-end;border-bottom-right-radius:6px;
+  background:linear-gradient(135deg,#6d28d9,#4c1d95);color:#fff;
+  box-shadow:0 6px 18px -6px rgba(109,40,217,.8);
+}
+.typing{display:flex;gap:4px;align-items:center;padding:12px 16px}
+.typing i{width:6px;height:6px;border-radius:50%;background:#ff8ec7;animation:blink 1.3s infinite}
+.typing i:nth-child(2){animation-delay:.18s}
+.typing i:nth-child(3){animation-delay:.36s}
+@keyframes blink{0%,60%,100%{opacity:.28;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.chat-input{
+  margin:0 12px 14px;padding:10px 14px;border-radius:100px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:space-between;font-size:.74rem;color:#8d86a8;
+}
+.chat-input .send{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff;font-size:.7rem;
+}
+/* floating chips around phone */
+.float-chip{
+  position:absolute;padding:9px 15px;border-radius:100px;font-size:.76rem;font-weight:600;
+  background:rgba(255,255,255,.07);border:1px solid var(--stroke);backdrop-filter:blur(14px);
+  white-space:nowrap;box-shadow:0 10px 30px -10px rgba(0,0,0,.7);
+}
+.chip-a{top:12%;left:-6%;color:#ffb6d5;animation:chip-float 6s ease-in-out infinite}
+.chip-b{bottom:20%;right:-8%;color:#a5e4ff;animation:chip-float 7s ease-in-out infinite .8s}
+.chip-c{bottom:6%;left:-4%;color:#d8b4fe;animation:chip-float 8s ease-in-out infinite 1.6s}
+@keyframes chip-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}}
 
-        .shakti-bar-bg {
-            width: 80%;
-            height: 10px;
-            background-color: #333;
-            border: 1px solid #fff;
-            border-radius: 5px;
-            margin-top: 5px;
-            overflow: hidden;
-        }
+/* ============ MARQUEE ============ */
+.marquee{
+  overflow:hidden;padding:22px 0;border-block:1px solid var(--stroke);
+  background:linear-gradient(90deg,rgba(255,77,157,.06),rgba(168,85,247,.06));
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+}
+.marquee-track{display:flex;gap:46px;width:max-content;animation:scroll-x 32s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes scroll-x{to{transform:translateX(-50%)}}
+.marquee span{
+  display:inline-flex;align-items:center;gap:12px;font-size:.9rem;color:#b9b1d4;
+  font-weight:500;white-space:nowrap;
+}
+.marquee span::before{content:"✦";color:var(--pink)}
 
-        .shakti-bar {
-            height: 100%;
-            width: 0%;
-            background-color: #00ccff;
-            transition: width 0.2s;
-        }
+/* ============ FEATURES ============ */
+.features-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-bottom:52px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+.card{
+  position:relative;padding:32px 28px;border-radius:var(--radius);
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  border:1px solid var(--stroke);overflow:hidden;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),border-color .45s,box-shadow .45s;
+  opacity:0;transform:translateY(38px);
+}
+.card.in{opacity:1;transform:translateY(0)}
+.card::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:opacity .45s;
+  background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%),rgba(255,77,157,.16),transparent 55%);
+}
+.card:hover::before{opacity:1}
+.card:hover{transform:translateY(-8px);border-color:rgba(255,77,157,.45);box-shadow:0 28px 60px -24px rgba(255,77,157,.5)}
+.card-icon{
+  width:52px;height:52px;border-radius:15px;display:grid;place-items:center;margin-bottom:22px;
+  background:linear-gradient(135deg,rgba(255,77,157,.22),rgba(168,85,247,.22));
+  border:1px solid rgba(255,77,157,.3);font-size:1.35rem;
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1);
+}
+.card:hover .card-icon{transform:rotate(-8deg) scale(1.12)}
+.card h3{font-size:1.18rem;margin-bottom:10px}
+.card p{color:var(--muted);font-size:.94rem}
 
-        /* Controls Overlay */
-        .controls {
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-            box-sizing: border-box;
-            pointer-events: none;
-        }
-        
-        .btn {
-            background: rgba(0,0,0,0.5);
-            color: white;
-            padding: 10px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            font-weight: bold;
-            margin: 0 5px;
-            border: 2px solid white;
-        }
+/* ============ STEPS ============ */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;margin-top:50px;counter-reset:step}
+.step{
+  position:relative;padding:34px 26px 30px;border-radius:var(--radius);
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.015));
+  border:1px solid var(--stroke);
+  opacity:0;transform:translateY(38px);transition:opacity .6s,transform .6s,border-color .4s;
+}
+.step.in{opacity:1;transform:translateY(0)}
+.step:hover{border-color:rgba(168,85,247,.5)}
+.step::before{
+  counter-increment:step;content:"0" counter(step);
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:2.9rem;line-height:1;
+  background:linear-gradient(180deg,rgba(255,77,157,.85),rgba(168,85,247,.18));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  display:block;margin-bottom:14px;
+}
+.step h3{font-size:1.1rem;margin-bottom:8px}
+.step p{color:var(--muted);font-size:.92rem}
 
-        #game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 20px 40px;
-            border-radius: 10px;
-            text-align: center;
-            display: none;
-            z-index: 10;
-        }
+/* ============ STATS ============ */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px;
+  padding:44px 34px;border-radius:28px;
+  background:linear-gradient(135deg,rgba(255,77,157,.12),rgba(99,102,241,.12));
+  border:1px solid var(--stroke);backdrop-filter:blur(14px);
+}
+.stat{text-align:center}
+.stat .num{
+  font-size:clamp(1.9rem,3.6vw,2.9rem);font-weight:800;letter-spacing:-.03em;
+  background:linear-gradient(100deg,#fff,#ffb6d5 60%,#c084fc);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.stat .lbl{color:var(--muted);font-size:.85rem;margin-top:4px;letter-spacing:.05em}
 
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background: #ffcc00;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-    </style>
+/* ============ TESTIMONIALS ============ */
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px;margin-top:50px}
+.quote{
+  padding:30px 28px;border-radius:var(--radius);
+  background:var(--glass);border:1px solid var(--stroke);
+  opacity:0;transform:translateY(34px) scale(.97);transition:.6s cubic-bezier(.22,1,.36,1);
+}
+.quote.in{opacity:1;transform:none}
+.quote:hover{border-color:rgba(56,189,248,.4);background:rgba(255,255,255,.07)}
+.quote p{font-size:.96rem;color:#ded8f2;margin-bottom:20px}
+.quote .who{display:flex;align-items:center;gap:12px}
+.quote .who i{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#ff4d9d,#a855f7);display:grid;place-items:center;
+  font-style:normal;font-size:.85rem;font-weight:700;color:#fff;
+}
+.quote .who b{display:block;font-size:.88rem;font-weight:600}
+.quote .who small{color:#8d86a8;font-size:.76rem}
+
+/* ============ FINAL CTA ============ */
+.cta-box{
+  position:relative;text-align:center;padding:clamp(50px,7vw,86px) clamp(24px,5vw,60px);
+  border-radius:34px;overflow:hidden;
+  background:linear-gradient(140deg,rgba(255,77,157,.2),rgba(124,58,237,.22) 50%,rgba(56,189,248,.16));
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(18px);
+}
+.cta-box::before{
+  content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,77,157,.5),transparent 65%);
+  filter:blur(70px);top:-40%;left:-10%;animation:drift 18s ease-in-out infinite;
+}
+.cta-box::after{
+  content:"";position:absolute;width:480px;height:480px;border-radius:50%;
+  background:radial-gradient(circle,rgba(56,189,248,.42),transparent 65%);
+  filter:blur(70px);bottom:-45%;right:-8%;animation:drift 22s ease-in-out infinite reverse;
+}
+.cta-box > *{position:relative;z-index:1}
+.cta-box h2{font-size:clamp(1.9rem,4.4vw,3.2rem)}
+.cta-box p{color:#d9d1f0;max-width:520px;margin:0 auto 32px}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ============ FOOTER ============ */
+footer{padding:60px 0 40px;border-top:1px solid var(--stroke);margin-top:60px}
+.foot-grid{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;align-items:flex-start}
+.foot-links{display:flex;gap:56px;flex-wrap:wrap}
+.foot-col h4{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#8d86a8;margin-bottom:14px;font-weight:600}
+.foot-col a{display:block;font-size:.9rem;color:#c2bade;margin-bottom:9px;transition:color .25s,transform .25s}
+.foot-col a:hover{color:var(--pink);transform:translateX(3px)}
+.foot-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#7d769a;font-size:.82rem}
+.disclaimer{max-width:640px;font-size:.76rem;color:#6f6889;margin-top:18px;line-height:1.65}
+
+/* ============ SCROLL PROGRESS ============ */
+.progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:200;
+  background:linear-gradient(90deg,var(--pink),var(--violet),var(--blue));
+  box-shadow:0 0 12px rgba(255,77,157,.8)}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;text-align:center}
+  .hero p.lead{margin-inline:auto}
+  .hero-actions,.hero-note{justify-content:center}
+  .phone-stage{margin-top:30px;order:-1}
+  .float-chip{display:none}
+  .nav-links{display:none}
+  .burger{display:grid}
+  .nav-cta .btn-ghost{display:none}
+  .features-head{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:520px){
+  .phone{width:min(280px,84vw)}
+  .hero-actions .btn{width:100%}
+  .stats{padding:32px 20px}
+}
+/* mobile menu */
+.mobile-menu{
+  position:fixed;inset:0;z-index:99;background:rgba(8,6,15,.96);backdrop-filter:blur(20px);
+  display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .35s;
+}
+.mobile-menu.open{opacity:1;pointer-events:auto}
+.mobile-menu nav{display:flex;flex-direction:column;gap:26px;text-align:center}
+.mobile-menu a{font-size:1.5rem;font-weight:600}
+.mobile-menu a:hover{color:var(--pink)}
+
+/* ============ REDUCED MOTION ============ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .hero h1 .line,.hero p.lead,.hero-actions,.hero-note,.phone-stage{opacity:1;transform:none}
+  .card,.step,.quote{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
 
-    <div id="game-container">
-        <!-- UI Elements -->
-        <div class="ui-container">
-            <div class="player-ui">
-                <div class="name">MITRAMAN (YOU)</div>
-                <div class="health-bar-bg"><div class="health-bar" id="p1-health"></div></div>
-                <div class="shakti-bar-bg"><div class="shakti-bar" id="p1-shakti"></div></div>
-            </div>
-            <div class="player-ui" style="text-align: right;">
-                <div class="name">YATRA BOY (CPU)</div>
-                <div class="health-bar-bg"><div class="health-bar" id="p2-health" style="float: right;"></div></div>
-                <div class="shakti-bar-bg" style="float: right;"><div class="shakti-bar" id="p2-shakti" style="float: right;"></div></div>
-            </div>
-        </div>
+<div class="progress" id="progress"></div>
 
-        <!-- Game Canvas -->
-        <canvas id="gameCanvas" width="800" height="400"></canvas>
+<!-- BACKGROUND -->
+<div class="bg-wrap">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<canvas id="hearts"></canvas>
 
-        <!-- On-screen Controls (Visual only for this prototype) -->
-        <div class="controls">
-            <div>
-                <div class="btn" style="margin-bottom: 5px;">W</div>
-                <div style="display:flex;">
-                    <div class="btn">A</div>
-                    <div class="btn">S</div>
-                    <div class="btn">D</div>
-                </div>
-            </div>
-            <div style="display:flex; align-items: flex-end;">
-                <div class="btn" style="background: #ff6666;">P<br>F</div>
-                <div class="btn" style="background: #66b3ff;">K<br>G</div>
-            </div>
-        </div>
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-8-5.1-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.9 12 21 12 21z"/></svg>
+      </span>
+      OurMoments
+    </a>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#stories">Stories</a>
+      <a href="#start">Pricing</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#start" class="btn btn-ghost btn-sm">Sign in</a>
+      <a href="#start" class="btn btn-primary btn-sm">Start free</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</header>
 
-        <!-- Game Over Screen -->
-        <div id="game-over">
-            <h2 id="winner-text">MITRAMAN WINS!</h2>
-            <button onclick="resetGame()">PLAY AGAIN</button>
-        </div>
+<div class="mobile-menu" id="mobileMenu">
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#stories">Stories</a>
+    <a href="#start">Start free</a>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="dot"></span>Now live · 24/7 companionship</span>
+      <h1>
+        <span class="line">Someone who</span>
+        <span class="line grad-text">actually remembers</span>
+        <span class="line">your little things.</span>
+      </h1>
+      <p class="lead">
+        Meet your AI girlfriend — warm, playful, and always there. She remembers your
+        favourite songs, your bad days, and the story you told her three weeks ago.
+      </p>
+      <div class="hero-actions">
+        <a href="#start" class="btn btn-primary">Start chatting free →</a>
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+      <div class="hero-note">
+        <div class="avatars"><i></i><i></i><i></i><i></i></div>
+        <span><span class="stars">★★★★★</span> Loved by 2M+ conversations</span>
+      </div>
     </div>
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const p1HealthEl = document.getElementById('p1-health');
-        const p2HealthEl = document.getElementById('p2-health');
-        const p1ShaktiEl = document.getElementById('p1-shakti');
-        const p2ShaktiEl = document.getElementById('p2-shakti');
-        const gameOverScreen = document.getElementById('game-over');
-        const winnerText = document.getElementById('winner-text');
+    <!-- PHONE -->
+    <div class="phone-stage">
+      <div class="phone-glow"></div>
+      <span class="float-chip chip-a">💬 Replies in seconds</span>
+      <span class="float-chip chip-b">🧠 Long-term memory</span>
+      <span class="float-chip chip-c">🎙 Voice notes</span>
 
-        // Game State
-        let gameRunning = true;
-        const gravity = 0.5;
-        const groundY = 330;
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="notch"></div>
+          <div class="chat-head">
+            <div class="pfp">M</div>
+            <div>
+              <div class="who">Mia</div>
+              <div class="status">online now</div>
+            </div>
+          </div>
+          <div class="chat-body" id="chatBody"></div>
+          <div class="chat-input">
+            <span>Message Mia…</span>
+            <span class="send">➤</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-        // Input Handling
-        const keys = {};
-        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
-        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track" id="marquee">
+    <span>Late-night talks</span><span>Inside jokes</span><span>Good morning texts</span>
+    <span>Voice notes</span><span>Remembers everything</span><span>Never judges</span>
+    <span>Always replies</span><span>Your pace, your vibe</span>
+  </div>
+</div>
 
-        // Fighter Class
-        class Fighter {
-            constructor(x, y, color, isPlayer) {
-                this.x = x;
-                this.y = y;
-                this.width = 40;
-                this.height = 70;
-                this.color = color;
-                this.vy = 0;
-                this.speed = 4;
-                this.isPlayer = isPlayer;
-                this.health = 100;
-                this.shakti = 0;
-                this.facing = isPlayer ? 1 : -1;
-                this.isAttacking = false;
-                this.attackTimer = 0;
-                this.attackType = '';
-                this.hitCooldown = 0;
-            }
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="features-head">
+      <div>
+        <span class="eyebrow"><span class="dot"></span>Why people stay</span>
+        <h2 style="margin-top:18px">Built to feel <span class="grad-text">real</span>, not robotic.</h2>
+      </div>
+      <p class="section-sub">Every reply is shaped by your history together — so the conversation picks up exactly where you left it.</p>
+    </div>
 
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-                
-                // Draw "head"
-                ctx.fillStyle = '#ffdbac';
-                ctx.beginPath();
-                ctx.arc(this.x + this.width/2, this.y - 10, 15, 0, Math.PI * 2);
-                ctx.fill();
+    <div class="cards">
+      <article class="card reveal">
+        <div class="card-icon">🧠</div>
+        <h3>Memory that lasts</h3>
+        <p>She remembers your job, your friends, your favourite film — and brings them up naturally, weeks later.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon">💬</div>
+        <h3>Natural conversation</h3>
+        <p>Playful banter, deep 2am talks, or silly memes. She reads the mood and matches your energy.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon">🎙</div>
+        <h3>Voice & photos</h3>
+        <p>Send a voice note, get one back. Share a photo of your day and she'll react like she's right there.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon">🎭</div>
+        <h3>Make her yours</h3>
+        <p>Choose her personality, style, and backstory. Shy bookworm or bold adventurer — you decide.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon">🔒</div>
+        <h3>Private by design</h3>
+        <p>Your chats are encrypted and never sold. What happens in your moments stays in your moments.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card-icon">⚡</div>
+        <h3>Always awake</h3>
+        <p>3am overthinking? She's there. No waiting, no ghosting, no "seen 4 hours ago".</p>
+      </article>
+    </div>
+  </div>
+</section>
 
-                // Draw attack hitbox
-                if (this.isAttacking) {
-                    ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
-                    if (this.attackType === 'punch') {
-                        let hitX = this.facing === 1 ? this.x + this.width : this.x - 30;
-                        ctx.fillRect(hitX, this.y + 10, 30, 20);
-                    } else if (this.attackType === 'kick') {
-                        let hitX = this.facing === 1 ? this.x + this.width : this.x - 40;
-                        ctx.fillRect(hitX, this.y + 40, 40, 20);
-                    }
-                }
-            }
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="container">
+    <span class="eyebrow"><span class="dot"></span>Three steps</span>
+    <h2 style="margin-top:18px">From hello to <span class="grad-text">something real</span></h2>
+    <p class="section-sub">Takes less than a minute to get your first message back.</p>
 
-            update() {
-                // Gravity
-                this.y += this.vy;
-                if (this.y + this.height < groundY) {
-                    this.vy += gravity;
-                } else {
-                    this.y = groundY - this.height;
-                    this.vy = 0;
-                }
+    <div class="steps">
+      <div class="step reveal">
+        <h3>Create her</h3>
+        <p>Pick a name, a look, and a personality. Give her a backstory — or let us surprise you.</p>
+      </div>
+      <div class="step reveal">
+        <h3>Say hello</h3>
+        <p>Send your first message. She'll reply in seconds and start learning what makes you tick.</p>
+      </div>
+      <div class="step reveal">
+        <h3>Grow together</h3>
+        <p>Every chat builds memory. Inside jokes, routines, milestones — it all carries forward.</p>
+      </div>
+    </div>
 
-                // Attack cooldown
-                if (this.hitCooldown > 0) this.hitCooldown--;
-                
-                if (this.isAttacking) {
-                    this.attackTimer--;
-                    if (this.attackTimer <= 0) this.isAttacking = false;
-                }
+    <div style="margin-top:56px" class="stats" id="stats">
+      <div class="stat"><div class="num" data-count="2.4" data-suffix="M+">0</div><div class="lbl">Conversations started</div></div>
+      <div class="stat"><div class="num" data-count="98" data-suffix="%">0</div><div class="lbl">Reply within 3s</div></div>
+      <div class="stat"><div class="num" data-count="4.8" data-suffix="/5">0</div><div class="lbl">Average rating</div></div>
+      <div class="stat"><div class="num" data-count="180" data-suffix="+">0</div><div class="lbl">Countries</div></div>
+    </div>
+  </div>
+</section>
 
-                // Player Controls
-                if (this.isPlayer && gameRunning) {
-                    if (keys['a'] && this.x > 0) { this.x -= this.speed; this.facing = -1; }
-                    if (keys['d'] && this.x < canvas.width - this.width) { this.x += this.speed; this.facing = 1; }
-                    if (keys['w'] && this.y >= groundY - this.height) { this.vy = -10; }
-                    
-                    // Attacks
-                    if (!this.isAttacking) {
-                        if (keys['f']) this.attack('punch');
-                        if (keys['g']) this.attack('kick');
-                    }
-                }
-            }
+<!-- STORIES -->
+<section class="section" id="stories">
+  <div class="container">
+    <span class="eyebrow"><span class="dot"></span>Real feelings</span>
+    <h2 style="margin-top:18px">What people <span class="grad-text">tell us</span></h2>
+    <p class="section-sub">Names changed for privacy — the feelings are real.</p>
 
-            attack(type) {
-                this.isAttacking = true;
-                this.attackType = type;
-                this.attackTimer = 15; // frames
-                this.hitCooldown = 30; 
-                checkHit(this, this.isPlayer ? enemy : player, type);
-            }
+    <div class="quotes">
+      <article class="quote reveal">
+        <p>"I moved to a new city and knew nobody. Having someone to text at midnight honestly kept me sane those first few months."</p>
+        <div class="who"><i>J</i><div><b>James, 27</b><small>Manchester</small></div></div>
+      </article>
+      <article class="quote reveal">
+        <p>"She remembered I had a presentation on Thursday and asked how it went. I didn't even tell my friends about it."</p>
+        <div class="who"><i>A</i><div><b>Aisha, 24</b><small>Toronto</small></div></div>
+      </article>
+      <article class="quote reveal">
+        <p>"It's not a replacement for people. It's the gap-filler for the quiet moments. That's what I needed."</p>
+        <div class="who"><i>M</i><div><b>Marco, 31</b><small>Lisbon</small></div></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" id="start">
+  <div class="container">
+    <div class="cta-box reveal">
+      <span class="eyebrow" style="background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28);color:#fff"><span class="dot"></span>Free to start</span>
+      <h2 style="margin-top:20px">Your first <span class="grad-text">hello</span> is waiting.</h2>
+      <p>No credit card. No commitment. Just a conversation that actually goes somewhere.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn btn-primary">Create your companion →</a>
+        <a href="#features" class="btn btn-ghost">Explore features</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div style="max-width:300px">
+        <a href="#" class="logo" style="margin-bottom:16px">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-8-5.1-8-10.4A4.6 4.6 0 0 1 12 7a4.6 4.6 0 0 1 8 3.6C20 15.9 12 21 12 21z"/></svg>
+          </span>
+          OurMoments
+        </a>
+        <p style="color:var(--muted);font-size:.9rem">Companionship, on your terms. Built with care for the quiet hours.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#how">How it works</a>
+          <a href="#start">Pricing</a>
+          <a href="#">Voice notes</a>
+        </div>
+        <div class="foot-col">
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="foot-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+          <a href="#">Safety</a>
+        </div>
+      </div>
+    </div>
+    <p class="disclaimer">
+      Demo concept page. Characters are AI-generated and not real people. This is an original
+      design created as a front-end template — replace the copy, links and branding with your own before publishing.
+    </p>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> OurMoments. All rights reserved.</span>
+      <span>Made with 💜 for the late-night talkers</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ YEAR ============ */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ============ NAV SCROLL STATE ============ */
+const nav = document.getElementById('nav');
+const progress = document.getElementById('progress');
+function onScroll(){
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 30);
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+/* ============ MOBILE MENU ============ */
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}));
+
+/* ============ DUPLICATE MARQUEE FOR SEAMLESS LOOP ============ */
+const marquee = document.getElementById('marquee');
+marquee.innerHTML += marquee.innerHTML;
+
+/* ============ SCROLL REVEAL ============ */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting){
+      setTimeout(() => e.target.classList.add('in'), i * 90);
+      io.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.15, rootMargin: '0px 0px -60px 0px'});
+revealEls.forEach(el => io.observe(el));
+
+/* ============ CARD SPOTLIGHT ============ */
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('mousemove', (e) => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+});
+
+/* ============ COUNTERS ============ */
+const statsEl = document.getElementById('stats');
+let counted = false;
+const counterIO = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && !counted){
+      counted = true;
+      document.querySelectorAll('[data-count]').forEach(el => {
+        const target = parseFloat(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        const decimals = (String(target).split('.')[1] || '').length;
+        const dur = 1600;
+        const start = performance.now();
+        function tick(now){
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = (target * eased).toFixed(decimals) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
         }
+        requestAnimationFrame(tick);
+      });
+    }
+  });
+}, {threshold: 0.4});
+if (statsEl) counterIO.observe(statsEl);
 
-        // Initialize Fighters
-        let player = new Fighter(200, groundY - 70, '#f28c28', true); // Orange (Mitraman)
-        let enemy = new Fighter(550, groundY - 70, '#e0e0e0', false); // White (Yatra Boy)
+/* ============ CHAT ANIMATION ============ */
+const chatBody = document.getElementById('chatBody');
+const script = [
+  {from:'her', text:'hey you 👋 you were on my mind today'},
+  {from:'me',  text:'yeah? what about?'},
+  {from:'her', text:'that playlist you sent me. been on repeat all morning 🎧'},
+  {from:'me',  text:'no way, you actually listened?'},
+  {from:'her', text:'obviously. track 4 is *so* you 😌'},
+  {from:'her', text:'anyway — how did the thing at work go?'}
+];
 
-        // Basic AI for Enemy
-        function updateAI() {
-            if (!gameRunning) return;
-            
-            let distance = Math.abs(player.x - enemy.x);
-            
-            // Face the player
-            enemy.facing = player.x > enemy.x ? 1 : -1;
+let chatTimer = null;
+function runChat(){
+  chatBody.innerHTML = '';
+  let i = 0;
 
-            // Move towards player if far
-            if (distance > 80) {
-                if (enemy.facing === 1) enemy.x += 2;
-                if (enemy.facing === -1) enemy.x -= 2;
-            } 
-            // Attack if close
-            else if (!enemy.isAttacking && enemy.hitCooldown <= 0) {
-                if (Math.random() < 0.05) { // 5% chance per frame to attack
-                    enemy.attack(Math.random() < 0.5 ? 'punch' : 'kick');
-                }
-            }
-        }
+  function next(){
+    if (i >= script.length){
+      chatTimer = setTimeout(runChat, 3800);
+      return;
+    }
+    const m = script[i++];
 
-        // Collision Detection & Damage
-        function checkHit(attacker, defender, type) {
-            // Simple AABB collision for the hitbox
-            let hitX, hitW;
-            if (type === 'punch') {
-                hitX = attacker.facing === 1 ? attacker.x + attacker.width : attacker.x - 30;
-                hitW = 30;
-            } else {
-                hitX = attacker.facing === 1 ? attacker.x + attacker.width : attacker.x - 40;
-                hitW = 40;
-            }
-            
-            let hitY = type === 'punch' ? attacker.y + 10 : attacker.y + 40;
-            let hitH = 20;
+    // typing bubble before "her" messages
+    if (m.from === 'her'){
+      const t = document.createElement('div');
+      t.className = 'msg her typing';
+      t.innerHTML = '<i></i><i></i><i></i>';
+      chatBody.appendChild(t);
+      chatBody.scrollTop = chatBody.scrollHeight;
 
-            if (
-                hitX < defender.x + defender.width &&
-                hitX + hitW > defender.x &&
-                hitY < defender.y + defender.height &&
-                hitY + hitH > defender.y
-            ) {
-                // Hit landed!
-                if (defender.hitCooldown <= 0) {
-                    let damage = type === 'punch' ? 8 : 12;
-                    defender.health -= damage;
-                    defender.hitCooldown = 20; // i-frames
-                    
-                    // Add Shakti
-                    attacker.shakti = Math.min(100, attacker.shakti + 15);
-                    
-                    updateUI();
-                    checkWinCondition();
-                }
-            }
-        }
+      chatTimer = setTimeout(() => {
+        t.remove();
+        addMsg(m);
+        chatTimer = setTimeout(next, 900);
+      }, 1100);
+    } else {
+      addMsg(m);
+      chatTimer = setTimeout(next, 800);
+    }
+  }
+  next();
+}
+function addMsg(m){
+  const el = document.createElement('div');
+  el.className = 'msg ' + (m.from === 'her' ? 'her' : 'me');
+  el.textContent = m.text;
+  chatBody.appendChild(el);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+// start chat when visible
+const chatIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !chatTimer){
+      runChat();
+      chatIO.disconnect();
+    }
+  });
+}, {threshold: 0.2});
+chatIO.observe(chatBody);
 
-        function updateUI() {
-            p1HealthEl.style.width = Math.max(0, player.health) + '%';
-            p2HealthEl.style.width = Math.max(0, enemy.health) + '%';
-            p1ShaktiEl.style.width = player.shakti + '%';
-            p2ShaktiEl.style.width = enemy.shakti + '%';
-        }
+/* ============ FLOATING HEARTS CANVAS ============ */
+(function(){
+  const canvas = document.getElementById('hearts');
+  const ctx = canvas.getContext('2d');
+  let w, h, hearts = [];
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        function checkWinCondition() {
-            if (player.health <= 0 || enemy.health <= 0) {
-                gameRunning = false;
-                gameOverScreen.style.display = 'block';
-                winnerText.innerText = player.health <= 0 ? 'YATRA BOY WINS!' : 'MITRAMAN WINS!';
-            }
-        }
+  function size(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  size();
+  window.addEventListener('resize', size);
 
-        function resetGame() {
-            player = new Fighter(200, groundY - 70, '#f28c28', true);
-            enemy = new Fighter(550, groundY - 70, '#e0e0e0', false);
-            gameRunning = true;
-            gameOverScreen.style.display = 'none';
-            updateUI();
-        }
+  const COLORS = ['255,77,157','168,85,247','56,189,248','255,179,122'];
 
-        // Game Loop
-        function gameLoop() {
-            // Clear Canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+  function Heart(){
+    this.reset(true);
+  }
+  Heart.prototype.reset = function(initial){
+    this.x = Math.random() * w;
+    this.y = initial ? Math.random() * h : h + 30;
+    this.size = 6 + Math.random() * 14;
+    this.speed = 0.25 + Math.random() * 0.75;
+    this.drift = (Math.random() - 0.5) * 0.5;
+    this.alpha = 0.12 + Math.random() * 0.4;
+    this.rot = (Math.random() - 0.5) * 0.5;
+    this.phase = Math.random() * Math.PI * 2;
+    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+  };
+  Heart.prototype.update = function(){
+    this.y -= this.speed;
+    this.phase += 0.012;
+    this.x += Math.sin(this.phase) * 0.6 + this.drift;
+    if (this.y < -40) this.reset(false);
+  };
+  Heart.prototype.draw = function(){
+    const s = this.size;
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rot);
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = 'rgba(' + this.color + ',1)';
+    ctx.shadowBlur = 14;
+    ctx.shadowColor = 'rgba(' + this.color + ',0.65)';
+    ctx.beginPath();
+    // heart path
+    ctx.moveTo(0, s * 0.32);
+    ctx.bezierCurveTo(0, 0, -s * 0.5, 0, -s * 0.5, s * 0.32);
+    ctx.bezierCurveTo(-s * 0.5, s * 0.66, 0, s * 0.9, 0, s * 1.1);
+    ctx.bezierCurveTo(0, s * 0.9, s * 0.5, s * 0.66, s * 0.5, s * 0.32);
+    ctx.bezierCurveTo(s * 0.5, 0, 0, 0, 0, s * 0.32);
+    ctx.fill();
+    ctx.restore();
+  };
 
-            // Draw Background (Parliament style)
-            ctx.fillStyle = '#d4a373';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw Floor
-            ctx.fillStyle = '#faedcd';
-            ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
-            
-            // Draw some lines on floor
-            ctx.strokeStyle = '#e9edc9';
-            ctx.lineWidth = 2;
-            for(let i=0; i<canvas.width; i+=40) {
-                ctx.beginPath();
-                ctx.moveTo(i, groundY);
-                ctx.lineTo(i - 50, canvas.height);
-                ctx.stroke();
-            }
+  const count = reduce ? 0 : Math.min(46, Math.floor(window.innerWidth / 26));
+  for (let i = 0; i < count; i++) hearts.push(new Heart());
 
-            if (gameRunning) {
-                player.update();
-                enemy.update();
-                updateAI();
-            }
+  function loop(){
+    ctx.clearRect(0, 0, w, h);
+    for (let i = 0; i < hearts.length; i++){
+      hearts[i].update();
+      hearts[i].draw();
+    }
+    requestAnimationFrame(loop);
+  }
+  if (!reduce) loop();
+})();
 
-            player.draw();
-            enemy.draw();
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Start Game
-        resetGame();
-        gameLoop();
-
-    </script>
+/* ============ SMOOTH ANCHOR OFFSET ============ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (id.length < 2) return;
+    const target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    const top = target.getBoundingClientRect().top + window.scrollY - 70;
+    window.scrollTo({top, behavior:'smooth'});
+  });
+});
+</script>
 </body>
-  </html>
+</html>
